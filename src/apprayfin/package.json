@@ -1,0 +1,17 @@
+{
+  "name": "helios-bicycle-apprayfin",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Reference Rayfin business app solution kit for the Helios Bicycle micro-hack (scenario 1).",
+  "scripts": {
+    "audit": "tsx demo/audit.ts",
+    "demo:build": "tsx demo/build-demo.ts",
+    "demo:shots": "node demo/capture.mjs",
+    "demo": "npm run audit && npm run demo:build && npm run demo:shots"
+  },
+  "devDependencies": {
+    "playwright": "^1.61.0",
+    "tsx": "^4.19.2"
+  }
+}

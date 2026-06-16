@@ -120,6 +120,8 @@ This guarantees a meaningful demo flow (detect -> assign -> close).
 - Assignment logic: `src/apprayfin/src/services/pit-stop-assignment.ts`
 - KPI logic: `src/apprayfin/src/services/business-kpi.ts`
 - Seed payload: `src/apprayfin/src/seed/helios-demo-seed.ts`
+- Runnable demo + screenshots: `cd src/apprayfin && npm install && npm run demo`
+- App screenshots: `docs/images/scenario1-*.png` (embedded in the solution doc)
 
 ### Suggested spec prompt (starter)
 ```text
