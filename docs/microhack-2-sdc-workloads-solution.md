@@ -72,7 +72,11 @@ flowchart LR
 
 ## 3) Data flow & contract
 
-**Read from OneLake — `sites` table**
+**Read from OneLake — `Files/sites.csv`**
+
+The customer sites are provided as a CSV file in the Lakehouse `Files` area
+(`Files/sites.csv`; sample at [`src/workloadsdc/data/sites.csv`](../src/workloadsdc/data/sites.csv)).
+Columns:
 
 | Column | Type | Example |
 |---|---|---|

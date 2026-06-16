@@ -14,7 +14,9 @@ A `GreenGridScorecard` item that lets a customer score the sustainability of the
 This shows the complementarity: client data stays in OneLake; the SDC adds value through
 its algorithm exposed as a SaaS.
 
-## Data read from OneLake (`sites` table)
+## Data read from OneLake (`Files/sites.csv`)
+
+Provided as a CSV file in the Lakehouse `Files` area (sample: `../../data/sites.csv`):
 
 | Column | Type | Example |
 |---|---|---|

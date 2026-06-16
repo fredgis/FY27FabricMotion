@@ -13,15 +13,16 @@ code to paste. Follow them in order and you get a working Fabric workload.
 
 ## 🗓️ Day agenda (1 day)
 
-**Morning — presentations & demos. Afternoon — hands-on hack.**
+**Morning — presentations & demos. Afternoon — hands-on hack.** This is a **standalone
+one-day micro-hack for the SDC Workloads (Extensibility Toolkit) track**.
 
 | Time | Session |
 |:-----|:-----------------------------------------------------------------|
-| 09:00 | Welcome & motion overview — the Fabric apps motion for EMEA, the two paths |
+| 09:00 | Welcome & motion overview — the Fabric apps motion for EMEA |
 | 09:30 | Microsoft Fabric foundations — OneLake, capacity, workspaces |
-| 10:00 | **Demo · Business Apps (Rayfin)** — Helios Bicycle Studio |
+| 10:00 | Extensibility Toolkit foundations — workloads, items, Dev Gateway |
 | 10:30 | Break |
-| 10:45 | **Demo · SDC Workloads (Extensibility Toolkit)** — GreenGrid Scorecard |
+| 10:45 | **Demo · GreenGrid Scorecard** — the workload you'll build + the SaaS prerequisite |
 | 11:15 | The hack brief, teams & environment check |
 | 12:00 | Lunch |
 | 13:30 | **Hack · Sprint 1** — scaffold & run (steps 1–4) |
@@ -30,8 +31,7 @@ code to paste. Follow them in order and you get a working Fabric workload.
 | 16:45 | Team demos (5 min each) |
 | 17:00 | Wrap-up, KPIs & next steps |
 
-> The morning shows **both** scenarios (Apps + SDC). This workbook drives the **afternoon
-> hack on the SDC Workloads track** (GreenGrid). The Business Apps track has its own workbook.
+> The Business Apps (Rayfin) track is a **separate** one-day micro-hack with its own workbook.
 
 ---
 
@@ -264,10 +264,46 @@ the SaaS → back to the screen. This alone is demoable.
 
 ## Step 5 — Switch the source to real OneLake data
 
-**What this is.** Replace the fake `seedSites` with the customer's real `sites` table.
-**Why.** This is the point of the workload: score the customer's **own** data, in place.
+**What this is.** Replace the fake `seedSites` with the customer's **real** site data stored
+in OneLake.
+
+### Where does the data live? (read this first)
+
+In Fabric, a customer's data lives in a **Lakehouse** inside **OneLake**. A Lakehouse has two
+areas:
+
+- **Files** — raw files: CSV, Parquet, JSON...
+- **Tables** — managed Delta tables (queryable, governed).
+
+For this hack the customer sites are provided as **one CSV file** in the Lakehouse:
+`Files/sites.csv`. *(A CSV is the simplest thing to read from a workload. A Delta
+`Tables/sites` would also work, but reading Delta needs a SQL endpoint or a backend — out of
+scope for one day.)*
+
+**Format of `Files/sites.csv`** — a header row, then one line per site:
+
+```text
+siteId,name,city,energyKwh,renewablePct
+site-hel,Helsinki Data Center,Helsinki,320,88
+site-lis,Lisbon Office,Lisbon,210,71
+site-muc,Munich Lab,Munich,430,80
+site-dub,Dublin Hub,Dublin,540,62
+site-waw,Warsaw Plant,Warsaw,880,24
+```
+
+> The trainer pre-loads this file (in Fabric: open the Lakehouse -> **Files** -> **Upload**).
+> A ready-made copy is in the kit at `src/workloadsdc/data/sites.csv`. To test your own data,
+> upload a CSV with the **same header** to `Files/`.
+
+**You also need two IDs** to build the OneLake path (both appear in the URL when the Lakehouse
+is open in Fabric, and are available from the item context):
+
+- `workspaceId` — the workspace GUID.
+- `lakehouseId` — the Lakehouse GUID.
 
 ### 5a. The OneLake reader — `onelake.ts`
+
+This reads the CSV file from OneLake (as the signed-in user, via an OBO token) and parses it.
 
 ```ts
 import type { WorkloadClientAPI } from '@ms-fabric/workload-client';
@@ -276,24 +312,38 @@ import type { SiteRecord } from './contracts';
 export async function readSites(
   client: WorkloadClientAPI, workspaceId: string, lakehouseId: string
 ): Promise<SiteRecord[]> {
-  // Ask Fabric for a token that lets us read OneLake AS the signed-in user (OBO).
+  // 1) Ask Fabric for a token to read OneLake AS the signed-in user (OBO).
   const { token } = await client.auth.acquireAccessToken({
     additionalScopesToConsent: ['https://storage.azure.com/user_impersonation'],
   });
-  const url = `https://onelake.dfs.fabric.microsoft.com/${workspaceId}/${lakehouseId}/Tables/sites`;
+  // 2) Read the CSV file from the Lakehouse "Files" area.
+  const url = `https://onelake.dfs.fabric.microsoft.com/${workspaceId}/${lakehouseId}/Files/sites.csv`;
   const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
   if (!res.ok) throw new Error(`OneLake read failed: ${res.status}`);
-  const rows = (await res.json()) as Array<Record<string, unknown>>;
-  return rows.map((r) => ({
-    siteId: String(r.siteId), name: String(r.name), city: String(r.city),
-    energyKwh: Number(r.energyKwh), renewablePct: Number(r.renewablePct),
-  }));
+  // 3) Parse the CSV text into SiteRecord rows.
+  return parseSitesCsv(await res.text());
+}
+
+function parseSitesCsv(csv: string): SiteRecord[] {
+  const [header, ...lines] = csv.trim().split(/\r?\n/);
+  const cols = header.split(',').map((c) => c.trim());
+  return lines.filter(Boolean).map((line) => {
+    const cells = line.split(',');
+    const row = Object.fromEntries(cols.map((c, i) => [c, (cells[i] ?? '').trim()]));
+    return {
+      siteId: row.siteId, name: row.name, city: row.city,
+      energyKwh: Number(row.energyKwh), renewablePct: Number(row.renewablePct),
+    };
+  });
 }
 ```
 
+> Note: this is a minimal CSV parser (split on commas). It's fine for this dataset; for names
+> containing commas you'd use a real CSV library.
+
 ### 5b. Use it in `Editor.tsx`
 
-**What you do.** Swap one line in the `useEffect`: read OneLake, then score.
+Swap one line in the `useEffect`: read OneLake, then score.
 
 ```tsx
 // before (fake data):
@@ -307,7 +357,7 @@ readSites(workloadClient, workspaceId, lakehouseId)
 ```
 
 **✅ What you should see — 🎯 Milestone M2 (Sprint 2).** The same scorecard, now built from
-the **OneLake** rows. *(If the OBO token gives you trouble, keep `seedSites` as a fallback and
+the **OneLake CSV**. *(If the OBO token gives you trouble, keep `seedSites` as a fallback and
 keep moving — don't lose time on auth.)*
 
 ---

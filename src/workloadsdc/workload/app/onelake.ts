@@ -1,9 +1,10 @@
 /**
- * Reads the customer's `sites` table from OneLake using a Fabric On-Behalf-Of token.
+ * Reads the customer's sites from OneLake using a Fabric On-Behalf-Of (OBO) token.
  *
- * In the Extensibility Toolkit the frontend can acquire an Entra OBO token and call
- * OneLake / Fabric REST APIs directly. This helper is intentionally small: it returns
- * the rows the workload needs to send to the GreenGrid SaaS.
+ * For the micro-hack the sites are provided as a CSV file in the Lakehouse `Files` area
+ * (`Files/sites.csv`, see ../../data/sites.csv for the format). A CSV is the simplest thing
+ * to read from a workload frontend; a Delta `Tables/sites` would also work but needs a SQL
+ * endpoint or a backend to read.
  *
  * See: https://learn.microsoft.com/en-us/fabric/extensibility-toolkit/key-concepts
  */
@@ -17,28 +18,33 @@ export async function readSitesFromOneLake(
   workspaceId: string,
   lakehouseId: string
 ): Promise<SiteRecord[]> {
-  // Acquire an OBO token scoped for OneLake (storage).
+  // Acquire an OBO token scoped for OneLake (storage), then read the CSV file.
   const { token } = await workloadClient.auth.acquireAccessToken({
     additionalScopesToConsent: ['https://storage.azure.com/user_impersonation'],
   });
 
-  // Read the Delta `sites` table exposed by the lakehouse Files/Tables area.
-  const url = `${ONELAKE_DFS}/${workspaceId}/${lakehouseId}/Tables/sites`;
-  const response = await fetch(url, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-
+  const url = `${ONELAKE_DFS}/${workspaceId}/${lakehouseId}/Files/sites.csv`;
+  const response = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
   if (!response.ok) {
     throw new Error(`OneLake read failed: ${response.status}`);
   }
 
-  // The Delta reader returns rows; map them to the SaaS contract.
-  const rows = (await response.json()) as Array<Record<string, unknown>>;
-  return rows.map((row) => ({
-    siteId: String(row.siteId),
-    name: String(row.name),
-    city: String(row.city),
-    energyKwh: Number(row.energyKwh),
-    renewablePct: Number(row.renewablePct),
-  }));
+  return parseSitesCsv(await response.text());
+}
+
+/** Minimal CSV parser for the `sites.csv` shape (no quoted commas). */
+export function parseSitesCsv(csv: string): SiteRecord[] {
+  const [header, ...lines] = csv.trim().split(/\r?\n/);
+  const cols = header.split(',').map((c) => c.trim());
+  return lines.filter(Boolean).map((line) => {
+    const cells = line.split(',');
+    const row = Object.fromEntries(cols.map((c, i) => [c, (cells[i] ?? '').trim()]));
+    return {
+      siteId: row.siteId,
+      name: row.name,
+      city: row.city,
+      energyKwh: Number(row.energyKwh),
+      renewablePct: Number(row.renewablePct),
+    };
+  });
 }

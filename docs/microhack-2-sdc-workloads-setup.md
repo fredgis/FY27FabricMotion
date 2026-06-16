@@ -70,7 +70,7 @@ Minimum requirement:
 - [ ] Extensibility Toolkit Starter-Kit cloned and bootstrapped.
 - [ ] Node.js + PowerShell 7 + Dotnet installed (toolkit prerequisites).
 - [ ] Entra app registration and scopes configured.
-- [ ] A lakehouse in OneLake with a `sites` table loaded (sample in `src/workloadsdc/src/seed`).
+- [ ] A lakehouse in OneLake with the sites CSV loaded to `Files/sites.csv` (sample in `src/workloadsdc/data/sites.csv`).
 
 ### Delivery readiness
 - [ ] End-to-end smoke test run once by trainer (OneLake → SaaS → scorecard).
@@ -82,7 +82,8 @@ Minimum requirement:
 ## 4) Setup procedure (step-by-step)
 
 1. Deploy the GreenGrid SaaS and validate `/health` + `/score` with curl.
-2. Load the `sites` table into a lakehouse in OneLake.
+2. Load the sites CSV into a lakehouse: open the Lakehouse, **Files -> Upload** the file
+   `src/workloadsdc/data/sites.csv` so it lands at `Files/sites.csv`.
 3. Open the Extensibility Toolkit Starter-Kit; enable Fabric Developer mode.
 4. Start the frontend dev server: `npm run start`.
 5. Start the **Dev Gateway**: `npm run start:devGateway` (registers the dev workload).

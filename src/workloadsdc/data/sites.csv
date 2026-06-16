@@ -1,0 +1,6 @@
+siteId,name,city,energyKwh,renewablePct
+site-hel,Helsinki Data Center,Helsinki,320,88
+site-lis,Lisbon Office,Lisbon,210,71
+site-muc,Munich Lab,Munich,430,80
+site-dub,Dublin Hub,Dublin,540,62
+site-waw,Warsaw Plant,Warsaw,880,24

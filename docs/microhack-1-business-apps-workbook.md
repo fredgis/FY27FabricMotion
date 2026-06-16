@@ -12,15 +12,16 @@ explains **what** you do, **why**, and **what you should see**. Follow them in o
 
 ## 🗓️ Day agenda (1 day)
 
-**Morning — presentations & demos. Afternoon — hands-on hack.**
+**Morning — presentations & demos. Afternoon — hands-on hack.** This is a **standalone
+one-day micro-hack for the Business Apps (Rayfin) track**.
 
 | Time | Session |
 |:-----|:-----------------------------------------------------------------|
-| 09:00 | Welcome & motion overview — the Fabric apps motion for EMEA, the two paths |
+| 09:00 | Welcome & motion overview — the Fabric apps motion for EMEA |
 | 09:30 | Microsoft Fabric foundations — OneLake, capacity, workspaces |
-| 10:00 | **Demo · Business Apps (Rayfin)** — Helios Bicycle Studio |
+| 10:00 | Rayfin foundations — spec-driven apps, data model = database |
 | 10:30 | Break |
-| 10:45 | **Demo · SDC Workloads (Extensibility Toolkit)** — GreenGrid Scorecard |
+| 10:45 | **Demo · Helios Bicycle Studio** — the app you'll build today |
 | 11:15 | The hack brief, teams & environment check |
 | 12:00 | Lunch |
 | 13:30 | **Hack · Sprint 1** — build the core app (steps 1–4) |
@@ -29,8 +30,7 @@ explains **what** you do, **why**, and **what you should see**. Follow them in o
 | 16:45 | Team demos (5 min each) |
 | 17:00 | Wrap-up, KPIs & next steps |
 
-> The morning shows **both** scenarios (Apps + SDC). This workbook drives the **afternoon
-> hack on the Business Apps track** (Helios Bicycle). The SDC track has its own workbook.
+> The SDC Workloads track is a **separate** one-day micro-hack with its own workbook.
 
 ---
 

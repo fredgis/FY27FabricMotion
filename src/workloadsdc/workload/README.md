@@ -1,7 +1,7 @@
 # GreenGrid Scorecard — Fabric workload
 
 A minimal **Fabric Extensibility Toolkit** workload that adds a `GreenGridScorecard`
-item. The item reads the customer's `sites` table from **OneLake**, sends it to the
+item. The item reads the customer's sites from **OneLake** (`Files/sites.csv`), sends it to the
 **GreenGrid SaaS** (`/score`), and renders a single graphical sustainability scorecard.
 
 This folder is the **reference shape** of the workload. To build a real, runnable
@@ -14,7 +14,7 @@ workload, scaffold from the official Starter-Kit and drop these files in.
 | `Manifest/product.json` | Declares the workload and its items |
 | `Manifest/GreenGridScorecard.json` | Item manifest (editor tab, icon, create dialog) |
 | `app/GreenGridScorecardEditor.tsx` | The item editor (React + Fluent) |
-| `app/onelake.ts` | Reads the `sites` table from OneLake with an Entra OBO token |
+| `app/onelake.ts` | Reads `Files/sites.csv` from OneLake with an Entra OBO token, parses the CSV |
 | `app/greengridClient.ts` | Calls the GreenGrid SaaS `/score` endpoint |
 | `app/contracts.ts` | Shared request/response types |
 | `.env.template` | Dev configuration (Entra app, frontend URL, SaaS URL/key) |
