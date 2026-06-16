@@ -12,7 +12,7 @@ Scenario: **Helios Bicycle** (fictional final customer)
 **Morning — presentations & demos. Afternoon — hands-on hack.**
 
 | Time | Session |
-|---|---|
+|:-----|:-----------------------------------------------------------------|
 | 09:00 | Welcome & motion overview — the Fabric apps motion for EMEA, the two paths |
 | 09:30 | Microsoft Fabric foundations — OneLake, capacity, workspaces |
 | 10:00 | **Demo · Business Apps (Rayfin)** — Helios Bicycle Studio |
@@ -54,6 +54,17 @@ flowchart TB
     class B b;
     class D d;
 ```
+
+---
+
+## 🎯 Expected result (example)
+
+By the end of the afternoon your **Helios Bicycle Studio** app should look like this — a
+Bicycle Board and a Live Map of the fleet:
+
+![Helios Bicycle Board](images/scenario1-bicycle-board.png)
+
+![Helios Live Map](images/scenario1-live-map.png)
 
 ---
 

@@ -18,7 +18,7 @@ This workbook is split in two parts:
 **Morning — presentations & demos. Afternoon — hands-on hack.**
 
 | Time | Session |
-|---|---|
+|:-----|:-----------------------------------------------------------------|
 | 09:00 | Welcome & motion overview — the Fabric apps motion for EMEA, the two paths |
 | 09:30 | Microsoft Fabric foundations — OneLake, capacity, workspaces |
 | 10:00 | **Demo · Business Apps (Rayfin)** — Helios Bicycle Studio |
@@ -47,8 +47,12 @@ A Fabric workload item, **GreenGrid Scorecard**, that:
 2. sends it to the **GreenGrid SaaS** (`/score`) — which holds the scoring algorithm,
 3. renders a **graphical sustainability scorecard inside Fabric**.
 
-The finished result looks like the
-[solution screenshots](microhack-2-sdc-workloads-solution.md#7-workload-screenshots-generated-from-real-code).
+The finished result looks like this — a sustainability scorecard and a map of the
+industrial sites, rendered inside Fabric:
+
+![GreenGrid Scorecard (example)](images/scenario2-scorecard.png)
+
+![GreenGrid sites map (example)](images/scenario2-sites-map.png)
 
 ## 2) Architecture in one picture
 
