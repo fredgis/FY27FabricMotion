@@ -3,6 +3,32 @@
 Track: **End-customer Apps (Rayfin)**  
 Scenario: **Helios Bicycle** (fictional final customer)
 
+> 📄 Print-ready PDF: [`microhack-1-business-apps-workbook.pdf`](microhack-1-business-apps-workbook.pdf)
+
+---
+
+## 🗓️ Day agenda (1 day)
+
+**Morning — presentations & demos. Afternoon — hands-on hack.**
+
+| Time | Session |
+|---|---|
+| 09:00 | Welcome & motion overview — the Fabric apps motion for EMEA, the two paths |
+| 09:30 | Microsoft Fabric foundations — OneLake, capacity, workspaces |
+| 10:00 | **Demo · Business Apps (Rayfin)** — Helios Bicycle Studio |
+| 10:30 | Break |
+| 10:45 | **Demo · SDC Workloads (Extensibility Toolkit)** — GreenGrid Scorecard |
+| 11:15 | The hack brief, teams & environment check |
+| 12:00 | Lunch |
+| 13:30 | **Hack · Sprint 1** — build the core app |
+| 15:30 | Break |
+| 15:45 | **Hack · Sprint 2** — extend & polish |
+| 16:45 | Team demos (5 min each) |
+| 17:00 | Wrap-up, KPIs & next steps |
+
+> The morning shows **both** scenarios (Apps + SDC). This workbook drives the **afternoon
+> hack on the Business Apps track** (Helios Bicycle). The SDC track has its own workbook.
+
 ---
 
 ## 1) Visual challenge map

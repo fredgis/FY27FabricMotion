@@ -1,3 +1,7 @@
 node_modules/
 *.pdf
 package-lock.json
+
+# Keep the print-ready workbook PDFs (deliverables)
+!docs/microhack-1-business-apps-workbook.pdf
+!docs/microhack-2-sdc-workloads-workbook.pdf

@@ -3,11 +3,37 @@
 Track: **SDC Workloads (Fabric Extensibility Toolkit)**
 Scenario: **GreenGrid Analytics** (fictional SDC)
 
+> 📄 Print-ready PDF: [`microhack-2-sdc-workloads-workbook.pdf`](microhack-2-sdc-workloads-workbook.pdf)
+
 This workbook is split in two parts:
 
 - **Part A — Understand** (sections 1–3): what you build and why.
 - **Part B — Build it step by step** (section 4): the **full solution, copy-paste**. You are
   not expected to *find* the solution — follow the steps and you get a working workload.
+
+---
+
+## 🗓️ Day agenda (1 day)
+
+**Morning — presentations & demos. Afternoon — hands-on hack.**
+
+| Time | Session |
+|---|---|
+| 09:00 | Welcome & motion overview — the Fabric apps motion for EMEA, the two paths |
+| 09:30 | Microsoft Fabric foundations — OneLake, capacity, workspaces |
+| 10:00 | **Demo · Business Apps (Rayfin)** — Helios Bicycle Studio |
+| 10:30 | Break |
+| 10:45 | **Demo · SDC Workloads (Extensibility Toolkit)** — GreenGrid Scorecard |
+| 11:15 | The hack brief, teams & environment check |
+| 12:00 | Lunch |
+| 13:30 | **Hack · Sprint 1** — scaffold & run (steps 1–4) |
+| 15:30 | Break |
+| 15:45 | **Hack · Sprint 2** — integrate & polish (steps 5–7) |
+| 16:45 | Team demos (5 min each) |
+| 17:00 | Wrap-up, KPIs & next steps |
+
+> The morning shows **both** scenarios (Apps + SDC). This workbook drives the **afternoon
+> hack on the SDC Workloads track** (GreenGrid). The Business Apps track has its own workbook.
 
 ---
 
