@@ -14,6 +14,7 @@ mkdirSync(imagesDir, { recursive: true });
 
 const shots = [
   { html: 'bicycle-board.html', png: 'scenario1-bicycle-board.png' },
+  { html: 'live-map.html', png: 'scenario1-live-map.png' },
   { html: 'pit-stop-queue.html', png: 'scenario1-pit-stop-queue.png' },
   { html: 'ride-mood-kpi.html', png: 'scenario1-ride-mood-kpi.png' },
 ];

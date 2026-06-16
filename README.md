@@ -46,6 +46,45 @@ regenerate, and the slide stays consistent.
 
 ---
 
+## 🚲 Business Apps track (Rayfin)
+
+The Advisory / SI path is delivered through a **business app built on
+[Microsoft Fabric](https://www.microsoft.com/en-us/microsoft-fabric/features/rayfin)
+with Rayfin**. The reference scenario is **Helios Bicycle**, a fictional final customer.
+
+**Helios Bicycle Studio — functional summary.** Helios Bicycle runs shared city bikes
+across EMEA stations. The app gives station teams one simple, fun place to run daily
+operations:
+
+- **Bicycle Board** — fleet readiness per station with a computed health score and tag.
+- **Live Map** — every bike on a city map, colored by status (ready / in ride / pit-stop).
+- **Pit-Stop Queue** — quick repair tickets, auto-assigned to the best mechanic.
+- **Ride Mood & KPI** — rider satisfaction signal plus the workshop → PoC → opportunity funnel.
+
+Roles: an **Operations Manager** sees and manages everything; a **Mechanic** only sees
+their assigned tickets.
+
+| Bicycle Board | Live Map |
+|---|---|
+| ![Bicycle Board](docs/images/scenario1-bicycle-board.png) | ![Live Map](docs/images/scenario1-live-map.png) |
+
+**Dive in:**
+- Full solution & screenshots: [`docs/microhack-1-business-apps-solution.md`](docs/microhack-1-business-apps-solution.md)
+- Code, data model & business logic: [`src/apprayfin/`](src/apprayfin)
+- Trainer setup: [`docs/microhack-1-business-apps-setup.md`](docs/microhack-1-business-apps-setup.md) ·
+  Participant workbook: [`docs/microhack-1-business-apps-workbook.md`](docs/microhack-1-business-apps-workbook.md)
+
+---
+
+## 🧩 ISV Workloads track (Fabric Extensibility Kit)
+
+> 🚧 **Coming soon.** The ISV / SDC path — building a Fabric workload with the
+> Extensibility Kit — will be documented here. Setup and workbook stubs already live in
+> [`docs/microhack-2-isv-workloads-setup.md`](docs/microhack-2-isv-workloads-setup.md) and
+> [`docs/microhack-2-isv-workloads-workbook.md`](docs/microhack-2-isv-workloads-workbook.md).
+
+---
+
 ## 🛠️ Regenerate the slide
 
 ```bash

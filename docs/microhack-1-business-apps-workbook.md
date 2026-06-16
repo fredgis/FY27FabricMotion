@@ -142,6 +142,12 @@ Add a "Ride Mood & KPI" screen with cards for average rider mood,
 number of bikes needing a pit-stop, and a workshop -> PoC -> opportunity funnel.
 ```
 
+```text
+Add a "Live Map" screen: a stylized city map with one marker per bike colored by
+status (teal = ready, blue = in ride, red = pit-stop needed), plus a per-station
+summary panel.
+```
+
 ### Step 3 — Polish prompts (pick what you need)
 
 ```text

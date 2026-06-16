@@ -43,5 +43,6 @@ npm run demo:shots  # capture docs/images/scenario1-*.png
 
 - `demo/out/*.html` — local preview pages (git-ignored)
 - `docs/images/scenario1-bicycle-board.png`
+- `docs/images/scenario1-live-map.png`
 - `docs/images/scenario1-pit-stop-queue.png`
 - `docs/images/scenario1-ride-mood-kpi.png`

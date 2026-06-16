@@ -1,7 +1,7 @@
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { renderBoard, renderQueue, renderMood } from './screens.js';
+import { renderBoard, renderMap, renderQueue, renderMood } from './screens.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const outDir = join(here, 'out');
@@ -9,6 +9,7 @@ mkdirSync(outDir, { recursive: true });
 
 const pages: { file: string; html: string }[] = [
   { file: 'bicycle-board.html', html: renderBoard() },
+  { file: 'live-map.html', html: renderMap() },
   { file: 'pit-stop-queue.html', html: renderQueue() },
   { file: 'ride-mood-kpi.html', html: renderMood() },
 ];

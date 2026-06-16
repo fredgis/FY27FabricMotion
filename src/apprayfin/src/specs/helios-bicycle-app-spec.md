@@ -44,13 +44,16 @@ Create an app for city bicycle operations teams to:
    - Grid by station.
    - Columns: bike code, status, rider mood.
    - Filters: station, status.
-2. **Pit-Stop Queue**
+2. **Live Map**
+   - City map with one marker per bike, colored by status.
+   - Per-station summary (ready / in ride / pit-stop).
+3. **Pit-Stop Queue**
    - Short queue with new/assigned/done.
    - Action: assign mechanic in one click.
-3. **Ride Mood**
+4. **Ride Mood**
    - Last sessions with mood trend.
    - Flag low mood bicycles.
-4. **Business KPI**
+5. **Business KPI**
    - Cards: workshops, PoCs, opportunities.
 
 ## Roles

@@ -56,14 +56,16 @@ function bikeColor(status: BicycleSnapshot['status']): string {
   return status === 'ready' ? '#00b4a6' : status === 'in-ride' ? '#0078d4' : '#e8584c';
 }
 
-function bikeSvg(color: string, w = 46, h = 30): string {
-  return `<svg width="${w}" height="${h}" viewBox="0 0 46 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <circle cx="10" cy="20" r="8" stroke="${color}" stroke-width="2"/>
+function bikeGlyph(color: string): string {
+  return `<circle cx="10" cy="20" r="8" stroke="${color}" stroke-width="2"/>
     <circle cx="36" cy="20" r="8" stroke="${color}" stroke-width="2"/>
     <path d="M10 20 L20 20 L28 8 M20 20 L28 8 L36 20 M28 8 L18 8" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     <line x1="14" y1="8" x2="22" y2="8" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
-    <circle cx="20" cy="20" r="1.8" fill="${color}"/>
-  </svg>`;
+    <circle cx="20" cy="20" r="1.8" fill="${color}"/>`;
+}
+
+function bikeSvg(color: string, w = 46, h = 30): string {
+  return `<svg width="${w}" height="${h}" viewBox="0 0 46 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${bikeGlyph(color)}</svg>`;
 }
 
 function bikeThumb(status: BicycleSnapshot['status']): string {
@@ -92,6 +94,7 @@ function moodFace(mood: number): string {
 function layout(title: string, activeNav: string, body: string): string {
   const navItems = [
     { id: 'board', label: 'Bicycle Board', icon: '🚲' },
+    { id: 'map', label: 'Live Map', icon: '🗺️' },
     { id: 'queue', label: 'Pit-Stop Queue', icon: '🔧' },
     { id: 'mood', label: 'Ride Mood & KPI', icon: '📈' },
   ];
@@ -150,6 +153,15 @@ function layout(title: string, activeNav: string, body: string): string {
   .hero .hstat b { font-size:26px; display:block; }
   .hero .hstat span { font-size:12px; opacity:.9; }
   .herobike { background:rgba(255,255,255,.18); border-radius:12px; padding:10px 14px; }
+  .maplayout { display:grid; grid-template-columns: 1fr 320px; gap:16px; }
+  .legendbar { display:flex; gap:14px; }
+  .leg { display:flex; align-items:center; gap:6px; font-size:12px; color:#3a4a5a; }
+  .leg .dot { width:11px; height:11px; border-radius:50%; display:inline-block; }
+  .srow { padding:12px 14px; border-bottom:1px solid #eef2f6; }
+  .srow:last-child { border-bottom:none; }
+  .sname { font-weight:600; font-size:14px; margin-bottom:8px; }
+  .stags { display:flex; flex-wrap:wrap; gap:6px; }
+  .stag { font-size:11px; font-weight:600; padding:3px 9px; border-radius:14px; }
   .grid3 { display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
   .kanban { display:grid; grid-template-columns: repeat(3,1fr); gap:16px; padding:18px; }
   .col-h { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:#6b7b8b; margin-bottom:10px; display:flex; justify-content:space-between; }
@@ -242,6 +254,114 @@ export function renderBoard(): string {
       </table>
     </div>`;
   return layout('Bicycle Board — Helios Bicycle Studio', 'board', body);
+}
+
+export function renderMap(): string {
+  type Station = { name: string; cx: number; cy: number };
+  const stations: Station[] = [
+    { name: 'Amsterdam Central', cx: 200, cy: 150 },
+    { name: 'Brussels Midi', cx: 660, cy: 140 },
+    { name: 'Madrid Atocha', cx: 430, cy: 330 },
+  ];
+
+  const pin = (x: number, y: number, status: BicycleSnapshot['status']): string => {
+    const color = bikeColor(status);
+    return `<g transform="translate(${x},${y})">
+      <circle cx="0" cy="0" r="15" fill="#ffffff" stroke="${color}" stroke-width="2.4"/>
+      <svg x="-11" y="-7" width="22" height="14" viewBox="0 0 46 30">${bikeGlyph(color)}</svg>
+    </g>`;
+  };
+
+  const stationGroups = stations
+    .map((st) => {
+      const bikes = heliosBicycles.filter((b) => b.station === st.name);
+      const n = bikes.length;
+      const startX = st.cx - ((n - 1) * 38) / 2;
+      const pins = bikes
+        .map((b, i) => pin(startX + i * 38, st.cy + 34, b.status))
+        .join('');
+      return `
+        <circle cx="${st.cx}" cy="${st.cy}" r="9" fill="#0b2447"/>
+        <circle cx="${st.cx}" cy="${st.cy}" r="16" fill="none" stroke="#0b2447" stroke-width="1.5" opacity="0.35"/>
+        <text x="${st.cx}" y="${st.cy - 22}" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="14" font-weight="700" fill="#0b2447">${escapeHtml(st.name)}</text>
+        <text x="${st.cx}" y="${st.cy + 70}" text-anchor="middle" font-family="Segoe UI, sans-serif" font-size="12" fill="#5b6b7b">${n} bike${n > 1 ? 's' : ''}</text>
+        ${pins}`;
+    })
+    .join('');
+
+  const mapSvg = `<svg viewBox="0 0 880 470" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="City map of Helios bikes">
+    <rect x="0" y="0" width="880" height="470" rx="14" fill="#eef4f9"/>
+    <!-- park -->
+    <rect x="540" y="270" width="250" height="150" rx="18" fill="#e3f3ea"/>
+    <text x="665" y="350" text-anchor="middle" font-family="Segoe UI" font-size="13" fill="#5b9c79">City Park</text>
+    <!-- canal -->
+    <path d="M0 90 C 180 60, 320 130, 520 110 S 820 70, 880 120" fill="none" stroke="#bfe3df" stroke-width="22" stroke-linecap="round"/>
+    <!-- roads -->
+    <g stroke="#ffffff" stroke-width="10" stroke-linecap="round">
+      <line x1="60" y1="430" x2="820" y2="410"/>
+      <line x1="200" y1="40" x2="220" y2="440"/>
+      <line x1="660" y1="40" x2="650" y2="430"/>
+      <line x1="120" y1="250" x2="800" y2="240"/>
+    </g>
+    <g stroke="#dbe6f1" stroke-width="2" stroke-dasharray="6 8">
+      <line x1="60" y1="430" x2="820" y2="410"/>
+      <line x1="120" y1="250" x2="800" y2="240"/>
+    </g>
+    ${stationGroups}
+  </svg>`;
+
+  const legend = (color: string, label: string): string =>
+    `<div class="leg"><span class="dot" style="background:${color}"></span>${label}</div>`;
+
+  const summaryRows = heliosBicycles
+    .reduce<Map<string, { ready: number; ride: number; pit: number }>>((acc, b) => {
+      const cur = acc.get(b.station) ?? { ready: 0, ride: 0, pit: 0 };
+      if (b.status === 'ready') cur.ready += 1;
+      else if (b.status === 'in-ride') cur.ride += 1;
+      else cur.pit += 1;
+      acc.set(b.station, cur);
+      return acc;
+    }, new Map());
+
+  const summaryHtml = [...summaryRows.entries()]
+    .map(
+      ([station, c]) => `<div class="srow">
+        <div class="sname">${escapeHtml(station)}</div>
+        <div class="stags">
+          <span class="stag" style="background:#e6f7f4;color:#0a7a6e">${c.ready} ready</span>
+          <span class="stag" style="background:#eaf3fb;color:#0a5bb0">${c.ride} riding</span>
+          <span class="stag" style="background:#fdecea;color:#b3261e">${c.pit} pit-stop</span>
+        </div>
+      </div>`
+    )
+    .join('');
+
+  const body = `
+    <div class="topbar">
+      <div>
+        <h1>Live Map</h1>
+        <div class="sub">Where every Helios bike is, right now, across the city</div>
+      </div>
+      <div class="user"><span>Operations Manager</span><span class="avatar">OM</span></div>
+    </div>
+    <div class="maplayout">
+      <div class="card">
+        <div class="card-h">
+          <h2>City map</h2>
+          <div class="legendbar">
+            ${legend('#00b4a6', 'Ready')}
+            ${legend('#0078d4', 'In ride')}
+            ${legend('#e8584c', 'Pit-stop needed')}
+          </div>
+        </div>
+        <div style="padding:16px">${mapSvg}</div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h2>By station</h2></div>
+        <div style="padding:8px 4px">${summaryHtml}</div>
+      </div>
+    </div>`;
+  return layout('Live Map — Helios Bicycle Studio', 'map', body);
 }
 
 export function renderQueue(): string {

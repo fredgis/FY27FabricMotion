@@ -32,9 +32,10 @@ simple, fun operations app** to run the daily routine.
 | # | Capability | Business value |
 |---|---|---|
 | 1 | **Bicycle Board** — readiness by station with a health score | Spot bikes to pull off the street in seconds |
-| 2 | **Pit-Stop Queue** — quick tickets auto-assigned to mechanics | Repairs reach the right person, fast |
-| 3 | **Ride Mood** — rider satisfaction signal per bike | Catch quality issues before riders complain |
-| 4 | **Business KPI** — workshop → PoC → opportunity funnel | Advisory teams see pipeline impact (MSX/ACR view) |
+| 2 | **Live Map** — every bike on a city map, colored by status | See the whole city fleet at a glance |
+| 3 | **Pit-Stop Queue** — quick tickets auto-assigned to mechanics | Repairs reach the right person, fast |
+| 4 | **Ride Mood** — rider satisfaction signal per bike | Catch quality issues before riders complain |
+| 5 | **Business KPI** — workshop → PoC → opportunity funnel | Advisory teams see pipeline impact (MSX/ACR view) |
 
 ---
 
@@ -293,14 +294,21 @@ bike** with a health score of 98; `HB-AMS-001` (pit-stop needed, mood 2.8) drops
 
 ![Bicycle Board screen](images/scenario1-bicycle-board.png)
 
-### 7.2 Pit-Stop Queue — auto-assignment
+### 7.2 Live Map — bikes across the city
+
+A stylized city map shows every bike at its station, colored by status (teal = ready,
+blue = in ride, red = pit-stop needed), with a per-station summary on the right.
+
+![Live Map screen](images/scenario1-live-map.png)
+
+### 7.3 Pit-Stop Queue — auto-assignment
 
 The two `high` tickets are processed first, then the `normal` one. Each ticket lands on
 the **same-station mechanic** because station match outweighs their current load.
 
 ![Pit-Stop Queue screen](images/scenario1-pit-stop-queue.png)
 
-### 7.3 Ride Mood & Business KPI
+### 7.4 Ride Mood & Business KPI
 
 Average rider mood is **3.7 / 5**, **2** bikes need a pit-stop, and the advisory funnel
 (8 workshops → 50% PoC → 75% opportunity) projects **3 opportunities** next quarter.
