@@ -91,3 +91,10 @@ flowchart TB
 - What would you change before a real customer rollout?
 - What metric would prove value in week 1 of production?
 
+---
+
+## 7) Reference assets (for teams and coaches)
+
+- Solution code: `src/apprayfin/`
+- Rayfin prompt baseline: `src/apprayfin/src/specs/helios-fleet-spec.md`
+- Trainer visual answer key: `docs/apprayfin-solution.md`

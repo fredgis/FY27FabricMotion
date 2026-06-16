@@ -39,6 +39,7 @@ flowchart LR
 - [ ] Workspace created: `helios-microhack`.
 - [ ] Rayfin available and validated in this workspace.
 - [ ] All participant accounts can sign in and open the workspace.
+- [ ] Solution kit available locally: `src/apprayfin/`.
 
 ### Data foundation
 - [ ] Lakehouse created: `HeliosLake`.
@@ -53,6 +54,7 @@ flowchart LR
 - [ ] Demo path tested end-to-end once by trainer.
 - [ ] Backup account + backup browser session ready.
 - [ ] Printed / shared workbook link ready for teams.
+- [ ] Reference solution document ready: `docs/apprayfin-solution.md`.
 
 ---
 
@@ -67,7 +69,7 @@ flowchart LR
    - Participants: Contributor
 5. **Launch Rayfin** and verify it can read target tables.
 6. **Run smoke demo**:
-   - Create minimal spec
+   - Start from `src/apprayfin/src/specs/helios-fleet-spec.md`
    - Generate app
    - Open app and list scooters
 
@@ -111,6 +113,13 @@ This guarantees the demo flow is meaningful (detect -> assign -> resolve).
 - Role split:
   - Manager: full visibility
   - Technician: assigned jobs only
+
+### Solution code references
+- Data model: `src/apprayfin/rayfin/data/`
+- Priority scoring: `src/apprayfin/src/services/fleet-priority.ts`
+- Assignment logic: `src/apprayfin/src/services/maintenance-assignment.ts`
+- KPI logic: `src/apprayfin/src/services/kpi-model.ts`
+- Seed payload: `src/apprayfin/src/seed/helios-demo-seed.ts`
 
 ### Suggested spec prompt (starter)
 ```text

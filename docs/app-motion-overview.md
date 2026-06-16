@@ -57,7 +57,12 @@ sequenceDiagram
 ## 4) Asset map in `/docs`
 
 - `motion-brief.md`: concise narrative baseline.
+- `apprayfin-solution.md`: full Business Apps solution with screen simulations.
 - `microhack-1-business-apps-setup.md`: trainer setup for end-customer apps.
 - `microhack-1-business-apps-workbook.md`: participant workbook for apps.
 - `microhack-2-isv-workloads-setup.md`: trainer setup for ISV workload build.
 - `microhack-2-isv-workloads-workbook.md`: participant workbook for ISV build.
+
+## 5) Code asset map in `/src`
+
+- `src/apprayfin/`: Business Apps Rayfin implementation package for the Helios scenario.

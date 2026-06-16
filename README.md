@@ -80,10 +80,13 @@ FY27FabricMotion/
 ├── docs/                           # markdown-only motion kit
 │   ├── motion-brief.md
 │   ├── app-motion-overview.md
+│   ├── apprayfin-solution.md
 │   ├── microhack-1-business-apps-setup.md
 │   ├── microhack-1-business-apps-workbook.md
 │   ├── microhack-2-isv-workloads-setup.md
 │   └── microhack-2-isv-workloads-workbook.md
+├── src/
+│   └── apprayfin/                  # Business Apps Rayfin solution package
 ├── scripts/
 │   ├── build.sh                    # regenerate slide + preview (macOS/Linux)
 │   └── build.ps1                   # regenerate slide + preview (Windows)
@@ -91,6 +94,11 @@ FY27FabricMotion/
 ```
 
 **Naming convention for `docs/`:** lowercase `kebab-case`, markdown only.
+
+For the Business Apps track implementation, start with:
+
+- `src/apprayfin/README.md`
+- `docs/apprayfin-solution.md`
 
 ---
 

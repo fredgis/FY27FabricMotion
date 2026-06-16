@@ -51,7 +51,12 @@ flowchart LR
 ## Working artifacts in `/docs`
 
 - `app-motion-overview.md`: full strategy template.
+- `apprayfin-solution.md`: complete Rayfin business app solution with simulated captures.
 - `microhack-1-business-apps-setup.md`: trainer setup guide (apps track).
 - `microhack-1-business-apps-workbook.md`: participant workbook (apps track).
 - `microhack-2-isv-workloads-setup.md`: trainer setup guide (ISV track).
 - `microhack-2-isv-workloads-workbook.md`: participant workbook (ISV track).
+
+## Working code in `/src`
+
+- `src/apprayfin/`: implementation package for the Business Apps scenario.
