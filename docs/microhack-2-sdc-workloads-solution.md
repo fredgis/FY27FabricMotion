@@ -42,6 +42,23 @@ flowchart LR
     class W out;
 ```
 
+### Who does what (and where the algorithm lives)
+
+| Component | Owner | Responsibility |
+|---|---|---|
+| **OneLake `sites` table** | Customer | Raw data (energy, renewable %), governed in Fabric |
+| **GreenGrid SaaS** (`/score`) | SDC | **Holds the scoring algorithm** — the SDC's IP. Turns site data into green scores, tiers and tips |
+| **GreenGrid workload** | SDC (in Fabric) | Reads OneLake (OBO token), calls the SaaS, renders the scorecard natively in Fabric |
+
+**Why two pieces?**
+
+- The **SaaS is the value/IP**: it owns the algorithm. The SDC can improve it, version it and
+  sell it independently — it is *not* exposed or copied into the customer tenant.
+- The **workload is the distribution**: a thin, native Fabric experience that brings that
+  algorithm to the customer's **own** OneLake data, with Fabric governance and **no data
+  movement**. This is the complementarity the motion sells: *the SDC keeps its IP, the customer
+  keeps its data, Fabric is the meeting point.*
+
 ---
 
 ## 2) Personas & roles
@@ -185,7 +202,14 @@ portfolio gauge (**60**), the tier distribution (**A:1 · B:3 · C:1**) and per-
 
 ![GreenGrid Scorecard screen](images/scenario2-scorecard.png)
 
-### 7.2 Site detail — score breakdown
+### 7.2 Industrial sites map
+
+The same scored data on a map: each industrial site is a factory marker colored by tier
+(A green · B amber · C red) with its green score, plus a portfolio side panel.
+
+![GreenGrid sites map screen](images/scenario2-sites-map.png)
+
+### 7.3 Site detail — score breakdown
 
 Helsinki Data Center scores **80 (Tier A)**: renewable sourcing contributes **52.8** and
 energy efficiency **27.2**, with a clear recommendation.

@@ -56,6 +56,14 @@ function bar(pct: number, color: string): string {
   return `<span class="bar"><span style="width:${Math.max(0, Math.min(100, pct))}%;background:${color}"></span></span>`;
 }
 
+function factoryGlyph(color: string): string {
+  return `<rect x="9" y="3" width="3" height="6" fill="${color}"/>
+    <path d="M3 21 V12 L9 15 V12 L15 15 V9 H21 V21 Z" fill="${color}" fill-opacity="0.14" stroke="${color}" stroke-width="1.4" stroke-linejoin="round"/>
+    <rect x="5" y="16" width="3" height="3" fill="${color}" fill-opacity="0.55"/>
+    <rect x="11" y="16" width="3" height="3" fill="${color}" fill-opacity="0.55"/>
+    <rect x="17" y="13" width="2.5" height="6" fill="${color}" fill-opacity="0.55"/>`;
+}
+
 function layout(title: string, body: string): string {
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"/>
@@ -110,6 +118,15 @@ function layout(title: string, body: string): string {
   .break { display:grid; gap:14px; padding:18px; }
   .blabel { display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px; }
   .reco { margin:0 18px 18px; padding:14px 16px; border-radius:12px; background:#e7f6ee; color:#1d7a4d; font-size:13.5px; }
+  .maplayout { display:grid; grid-template-columns: 1fr 300px; gap:18px; }
+  .legendbar { display:flex; gap:14px; }
+  .leg { display:flex; align-items:center; gap:6px; font-size:12px; color:#3a4a5a; }
+  .leg .dot { width:11px; height:11px; border-radius:50%; display:inline-block; }
+  .srow { padding:12px 14px; border-bottom:1px solid #eef2f6; display:flex; align-items:center; justify-content:space-between; }
+  .srow:last-child { border-bottom:none; }
+  .sname { font-weight:600; font-size:13.5px; }
+  .scity { font-size:12px; color:#7a8a9a; }
+  .sscore { font-weight:700; font-size:16px; }
 </style></head>
 <body>
   <div class="fabricbar">
@@ -178,6 +195,83 @@ export function renderScorecard(): string {
       </div>
     </div>`;
   return layout('GreenGrid Scorecard — Fabric workload', body);
+}
+
+export function renderSitesMap(): string {
+  const scored = scoreSites(onelakeSites);
+  const p = buildPortfolio(scored);
+  const byId = new Map(scored.map((s) => [s.siteId, s]));
+
+  type Pos = { id: string; x: number; y: number };
+  const positions: Pos[] = [
+    { id: 'site-hel', x: 690, y: 95 },
+    { id: 'site-dub', x: 150, y: 175 },
+    { id: 'site-waw', x: 650, y: 205 },
+    { id: 'site-muc', x: 470, y: 255 },
+    { id: 'site-lis', x: 170, y: 360 },
+  ];
+
+  const marker = (pos: Pos): string => {
+    const s = byId.get(pos.id);
+    if (!s) return '';
+    const color = tierColor(s.tier);
+    return `<g transform="translate(${pos.x},${pos.y})">
+      <circle cx="0" cy="0" r="19" fill="#ffffff" stroke="${color}" stroke-width="2.6"/>
+      <svg x="-13" y="-13" width="26" height="26" viewBox="0 0 24 24">${factoryGlyph(color)}</svg>
+      <g transform="translate(0,32)">
+        <rect x="-46" y="-15" width="92" height="26" rx="13" fill="#fff" stroke="#dbe6f1"/>
+        <text x="-30" y="3" text-anchor="middle" font-family="Segoe UI" font-size="12" font-weight="600" fill="#1b2a3a">${escapeHtml(s.city)}</text>
+        <circle cx="26" cy="-2" r="11" fill="${color}"/>
+        <text x="26" y="2" text-anchor="middle" font-family="Segoe UI" font-size="11" font-weight="700" fill="#fff">${s.greenScore}</text>
+      </g>
+    </g>`;
+  };
+
+  const mapSvg = `<svg viewBox="0 0 860 460" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Map of industrial sites">
+    <rect x="0" y="0" width="860" height="460" rx="14" fill="#eaf1f7"/>
+    <path d="M120 60 Q300 30 430 70 T780 90 L820 240 Q700 300 620 360 T360 420 Q220 400 140 320 T120 60 Z"
+      fill="#e7eef5" stroke="#d3e0ec" stroke-width="2"/>
+    <path d="M60 250 Q160 220 240 250 T420 250" fill="none" stroke="#c7e6e1" stroke-width="14" stroke-linecap="round"/>
+    <text x="40" y="40" font-family="Segoe UI" font-size="12" fill="#9aa9b8">EMEA · industrial sites</text>
+    ${positions.map(marker).join('')}
+  </svg>`;
+
+  const legend = (color: string, label: string): string =>
+    `<div class="leg"><span class="dot" style="background:${color}"></span>${label}</div>`;
+
+  const summary = scored
+    .map(
+      (s) => `<div class="srow">
+        <div><div class="sname">${escapeHtml(s.city)}</div><div class="scity">${escapeHtml(s.name)}</div></div>
+        <div class="sscore" style="color:${tierColor(s.tier)}">${s.greenScore}</div>
+      </div>`
+    )
+    .join('');
+
+  const body = `
+    <div class="prov">
+      <span class="chip blue">🟦 OneLake · <b>sites</b> (${onelakeSites.length} rows)</span>
+      <span class="arrow">→</span>
+      <span class="chip green">${leaf(BRAND.green, 15)} GreenGrid SaaS · <b>/score</b></span>
+      <span class="arrow">→</span>
+      <span class="chip">🗺️ Sites map</span>
+    </div>
+    <div class="maplayout">
+      <div class="card">
+        <div class="card-h">
+          <h2>Sites map · green score by site</h2>
+          <div class="legendbar">
+            ${legend(BRAND.green, 'A')}${legend(BRAND.amber, 'B')}${legend(BRAND.red, 'C')}
+          </div>
+        </div>
+        <div style="padding:16px">${mapSvg}</div>
+      </div>
+      <div class="card">
+        <div class="card-h"><h2>Portfolio ${p.avgScore}</h2></div>
+        <div>${summary}</div>
+      </div>
+    </div>`;
+  return layout('GreenGrid Scorecard — Sites map', body);
 }
 
 export function renderSiteDetail(): string {

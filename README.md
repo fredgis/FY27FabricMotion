@@ -88,15 +88,26 @@ customer's sites. The workload shows the complementarity of Fabric + SDC:
 - The customer's `sites` data stays in **OneLake** (no data movement).
 - A pre-deployed **GreenGrid SaaS** (`/score`) brings the SDC's scoring algorithm.
 - The result is a **graphical scorecard rendered inside Fabric** — portfolio green score,
-  A/B/C tiers, per-site renewable/efficiency bars and recommendations.
+  A/B/C tiers, a map of industrial sites, and per-site recommendations.
+
+### Who does what
+
+| Component | Owner | Responsibility |
+|---|---|---|
+| **OneLake `sites` table** | Customer | The raw data (energy, renewable %), governed in Fabric |
+| **GreenGrid SaaS** (`/score`) | SDC | **Holds the scoring algorithm** (the SDC's IP) — turns site data into green scores + tiers |
+| **GreenGrid workload** | SDC, in Fabric | Reads OneLake, calls the SaaS, renders the scorecard natively in Fabric |
+
+So the **algorithm lives in the SaaS**; the **workload is the thin, native Fabric experience**
+that brings that algorithm to the customer's own OneLake data — no data leaves Fabric.
 
 A **major prerequisite** is that the SaaS is **deployed and running before the workshop** —
 it is coded and runnable in [`src/workloadsdc/saas/`](src/workloadsdc/saas). The workload is
 run in **dev mode via the Dev Gateway**.
 
-| Sustainability Scorecard | Site detail |
+| Sustainability Scorecard | Industrial sites map |
 |---|---|
-| ![GreenGrid Scorecard](docs/images/scenario2-scorecard.png) | ![Site detail](docs/images/scenario2-site-detail.png) |
+| ![GreenGrid Scorecard](docs/images/scenario2-scorecard.png) | ![Sites map](docs/images/scenario2-sites-map.png) |
 
 **Dive in:**
 - Full solution & screenshots: [`docs/microhack-2-sdc-workloads-solution.md`](docs/microhack-2-sdc-workloads-solution.md)

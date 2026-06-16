@@ -11,21 +11,21 @@ const outDir = join(here, 'out');
 const imagesDir = join(here, '..', '..', '..', 'docs', 'images');
 mkdirSync(imagesDir, { recursive: true });
 
+const FIXED = { width: 1280, height: 940 };
+
 const shots = [
-  { html: 'scorecard.html', png: 'scenario2-scorecard.png' },
-  { html: 'site-detail.html', png: 'scenario2-site-detail.png' },
+  { html: 'scorecard.html', png: 'scenario2-scorecard.png', fullPage: false },
+  { html: 'sites-map.html', png: 'scenario2-sites-map.png', fullPage: false },
+  { html: 'site-detail.html', png: 'scenario2-site-detail.png', fullPage: false },
 ];
 
 const browser = await chromium.launch({ channel: 'msedge' });
-const page = await browser.newPage({
-  viewport: { width: 1280, height: 760 },
-  deviceScaleFactor: 2,
-});
+const page = await browser.newPage({ viewport: FIXED, deviceScaleFactor: 2 });
 
 for (const shot of shots) {
   const url = pathToFileURL(join(outDir, shot.html)).href;
   await page.goto(url, { waitUntil: 'networkidle' });
-  await page.screenshot({ path: join(imagesDir, shot.png), fullPage: true });
+  await page.screenshot({ path: join(imagesDir, shot.png), fullPage: shot.fullPage });
   console.log(`Captured ${shot.png}`);
 }
 

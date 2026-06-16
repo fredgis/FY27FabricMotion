@@ -35,7 +35,9 @@ its algorithm exposed as a SaaS.
    - Hero: portfolio green score gauge + tier distribution.
    - Provenance chips: "Data from OneLake" → "Scored by GreenGrid".
    - Site cards/table: green score, tier badge, renewable %, tip.
-2. **Site Detail** (optional)
+2. **Sites Map** (optional but recommended)
+   - Industrial site markers on a map, colored by tier, with green scores.
+3. **Site Detail** (optional)
    - One site: score breakdown (renewable vs efficiency) + recommendation.
 
 ## Roles

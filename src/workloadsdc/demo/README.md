@@ -28,4 +28,5 @@ npm run demo        # audit -> build HTML -> capture screenshots
 
 - `demo/out/*.html` — local preview pages (git-ignored)
 - `docs/images/scenario2-scorecard.png`
+- `docs/images/scenario2-sites-map.png`
 - `docs/images/scenario2-site-detail.png`
