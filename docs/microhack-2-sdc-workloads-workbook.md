@@ -6,8 +6,8 @@ Scenario: **GreenGrid Analytics** (fictional SDC)
 > 📄 Print-ready PDF: [`microhack-2-sdc-workloads-workbook.pdf`](microhack-2-sdc-workloads-workbook.pdf)
 
 This is a **didactic** micro-hack. You are **not** expected to *find* the solution — every
-step explains **what** you do, **why**, and **what you should see**, and gives you the exact
-code to paste. Follow them in order and you get a working Fabric workload.
+step tells you **exactly what to type or paste**, **why**, and **what you should see**. Follow
+them in order and you get a working Fabric workload, starting from a clean machine.
 
 ---
 
@@ -25,13 +25,11 @@ one-day micro-hack for the SDC Workloads (Extensibility Toolkit) track**.
 | 10:45 | **Demo · GreenGrid Scorecard** — the workload you'll build + the SaaS prerequisite |
 | 11:15 | The hack brief, teams & environment check |
 | 12:00 | Lunch |
-| 13:30 | **Hack · Sprint 1** — scaffold & run (steps 1–4) |
+| 13:30 | **Hack · Sprint 1** — clone, run Hello World, render with fake data (steps 1–7) |
 | 15:30 | Break |
-| 15:45 | **Hack · Sprint 2** — integrate & polish (steps 5–7) |
+| 15:45 | **Hack · Sprint 2** — switch to OneLake & polish (steps 8–9) |
 | 16:45 | Team demos (5 min each) |
 | 17:00 | Wrap-up, KPIs & next steps |
-
-> The Business Apps (Rayfin) track is a **separate** one-day micro-hack with its own workbook.
 
 ---
 
@@ -58,7 +56,7 @@ rendered inside Fabric:
   'primaryColor':'#E6F7F4','primaryTextColor':'#1B2A3A',
   'primaryBorderColor':'#00B4A6','lineColor':'#0B2447','secondaryColor':'#EAF3FB'}}}%%
 flowchart LR
-    O["OneLake<br/>sites table (customer data)"] --> W["GreenGrid Scorecard<br/>workload item"]
+    O["OneLake<br/>sites data (customer)"] --> W["GreenGrid Scorecard<br/>workload item"]
     SA["GreenGrid SaaS<br/>/score (the algorithm)"] --> W
     W --> R["Scorecard<br/>inside Fabric"]
     classDef fab fill:#EAF3FB,stroke:#0078D4,color:#1B2A3A,stroke-width:2px;
@@ -67,48 +65,144 @@ flowchart LR
     class O,R fab; class SA saas; class W out;
 ```
 
-- **OneLake** = where the **customer's data** lives (a `sites` table).
+- **OneLake** = where the **customer's data** lives.
 - **GreenGrid SaaS** = a small web service that **holds the scoring algorithm** (GreenGrid's
-  IP). You send it sites, it returns scores. *The trainer deploys it for you — it is a
-  prerequisite.*
+  IP). *The trainer deploys it for you — it is a prerequisite.*
 - **The workload** = the piece **you build today**: a Fabric *item* that reads OneLake, calls
   the SaaS, and draws the scorecard.
 
 ## 3) Key words (30-second primer)
 
-- **Workload**: a web app that runs *inside* the Fabric portal (in an iFrame). You host it,
-  Fabric displays it.
-- **Item**: one thing a user creates in a workspace (here: a *GreenGrid Scorecard*). Like a
-  Notebook or a Lakehouse, but yours.
-- **Extensibility Toolkit**: Microsoft's starter kit + SDK to build such workloads quickly.
+- **Workload**: a web app that runs *inside* the Fabric portal. You host it, Fabric shows it.
+- **Item**: one thing a user creates in a workspace (here: a *GreenGrid Scorecard*).
+- **Extensibility Toolkit**: Microsoft's open-source kit + SDK to build such workloads.
+- **Dev Gateway**: a local bridge so Fabric can show your workload while it runs on **your
+  machine** — this is what makes a one-day hack possible.
 - **OBO token** (On-Behalf-Of): a secure token the workload gets so it can read the user's
   OneLake data **as that user** — no passwords, no data copies.
-- **Dev Gateway**: a local bridge that lets Fabric show your workload while it runs on **your
-  machine** — perfect for a hack.
 
-## 4) Team framing (fill this in 2 minutes, then build)
+## 4) Before you start — checklist
+
+- [ ] **Node.js**, **PowerShell 7**, **.NET (x64)**, **Azure CLI**, **VS Code** installed.
+- [ ] A **Fabric workspace** with a **capacity** assigned (from the trainer).
+- [ ] Permission to create an **Entra app** (or one provided by the trainer).
+- [ ] The **GreenGrid SaaS URL + API key** (from the trainer).
+
+## 5) Team framing (fill this in 2 minutes, then build)
 
 - Team name:
-- SaaS URL + API key (from the trainer):
+- SaaS URL + API key:
 - One sentence you'll say in the demo:
 
 ---
 
 # Part B — Build it step by step (full solution)
 
-> **Golden rule (read this!):** make the flow work with **seed (fake) data first**
-> (steps 1–4), *then* switch the source to real OneLake data (step 5). Don't fight OneLake
-> security before anything appears on screen — you'll waste the afternoon.
+> **Golden rule (read this!):** first get the toolkit running with the built-in **Hello
+> World** (steps 1–4). Only then build GreenGrid (steps 5–9). And inside GreenGrid, render
+> **fake data first** (step 7), *then* switch to real OneLake data (step 8). Never debug
+> security before something shows on screen.
 
-Each step tells you **what it is**, **why**, **where to paste** and **what you should see**.
-Copy the code as-is.
+Every step says **what it is**, **what to type/paste**, and **what you should see**.
 
 ---
 
-## Step 1 — Check the SaaS is alive (1 min)
+## Step 1 — Clone the toolkit
 
-**What this is.** A quick test that the GreenGrid service (the algorithm) is reachable.
-**Why.** Your workload will call it; if it's down, nothing scores. Test it before coding.
+**What this is.** Get Microsoft's Extensibility Toolkit on your machine. This is a real
+repository — you clone it and start from it.
+
+```bash
+git clone https://github.com/microsoft/fabric-extensibility-toolkit
+cd fabric-extensibility-toolkit
+```
+
+**✅ What you should see.** A `fabric-extensibility-toolkit` folder with `Workload/` and
+`scripts/` inside.
+
+---
+
+## Step 2 — Configure the dev environment (one script)
+
+**What this is.** A setup script that creates the Entra app, writes your `.env`, and downloads
+the Dev Gateway. It asks you to sign in and pick your workspace.
+
+```powershell
+cd scripts/Setup
+./Setup.ps1 -WorkloadName "Org.GreenGrid"
+```
+
+> The `WorkloadName` must look like `Organization.Name` — use `Org.GreenGrid` for the hack.
+> On macOS/Linux run `pwsh ./Setup.ps1 -WorkloadName "Org.GreenGrid"`.
+
+**✅ What you should see.** The script ends with "setup complete" and prints the next steps.
+
+---
+
+## Step 3 — Start the dev server + the Dev Gateway
+
+**What this is.** Two long-running processes, in **two terminals**. One serves your workload
+UI from localhost; the other connects Fabric to that localhost.
+
+```powershell
+# Terminal 1 — the frontend + APIs
+cd scripts/Run
+./StartDevServer.ps1
+```
+
+```powershell
+# Terminal 2 — the bridge to Fabric
+cd scripts/Run
+./StartDevGateway.ps1
+```
+
+Then, **in the Fabric portal**: open **Settings -> Admin portal** and enable the developer
+tenant settings, then **Settings -> Developer settings -> enable Fabric Developer Mode**.
+
+**✅ What you should see.** Both terminals keep running without errors, and Developer Mode is
+ON in Fabric.
+
+---
+
+## Step 4 — Hello World test (prove the gateway works, before building anything)
+
+**What this is.** The toolkit ships a **Hello World** item. Create it in Fabric to confirm the
+whole chain — *your localhost code -> Dev Gateway -> Fabric* — works. **This is your safety
+checkpoint.**
+
+1. Go to
+   `https://app.fabric.microsoft.com/workloadhub/detail/Org.GreenGrid.Product?experience=fabric-developer`
+   (the workload shows as "Hello Fabric!" until you rename it).
+2. Click the **Hello World** item type on the left.
+3. Pick your **dev workspace** in the dialog.
+4. The Hello World editor opens.
+
+**✅ What you should see.** The Hello World editor renders **inside Fabric**, served from your
+machine. If you see it, everything works — now you can build GreenGrid. *(Nothing shows up?
+Developer Mode is off, or one of the two terminals isn't running.)*
+
+---
+
+## Step 5 — Create the GreenGrid item
+
+**What this is.** Generate a fresh item to hold your scorecard (don't overwrite Hello World).
+
+```powershell
+cd scripts/Setup
+./CreateNewItem.ps1 -Name "GreenGridScorecard"
+```
+
+This creates `Workload/app/items/GreenGridScorecardItem/`, including
+`GreenGridScorecardItemEditor.tsx`. **Restart the dev server** (Ctrl+C in Terminal 1, then
+`./StartDevServer.ps1` again). In Fabric, create a **GreenGridScorecard** item.
+
+**✅ What you should see.** An empty GreenGridScorecard editor opens in Fabric.
+
+---
+
+## Step 6 — Check the SaaS is alive
+
+**What this is.** A quick test that GreenGrid's algorithm service answers.
 
 ```bash
 curl -i <SAAS_URL>/health        # expect: 200
@@ -117,33 +211,18 @@ curl -s -X POST <SAAS_URL>/score \
   -d '{"sites":[{"siteId":"s1","name":"Helsinki DC","city":"Helsinki","energyKwh":320,"renewablePct":88}]}'
 ```
 
-**✅ What you should see.** `/health` returns `200`; `/score` returns a `greenScore` and a
-`tier`. (Local fallback: `cd src/workloadsdc && npm install && npm run saas:start`, URL
-`http://localhost:8787`, key `greengrid-demo-key`.)
+**✅ What you should see.** `/score` returns a `greenScore` and a `tier`. *(Local fallback:
+`cd src/workloadsdc && npm install && npm run saas:start`, URL `http://localhost:8787`, key
+`greengrid-demo-key`.)*
 
 ---
 
-## Step 2 — Create the empty item
+## Step 7 — Make it work with fake data (Milestone M1)
 
-**What this is.** Generate a new Fabric *item type* from the Starter-Kit, using GitHub Copilot.
-**Why.** The item is the container your scorecard lives in. Start empty, fill it next.
+Create **four files** in `Workload/app/items/GreenGridScorecardItem/`, then render the
+scorecard from the generated editor. This proves the whole chain *screen -> SaaS -> screen*.
 
-```text
-Create a new Extensibility Toolkit item type "GreenGridScorecard" with an editor tab and a
-Leaf icon. Keep the default item creation flow.
-```
-
-**✅ What you should see.** A new item folder (e.g. `app/items/GreenGridScorecard/`) and an
-empty editor that opens without errors.
-
----
-
-## Step 3 — Describe the data shape (the contract)
-
-**What this is.** TypeScript types that describe what you send to the SaaS and what it returns.
-**Why.** A shared "contract" means your code and the SaaS agree on field names — fewer bugs.
-
-Create `app/items/GreenGridScorecard/contracts.ts` and paste:
+### 7a. `contracts.ts` — the data shapes
 
 ```ts
 export type SiteRecord = {
@@ -155,30 +234,18 @@ export type ScoredSite = SiteRecord & {
 };
 export type ScoreResponse = {
   sites: ScoredSite[];
-  summary: {
-    totalSites: number; avgScore: number; avgRenewablePct: number;
-    tierCounts: Record<GreenTier, number>; best: ScoredSite; worst: ScoredSite;
-  };
+  summary: { totalSites: number; avgScore: number; avgRenewablePct: number;
+    tierCounts: Record<GreenTier, number>; best: ScoredSite; worst: ScoredSite; };
 };
 ```
 
-**✅ What you should see.** The file compiles (no red squiggles) and can be imported.
-
----
-
-## Step 4 — Call the SaaS and render with fake data
-
-This is the big one: it makes the **end-to-end flow visible**. Three small files.
-
-### 4a. The SaaS client — `greengridClient.ts`
-
-**What this is.** A function that POSTs sites to the SaaS and returns the scores.
+### 7b. `greengridClient.ts` — call the SaaS
 
 ```ts
 import type { ScoreResponse, SiteRecord } from './contracts';
 
-const SAAS_URL = 'http://localhost:8787';        // <- replace with the trainer URL
-const API_KEY = 'greengrid-demo-key';            // <- replace with the trainer key
+const SAAS_URL = 'http://localhost:8787';   // <- replace with the trainer URL
+const API_KEY = 'greengrid-demo-key';       // <- replace with the trainer key
 
 export async function scorePortfolio(sites: SiteRecord[]): Promise<ScoreResponse> {
   const res = await fetch(`${SAAS_URL}/score`, {
@@ -191,9 +258,7 @@ export async function scorePortfolio(sites: SiteRecord[]): Promise<ScoreResponse
 }
 ```
 
-### 4b. Fake data — `seed.ts`
-
-**What this is.** A handful of sample sites so you can see results before touching OneLake.
+### 7c. `seed.ts` — fake sites to start
 
 ```ts
 import type { SiteRecord } from './contracts';
@@ -206,27 +271,25 @@ export const seedSites: SiteRecord[] = [
 ];
 ```
 
-### 4c. The screen — `Editor.tsx`
+### 7d. `Scorecard.tsx` — the screen
 
-**What this is.** The React component that calls the SaaS on open and shows the scorecard.
+It takes a `getSites` function, so swapping the data source later is **one line**.
 
 ```tsx
 import React, { useEffect, useState } from 'react';
 import { FluentProvider, webLightTheme, Spinner, Badge } from '@fluentui/react-components';
 import { scorePortfolio } from './greengridClient';
-import { seedSites } from './seed';
-import type { ScoreResponse } from './contracts';
+import type { ScoreResponse, SiteRecord } from './contracts';
 
 const tierColor = (t: 'A' | 'B' | 'C') => (t === 'A' ? '#2faa6a' : t === 'B' ? '#d9a300' : '#d1453b');
 
-export default function Editor() {
+export function Scorecard({ getSites }: { getSites: () => Promise<SiteRecord[]> }) {
   const [data, setData] = useState<ScoreResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Step 4: fake data. In Step 5 you replace `seedSites` with OneLake rows.
-    scorePortfolio(seedSites).then(setData).catch((e) => setError(String(e)));
-  }, []);
+    getSites().then(scorePortfolio).then(setData).catch((e) => setError(String(e)));
+  }, [getSites]);
 
   if (error) return <div role="alert">Failed: {error}</div>;
   if (!data) return <Spinner label="Scoring sites..." />;
@@ -256,31 +319,35 @@ export default function Editor() {
 }
 ```
 
-**✅ What you should see — 🎯 Milestone M1 (Sprint 1).** The item shows the portfolio score
-(a big number) and 5 site cards with their tier. The **whole chain works**: your screen →
-the SaaS → back to the screen. This alone is demoable.
+### 7e. Render it from the generated editor
+
+Open `GreenGridScorecardItemEditor.tsx` and render the `Scorecard` with the **fake** data:
+
+```tsx
+import { Scorecard } from './Scorecard';
+import { seedSites } from './seed';
+
+// inside the editor's returned JSX:
+<Scorecard getSites={() => Promise.resolve(seedSites)} />
+```
+
+**✅ What you should see — 🎯 Milestone M1.** The item shows the portfolio score and 5 site
+cards with their tier, **inside Fabric**. The whole chain works on fake data. This is demoable.
 
 ---
 
-## Step 5 — Switch the source to real OneLake data
+## Step 8 — Switch to real OneLake data (Milestone M2)
 
-**What this is.** Replace the fake `seedSites` with the customer's **real** site data stored
-in OneLake.
+**What this is.** Replace the fake `seedSites` with the customer's **real** site data in OneLake.
 
-### Where does the data live? (read this first)
+### Where does the data live?
 
-In Fabric, a customer's data lives in a **Lakehouse** inside **OneLake**. A Lakehouse has two
-areas:
+In Fabric, customer data lives in a **Lakehouse** inside OneLake. A Lakehouse has **Files**
+(raw files: CSV, Parquet...) and **Tables** (Delta). For this hack the sites are a **CSV file**:
+`Files/sites.csv`. *(A CSV is the simplest thing to read from a workload; a Delta table would
+need a SQL endpoint — out of scope for one day.)*
 
-- **Files** — raw files: CSV, Parquet, JSON...
-- **Tables** — managed Delta tables (queryable, governed).
-
-For this hack the customer sites are provided as **one CSV file** in the Lakehouse:
-`Files/sites.csv`. *(A CSV is the simplest thing to read from a workload. A Delta
-`Tables/sites` would also work, but reading Delta needs a SQL endpoint or a backend — out of
-scope for one day.)*
-
-**Format of `Files/sites.csv`** — a header row, then one line per site:
+**Format of `Files/sites.csv`** (a ready copy is in the kit at `src/workloadsdc/data/sites.csv`):
 
 ```text
 siteId,name,city,energyKwh,renewablePct
@@ -291,19 +358,13 @@ site-dub,Dublin Hub,Dublin,540,62
 site-waw,Warsaw Plant,Warsaw,880,24
 ```
 
-> The trainer pre-loads this file (in Fabric: open the Lakehouse -> **Files** -> **Upload**).
-> A ready-made copy is in the kit at `src/workloadsdc/data/sites.csv`. To test your own data,
+> The trainer pre-loads this file (Lakehouse -> **Files** -> **Upload**). To test your own,
 > upload a CSV with the **same header** to `Files/`.
 
-**You also need two IDs** to build the OneLake path (both appear in the URL when the Lakehouse
-is open in Fabric, and are available from the item context):
+You also need two IDs (visible in the Lakehouse URL, or from the item context):
+`workspaceId` and `lakehouseId`.
 
-- `workspaceId` — the workspace GUID.
-- `lakehouseId` — the Lakehouse GUID.
-
-### 5a. The OneLake reader — `onelake.ts`
-
-This reads the CSV file from OneLake (as the signed-in user, via an OBO token) and parses it.
+### 8a. `onelake.ts` — read & parse the CSV
 
 ```ts
 import type { WorkloadClientAPI } from '@ms-fabric/workload-client';
@@ -312,7 +373,7 @@ import type { SiteRecord } from './contracts';
 export async function readSites(
   client: WorkloadClientAPI, workspaceId: string, lakehouseId: string
 ): Promise<SiteRecord[]> {
-  // 1) Ask Fabric for a token to read OneLake AS the signed-in user (OBO).
+  // 1) Token to read OneLake AS the signed-in user (OBO).
   const { token } = await client.auth.acquireAccessToken({
     additionalScopesToConsent: ['https://storage.azure.com/user_impersonation'],
   });
@@ -320,83 +381,51 @@ export async function readSites(
   const url = `https://onelake.dfs.fabric.microsoft.com/${workspaceId}/${lakehouseId}/Files/sites.csv`;
   const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
   if (!res.ok) throw new Error(`OneLake read failed: ${res.status}`);
-  // 3) Parse the CSV text into SiteRecord rows.
-  return parseSitesCsv(await res.text());
-}
-
-function parseSitesCsv(csv: string): SiteRecord[] {
-  const [header, ...lines] = csv.trim().split(/\r?\n/);
+  // 3) Parse CSV text into rows.
+  const [header, ...lines] = (await res.text()).trim().split(/\r?\n/);
   const cols = header.split(',').map((c) => c.trim());
   return lines.filter(Boolean).map((line) => {
     const cells = line.split(',');
     const row = Object.fromEntries(cols.map((c, i) => [c, (cells[i] ?? '').trim()]));
-    return {
-      siteId: row.siteId, name: row.name, city: row.city,
-      energyKwh: Number(row.energyKwh), renewablePct: Number(row.renewablePct),
-    };
+    return { siteId: row.siteId, name: row.name, city: row.city,
+      energyKwh: Number(row.energyKwh), renewablePct: Number(row.renewablePct) };
   });
 }
 ```
 
-> Note: this is a minimal CSV parser (split on commas). It's fine for this dataset; for names
-> containing commas you'd use a real CSV library.
+### 8b. Swap one line in the editor
 
-### 5b. Use it in `Editor.tsx`
-
-Swap one line in the `useEffect`: read OneLake, then score.
+The generated editor exposes the workload client and the item's context. Change the render to:
 
 ```tsx
-// before (fake data):
-scorePortfolio(seedSites).then(setData).catch((e) => setError(String(e)));
+import { readSites } from './onelake';
 
-// after (real OneLake data; props: workloadClient, workspaceId, lakehouseId):
-readSites(workloadClient, workspaceId, lakehouseId)
-  .then(scorePortfolio)
-  .then(setData)
-  .catch((e) => setError(String(e)));
+// before (fake):
+<Scorecard getSites={() => Promise.resolve(seedSites)} />
+
+// after (real OneLake CSV):
+<Scorecard getSites={() => readSites(workloadClient, workspaceId, lakehouseId)} />
 ```
 
-**✅ What you should see — 🎯 Milestone M2 (Sprint 2).** The same scorecard, now built from
-the **OneLake CSV**. *(If the OBO token gives you trouble, keep `seedSites` as a fallback and
-keep moving — don't lose time on auth.)*
+**✅ What you should see — 🎯 Milestone M2.** The same scorecard, now built from the **OneLake
+CSV**. *(If the OBO token fights you, keep the fake-data line as a fallback and keep moving.)*
 
 ---
 
-## Step 6 — Make it graphical (polish)
+## Step 9 — Make it graphical (Milestone M3)
 
-**What this is.** Upgrade the plain list into the polished scorecard + map.
-**Why.** A graphical result is what sells the story in the demo.
-
-Ask Copilot (keep the data flow from steps 4–5):
+**What this is.** Upgrade the plain list into the polished scorecard + map. Easiest with GitHub
+Copilot (the toolkit ships AI instructions in `.github/copilot-instructions.md`):
 
 ```text
-Upgrade GreenGrid Scorecard: add a circular green-score gauge for the portfolio,
+Upgrade the GreenGrid Scorecard screen: add a circular green-score gauge for the portfolio,
 an A/B/C tier distribution, provenance chips "Data from OneLake" then "Scored by GreenGrid",
 and a second view showing the sites as factory markers on a simple map, colored by tier.
-Style: Fluent UI, teal #00b4a6 + green accents.
+Style: Fluent UI, teal #00b4a6 + green accents. Keep the getSites data flow.
 ```
 
-**✅ What you should see — 🎯 Milestone M3 (Sprint 2).** A gauge, A/B/C tiers, and the sites
-map — matching the example images at the top.
-
----
-
-## Step 7 — Run it inside Fabric (Dev Gateway)
-
-**What this is.** Show your locally-running workload **inside the Fabric portal**.
-**Why.** That's how a workload really looks to a user — and how you demo it.
-
-```bash
-npm run start            # frontend dev server (serves the item UI)
-npm run start:devGateway # registers the dev workload with Fabric
-```
-
-Then in Fabric: **Settings -> Developer settings -> enable Developer mode**, open your
-workspace, then **+ New -> GreenGridScorecard**.
-
-**✅ What you should see.** The `GreenGridScorecard` item appears in Fabric and renders your
-scorecard, served from your machine. You're ready to demo. *(Not listed? Developer mode is
-off, or the Dev Gateway isn't running.)*
+**✅ What you should see — 🎯 Milestone M3.** A gauge, A/B/C tiers and the sites map — matching
+the example images at the top.
 
 ---
 
@@ -419,5 +448,5 @@ off, or the Dev Gateway isn't running.)*
 
 - Full solution code: `src/workloadsdc/`
 - SaaS prerequisite: `src/workloadsdc/saas/`
-- Canonical spec: `src/workloadsdc/src/specs/greengrid-workload-spec.md`
+- Sample OneLake data: `src/workloadsdc/data/sites.csv`
 - Trainer answer key + screenshots: `docs/microhack-2-sdc-workloads-solution.md`

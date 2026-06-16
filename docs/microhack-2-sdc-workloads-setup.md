@@ -84,11 +84,14 @@ Minimum requirement:
 1. Deploy the GreenGrid SaaS and validate `/health` + `/score` with curl.
 2. Load the sites CSV into a lakehouse: open the Lakehouse, **Files -> Upload** the file
    `src/workloadsdc/data/sites.csv` so it lands at `Files/sites.csv`.
-3. Open the Extensibility Toolkit Starter-Kit; enable Fabric Developer mode.
-4. Start the frontend dev server: `npm run start`.
-5. Start the **Dev Gateway**: `npm run start:devGateway` (registers the dev workload).
-6. In Fabric, create a `GreenGridScorecard` item in the workspace.
-7. Confirm the item reads OneLake and renders the SaaS scores.
+3. `git clone https://github.com/microsoft/fabric-extensibility-toolkit`.
+4. `cd scripts/Setup; ./Setup.ps1 -WorkloadName "Org.GreenGrid"` (creates the Entra app,
+   writes `.env`, downloads the Dev Gateway).
+5. `cd scripts/Run; ./StartDevServer.ps1` and (second terminal) `./StartDevGateway.ps1`.
+6. In Fabric, enable the developer tenant settings (Admin portal) and **Fabric Developer Mode**.
+7. Create the **Hello World** item to confirm the gateway works, then build the
+   `GreenGridScorecard` item.
+8. Confirm the item reads `Files/sites.csv` from OneLake and renders the SaaS scores.
 
 ---
 

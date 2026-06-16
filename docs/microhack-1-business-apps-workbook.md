@@ -24,13 +24,11 @@ one-day micro-hack for the Business Apps (Rayfin) track**.
 | 10:45 | **Demo · Helios Bicycle Studio** — the app you'll build today |
 | 11:15 | The hack brief, teams & environment check |
 | 12:00 | Lunch |
-| 13:30 | **Hack · Sprint 1** — build the core app (steps 1–4) |
+| 13:30 | **Hack · Sprint 1** — build the core app (steps 1–5) |
 | 15:30 | Break |
-| 15:45 | **Hack · Sprint 2** — extend & polish (steps 5–7) |
+| 15:45 | **Hack · Sprint 2** — extend & polish (steps 6–8) |
 | 16:45 | Team demos (5 min each) |
 | 17:00 | Wrap-up, KPIs & next steps |
-
-> The SDC Workloads track is a **separate** one-day micro-hack with its own workbook.
 
 ---
 
@@ -84,31 +82,50 @@ By the end of the afternoon your app should look like this — a **Bicycle Board
 
 # Part B — Build it step by step
 
-> **How to work:** you build the app **conversationally**. You paste a short prompt into
-> **GitHub Copilot** inside the Rayfin project; Copilot writes the code; you check the result
-> in the browser. Each step below = one prompt + what you should see.
+> **How to work.** **There is no repository to clone** for this track — Rayfin scaffolds the
+> whole project for you with one command (Step 1). After that you build the app
+> **conversationally**: you paste a short prompt into **GitHub Copilot** inside the project,
+> Copilot writes the code, and you check the result in the browser. Each step below = one
+> action + **what you should see**.
 
 ---
 
-## Step 1 — Create and run the empty project
+## Step 1 — Create the project (no clone needed)
 
-**What you do.** Scaffold a Rayfin project and start it. "Scaffold" just means *generate a
-ready-to-run starter project*.
+**What you do.** Scaffold a Rayfin project. "Scaffold" means *generate a ready-to-run starter
+project* — you do **not** clone any repo.
 
 ```bash
 npm create @microsoft/rayfin@latest -- --template field-technician
-npm run dev          # deploys to Fabric and provisions the database
+cd <the-folder-it-created>
 ```
 
-**Why.** `npm run dev` pushes the project to Fabric and **provisions your database** from the
-data model in `rayfin/data/*.ts`. You now have a live backend before writing a single screen.
+**Why.** Rayfin gives you a complete app skeleton (data layer + UI) so you start from
+something that already runs.
 
-**✅ What you should see.** A local app opens in the browser with the starter template, and
-your Fabric workspace shows the new app.
+**✅ What you should see.** A new project folder is created and dependencies install.
 
 ---
 
-## Step 2 — Declare the data model
+## Step 2 — Run the empty app first (your "it works" check)
+
+**What you do.** Start the starter app **before changing anything** — exactly like a Hello
+World, to confirm your environment and Fabric connection are healthy.
+
+```bash
+npm run dev          # deploys to Fabric and provisions the database, then opens the app
+```
+
+**Why.** `npm run dev` pushes the project to Fabric and **provisions your database** from the
+data model in `rayfin/data/*.ts`. If the starter app opens, your whole chain works and you can
+safely start customizing.
+
+**✅ What you should see.** The starter app opens in the browser and your Fabric workspace shows
+the new app. **Don't go further until this works.**
+
+---
+
+## Step 3 — Declare the data model
 
 **What you do.** Tell Copilot the data your app is about. This defines the **database tables**.
 
@@ -132,7 +149,7 @@ database with the new tables (still empty screens — that's normal).
 
 ---
 
-## Step 3 — Build the Bicycle Board (your first screen)
+## Step 4 — Build the Bicycle Board (your first screen)
 
 **What you do.** Ask for the main screen: the list of bikes a manager looks at every morning.
 
@@ -150,7 +167,7 @@ tag. You can filter by station and status. (Compare with the first example image
 
 ---
 
-## Step 4 — Build the Pit-Stop Queue (take action)
+## Step 5 — Build the Pit-Stop Queue (take action)
 
 **What you do.** Add the screen where a manager turns a problem into an assigned repair.
 
@@ -166,12 +183,12 @@ manager fast; preferring the same-station, least-busy mechanic is a simple, sens
 **✅ What you should see.** A three-column board. Creating a ticket from a bike places a card
 in **New**; assigning moves it to **Assigned** with the mechanic's name.
 
-> 🎯 **Milestone (Sprint 1):** Steps 1–4 give you a working app — detect a bike, open a
+> 🎯 **Milestone (Sprint 1):** Steps 1–5 give you a working app — detect a bike, open a
 > ticket, assign it. If you reach here, you can already demo.
 
 ---
 
-## Step 5 — Add the Ride Mood & KPI screen
+## Step 6 — Add the Ride Mood & KPI screen
 
 **What you do.** Add a light analytics screen.
 
@@ -188,7 +205,7 @@ needing a pit-stop, and the funnel percentages.
 
 ---
 
-## Step 6 — Add the Live Map (make it shine)
+## Step 7 — Add the Live Map (make it shine)
 
 **What you do.** Add a map view of the fleet.
 
@@ -206,7 +223,7 @@ per station (compare with the second example image above).
 
 ---
 
-## Step 7 — Polish (roles & visuals)
+## Step 8 — Polish (roles & visuals)
 
 **What you do.** Tighten the experience. Pick what you have time for.
 
