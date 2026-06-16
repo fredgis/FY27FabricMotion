@@ -80,8 +80,10 @@ FY27FabricMotion/
 ├── docs/
 │   ├── motion-brief.md             # short narrative brief
 │   ├── app-motion-overview.md      # full motion strategy (+ .pptx deck)
-│   ├── microhack-1-business-apps.* # Micro Hack 1 agenda (.docx + .md)
-│   └── microhack-2-isv-workloads.* # Micro Hack 2 agenda (.docx + .md)
+│   ├── microhack-1-business-apps.* # Micro Hack 1 — agenda (.docx + .md)
+│   │                               #   + -setup.docx (prereqs) + -workbook.docx (participants)
+│   └── microhack-2-isv-workloads.* # Micro Hack 2 — agenda (.docx + .md)
+│                                   #   + -setup.docx (prereqs) + -workbook.docx (participants)
 ├── scripts/
 │   ├── build.sh                    # regenerate slide + preview (macOS/Linux)
 │   └── build.ps1                   # regenerate slide + preview (Windows)
