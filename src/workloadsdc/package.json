@@ -1,0 +1,20 @@
+{
+  "name": "greengrid-workload-sdc",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "SDC workload solution kit for the GreenGrid micro-hack (scenario 2): SaaS prerequisite + Fabric workload.",
+  "scripts": {
+    "audit": "tsx demo/audit.ts",
+    "saas:start": "tsx saas/server.ts",
+    "demo:build": "tsx demo/build-demo.ts",
+    "demo:shots": "node demo/capture.mjs",
+    "demo": "npm run audit && npm run demo:build && npm run demo:shots"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "express": "^4.21.2",
+    "playwright": "^1.61.0",
+    "tsx": "^4.19.2"
+  }
+}

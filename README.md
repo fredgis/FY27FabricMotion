@@ -15,7 +15,7 @@ converge into **one Microsoft program**.
 | Path | Audience | Approach | KPI |
 | ---- | -------- | -------- | --- |
 | **Advisory** | System Integrators | Use Microsoft Fabric (Preview) — SIs build Business Apps | **Number of opportunities** (MSX / CRM), Stage 1 & 2 — vision **ACR** |
-| **Workload** | ISV / SDC | Become Microsoft Fabric (GA) — ISV platform extension | **Number of workloads per ISV** — vision **Adoption** (1 workload / ISV) |
+| **Workload** | SDC | Become Microsoft Fabric (GA) — SDC platform extension | **Number of workloads per SDC** — vision **Adoption** (1 workload / SDC) |
 
 **Enablement vehicle:** ⚡ *Micro Hack — 1 day* (hands-on activation).
 
@@ -29,7 +29,7 @@ converge into **one Microsoft program**.
 - Sponsorship — Ahmed + EPS.
 - Funding secured.
 - Contact PM lead on workloads.
-- **ISV + Advisory → ONE Microsoft program.**
+- **SDC + Advisory → ONE Microsoft program.**
 
 Full detail in [`docs/motion-brief.md`](docs/motion-brief.md).
 
@@ -76,12 +76,33 @@ their assigned tickets.
 
 ---
 
-## 🧩 ISV Workloads track (Fabric Extensibility Kit)
+## 🧩 SDC Workloads track (Fabric Extensibility Toolkit)
 
-> 🚧 **Coming soon.** The ISV / SDC path — building a Fabric workload with the
-> Extensibility Kit — will be documented here. Setup and workbook stubs already live in
-> [`docs/microhack-2-isv-workloads-setup.md`](docs/microhack-2-isv-workloads-setup.md) and
-> [`docs/microhack-2-isv-workloads-workbook.md`](docs/microhack-2-isv-workloads-workbook.md).
+The SDC path is delivered through a **Fabric workload built with the
+[Extensibility Toolkit](https://learn.microsoft.com/en-us/fabric/extensibility-toolkit/extensibility-toolkit-overview)**.
+The reference scenario is **GreenGrid Analytics**, a fictional SDC.
+
+**GreenGrid Scorecard — functional summary.** GreenGrid scores the **sustainability** of a
+customer's sites. The workload shows the complementarity of Fabric + SDC:
+
+- The customer's `sites` data stays in **OneLake** (no data movement).
+- A pre-deployed **GreenGrid SaaS** (`/score`) brings the SDC's scoring algorithm.
+- The result is a **graphical scorecard rendered inside Fabric** — portfolio green score,
+  A/B/C tiers, per-site renewable/efficiency bars and recommendations.
+
+A **major prerequisite** is that the SaaS is **deployed and running before the workshop** —
+it is coded and runnable in [`src/workloadsdc/saas/`](src/workloadsdc/saas). The workload is
+run in **dev mode via the Dev Gateway**.
+
+| Sustainability Scorecard | Site detail |
+|---|---|
+| ![GreenGrid Scorecard](docs/images/scenario2-scorecard.png) | ![Site detail](docs/images/scenario2-site-detail.png) |
+
+**Dive in:**
+- Full solution & screenshots: [`docs/microhack-2-sdc-workloads-solution.md`](docs/microhack-2-sdc-workloads-solution.md)
+- SaaS + workload code: [`src/workloadsdc/`](src/workloadsdc)
+- Trainer setup: [`docs/microhack-2-sdc-workloads-setup.md`](docs/microhack-2-sdc-workloads-setup.md) ·
+  Participant workbook: [`docs/microhack-2-sdc-workloads-workbook.md`](docs/microhack-2-sdc-workloads-workbook.md)
 
 ---
 
@@ -122,10 +143,12 @@ FY27FabricMotion/
 │   ├── microhack-1-business-apps-solution.md
 │   ├── microhack-1-business-apps-setup.md
 │   ├── microhack-1-business-apps-workbook.md
-│   ├── microhack-2-isv-workloads-setup.md
-│   └── microhack-2-isv-workloads-workbook.md
+│   ├── microhack-2-sdc-workloads-solution.md
+│   ├── microhack-2-sdc-workloads-setup.md
+│   └── microhack-2-sdc-workloads-workbook.md
 ├── src/
-│   └── apprayfin/                  # Business Apps Rayfin solution package
+│   ├── apprayfin/                  # Business Apps (Rayfin) solution package
+│   └── workloadsdc/                # SDC Workload (Extensibility Toolkit) + SaaS
 ├── scripts/
 │   ├── build.sh                    # regenerate slide + preview (macOS/Linux)
 │   └── build.ps1                   # regenerate slide + preview (Windows)
@@ -134,10 +157,10 @@ FY27FabricMotion/
 
 **Naming convention for `docs/`:** lowercase `kebab-case`, markdown only.
 
-For the Business Apps track implementation, start with:
+For the track implementations, start with:
 
-- `src/apprayfin/README.md`
-- `docs/microhack-1-business-apps-solution.md`
+- Business Apps: `src/apprayfin/README.md` · `docs/microhack-1-business-apps-solution.md`
+- SDC Workloads: `src/workloadsdc/README.md` · `docs/microhack-2-sdc-workloads-solution.md`
 
 ---
 

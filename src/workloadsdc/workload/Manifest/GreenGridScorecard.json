@@ -1,0 +1,21 @@
+{
+  "name": "GreenGridScorecard",
+  "displayName": "GreenGrid Scorecard",
+  "displayNamePlural": "GreenGrid Scorecards",
+  "editorTab": {
+    "onInit": "/GreenGridScorecard/init",
+    "onDeactivate": "/GreenGridScorecard/deactivate"
+  },
+  "icon": { "name": "Leaf" },
+  "contextMenuItems": [],
+  "quickActionItems": [],
+  "supportedInMonitoringHub": false,
+  "supportedInDatahubL1": true,
+  "editorContent": {
+    "path": "/GreenGridScorecard"
+  },
+  "createItemDialogConfig": {
+    "onCreationFailure": { "action": "showErrorNotification" },
+    "description": "Score the sustainability of the sites stored in your OneLake."
+  }
+}

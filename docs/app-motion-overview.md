@@ -15,7 +15,7 @@ Single reference for business direction, delivery model and KPI logic.
 }}}%%
 flowchart LR
     A["Track A<br/>Advisory / SI<br/>Rayfin apps"] --> M["ONE MOTION<br/>Fabric App Platform"]
-    B["Track B<br/>ISV / SDC<br/>Fabric workloads"] --> M
+    B["Track B<br/>SDC<br/>Fabric workloads"] --> M
     M --> V["Vehicle<br/>Micro Hack (1 day)"]
     V --> O["Outcomes<br/>Apps + Workloads + Adoption"]
     classDef a fill:#EAF3FB,stroke:#0078D4,color:#1B2A3A,stroke-width:2px;
@@ -33,7 +33,7 @@ flowchart LR
 | Track | KPI | KPI interpretation |
 |---|---|---|
 | Advisory / SI | # opportunities (MSX/CRM) | Stage quality + revenue proxy (ACR view) |
-| ISV / SDC | # workloads per ISV | Productized adoption + Fabric usage growth |
+| SDC | # workloads per SDC | Productized adoption + Fabric usage growth |
 
 ## 3) Operating principle
 
@@ -60,9 +60,11 @@ sequenceDiagram
 - `microhack-1-business-apps-solution.md`: full Business Apps solution with screen simulations.
 - `microhack-1-business-apps-setup.md`: trainer setup for end-customer apps.
 - `microhack-1-business-apps-workbook.md`: participant workbook for apps.
-- `microhack-2-isv-workloads-setup.md`: trainer setup for ISV workload build.
-- `microhack-2-isv-workloads-workbook.md`: participant workbook for ISV build.
+- `microhack-2-sdc-workloads-solution.md`: full SDC workload solution with screenshots.
+- `microhack-2-sdc-workloads-setup.md`: trainer setup for SDC workload build.
+- `microhack-2-sdc-workloads-workbook.md`: participant workbook for SDC build.
 
 ## 5) Code asset map in `/src`
 
 - `src/apprayfin/`: Business Apps Rayfin implementation package for the Helios scenario.
+- `src/workloadsdc/`: SDC workload + GreenGrid SaaS package for the GreenGrid scenario.

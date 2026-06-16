@@ -1,0 +1,13 @@
+{
+  "name": "GreenGrid.Scorecard",
+  "displayName": "GreenGrid Sustainability",
+  "description": "Score the sustainability of your sites in Fabric, powered by the GreenGrid SaaS.",
+  "publisher": "GreenGrid Analytics",
+  "version": "1.0.0",
+  "items": [
+    {
+      "name": "GreenGridScorecard",
+      "manifest": "GreenGridScorecard.json"
+    }
+  ]
+}

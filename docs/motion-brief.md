@@ -7,7 +7,7 @@ Concise working brief for FY27 EMEA Fabric Application Motion.
 Build one coherent Microsoft Fabric application motion with two execution tracks:
 
 1. **Advisory / SI track**: spec-driven business apps with Rayfin.
-2. **ISV / SDC track**: code-driven workloads with Fabric Extensibility Kit.
+2. **SDC track**: code-driven workloads with Fabric Extensibility Toolkit.
 
 Both tracks converge into one operating model and one reporting rhythm.
 
@@ -22,7 +22,7 @@ Both tracks converge into one operating model and one reporting rhythm.
 }}}%%
 flowchart LR
     A["Advisory / SI<br/>Rayfin · spec-driven"] --> C["ONE Fabric Motion<br/>EMEA"]
-    B["ISV / SDC<br/>Extensibility Kit · code-driven"] --> C
+    B["SDC<br/>Extensibility Kit · code-driven"] --> C
     C --> D["Micro Hack vehicle<br/>Morning demos · Afternoon build"]
     D --> E["Outcomes<br/>Apps + Workloads + Adoption"]
     classDef advisory fill:#EAF3FB,stroke:#0078D4,color:#1B2A3A,stroke-width:2px;
@@ -40,7 +40,7 @@ flowchart LR
 | Track | Primary KPI | Secondary KPI |
 |---|---|---|
 | Advisory / SI | # opportunities (MSX / CRM) | Stage 1–2 quality + ACR proxy |
-| ISV / SDC | # workloads per ISV | workload adoption + Fabric capacity use |
+| SDC | # workloads per SDC | workload adoption + Fabric capacity use |
 
 ## Activation baseline
 
@@ -54,9 +54,11 @@ flowchart LR
 - `microhack-1-business-apps-solution.md`: complete Rayfin business app solution with simulated captures.
 - `microhack-1-business-apps-setup.md`: trainer setup guide (apps track).
 - `microhack-1-business-apps-workbook.md`: participant workbook (apps track).
-- `microhack-2-isv-workloads-setup.md`: trainer setup guide (ISV track).
-- `microhack-2-isv-workloads-workbook.md`: participant workbook (ISV track).
+- `microhack-2-sdc-workloads-solution.md`: full SDC workload solution with screenshots.
+- `microhack-2-sdc-workloads-setup.md`: trainer setup guide (SDC track).
+- `microhack-2-sdc-workloads-workbook.md`: participant workbook (SDC track).
 
 ## Working code in `/src`
 
 - `src/apprayfin/`: implementation package for the Business Apps scenario.
+- `src/workloadsdc/`: SaaS + Fabric workload package for the SDC scenario.
