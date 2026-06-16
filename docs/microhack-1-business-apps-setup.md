@@ -1,11 +1,11 @@
 # Micro Hack 1 — Business Apps Setup (Trainer Guide)
 
 Track: **End-customer Apps (Rayfin)**  
-Scenario: **Helios Mobility** (fictional final customer)
+Scenario: **Helios Bicycle** (fictional final customer)
 
 ---
 
-## 1) Architecture to prepare before the day
+## 1) App metier architecture to prepare before the day
 
 ```mermaid
 %%{init: {'theme':'base','themeVariables':{
@@ -16,10 +16,10 @@ Scenario: **Helios Mobility** (fictional final customer)
   'secondaryColor':'#E6F7F4'
 }}}%%
 flowchart LR
-    D["Helios sample data<br/>rides · battery · maintenance"] --> L["Fabric Lakehouse<br/>OneLake"]
+    D["Helios Bicycle data<br/>bicycles · rides · pit-stop tickets"] --> L["Fabric Lakehouse<br/>OneLake"]
     L --> R["Rayfin<br/>Spec-driven generation"]
-    R --> A["Fleet Operations App"]
-    A --> U["Ops manager + technician views"]
+    R --> A["Helios Bicycle Studio"]
+    A --> U["Operations manager + mechanic views"]
     classDef src fill:#F3F7FB,stroke:#5B6B7B,color:#1B2A3A,stroke-width:2px;
     classDef fab fill:#EAF3FB,stroke:#0078D4,color:#1B2A3A,stroke-width:2px;
     classDef app fill:#0B2447,stroke:#0B2447,color:#FFFFFF,stroke-width:2px;
@@ -36,7 +36,7 @@ flowchart LR
 
 ### Platform
 - [ ] Fabric capacity available and assigned to workshop workspace.
-- [ ] Workspace created: `helios-microhack`.
+- [ ] Workspace created: `helios-bicycle-microhack`.
 - [ ] Rayfin available and validated in this workspace.
 - [ ] All participant accounts can sign in and open the workspace.
 - [ ] Solution kit available locally: `src/apprayfin/`.
@@ -44,17 +44,17 @@ flowchart LR
 ### Data foundation
 - [ ] Lakehouse created: `HeliosLake`.
 - [ ] Four datasets loaded as tables:
-  - [ ] `scooters`
-  - [ ] `rides`
-  - [ ] `battery`
-  - [ ] `maintenance`
+  - [ ] `bicycles`
+  - [ ] `ride_sessions`
+  - [ ] `pit_stop_tickets`
+  - [ ] `mechanics`
 - [ ] One quick data quality check done (sample rows + types).
 
 ### Delivery readiness
 - [ ] Demo path tested end-to-end once by trainer.
 - [ ] Backup account + backup browser session ready.
-- [ ] Printed / shared workbook link ready for teams.
-- [ ] Reference solution document ready: `docs/apprayfin-solution.md`.
+- [ ] Workbook link shared with all teams.
+- [ ] Reference solution document ready: `docs/microhack-1-business-apps-solution.md`.
 
 ---
 
@@ -62,16 +62,16 @@ flowchart LR
 
 1. **Create workspace** and assign Fabric capacity.
 2. **Create Lakehouse** (`HeliosLake`).
-3. **Upload files** and load to tables.
+3. **Upload files** and load the four tables.
 4. **Grant roles**:
    - Trainer: Admin
    - Coaches: Member
    - Participants: Contributor
-5. **Launch Rayfin** and verify it can read target tables.
+5. **Launch Rayfin** and verify table discovery.
 6. **Run smoke demo**:
-   - Start from `src/apprayfin/src/specs/helios-fleet-spec.md`
+   - Start from `src/apprayfin/src/specs/helios-bicycle-app-spec.md`
    - Generate app
-   - Open app and list scooters
+   - Open app and list bicycles by station
 
 ---
 
@@ -84,54 +84,54 @@ flowchart LR
 | D-1 (afternoon) | Trainer | Validate Rayfin access in workspace | Rayfin opens without permission errors |
 | D-1 (afternoon) | Trainer | Run full smoke demo once | App generated and opens with data |
 | D-day 08:30 | Trainer | Recheck access for all participant accounts | No sign-in failures |
-| D-day 08:45 | Data coach | Recheck table row counts | Non-zero rows in core tables |
+| D-day 08:45 | Data coach | Recheck row counts | Non-zero rows in all core tables |
 
 ### Data sanity checks before participants arrive
 
-- [ ] At least one city has scooters in `needs_attention` state.
-- [ ] At least one scooter has low battery (< 20%).
-- [ ] At least one maintenance job is open.
+- [ ] At least one bicycle is in `pit-stop-needed` status.
+- [ ] At least one ride mood score is below `3.0`.
+- [ ] At least one pit-stop ticket is `new`.
 
-This guarantees the demo flow is meaningful (detect -> assign -> resolve).
+This guarantees a meaningful demo flow (detect -> assign -> close).
 
 ---
 
 ## 4) Trainer solution path (to orient trainees)
 
-> This section is the "answer key" for facilitators.
+> This section is the answer key for facilitators.
 
 ### Recommended minimum solution
-- App name: `Helios Fleet Ops`.
+- App name: `Helios Bicycle Studio`.
 - Main screens:
-  - `Fleet List` (status + battery + city)
-  - `Scooter Detail`
-  - `Maintenance Queue`
+  - `Bicycle Board` (status + station + rider mood)
+  - `Pit-Stop Queue`
+  - `Ride Mood`
 - Required actions:
-  - Filter by city
-  - Filter "needs attention"
-  - Assign maintenance task
+  - Filter by station
+  - Create pit-stop ticket
+  - Assign pit-stop ticket to mechanic
 - Role split:
-  - Manager: full visibility
-  - Technician: assigned jobs only
+  - Operations manager: full visibility
+  - Mechanic: assigned tickets only
 
 ### Solution code references
 - Data model: `src/apprayfin/rayfin/data/`
-- Priority scoring: `src/apprayfin/src/services/fleet-priority.ts`
-- Assignment logic: `src/apprayfin/src/services/maintenance-assignment.ts`
-- KPI logic: `src/apprayfin/src/services/kpi-model.ts`
+- Bike health scoring: `src/apprayfin/src/services/bike-health.ts`
+- Assignment logic: `src/apprayfin/src/services/pit-stop-assignment.ts`
+- KPI logic: `src/apprayfin/src/services/business-kpi.ts`
 - Seed payload: `src/apprayfin/src/seed/helios-demo-seed.ts`
 
 ### Suggested spec prompt (starter)
 ```text
-Build a Fleet Operations app for Helios Mobility.
-Use scooters, battery and maintenance tables from HeliosLake.
-Show scooter status by city, highlight units needing attention,
-and allow managers to assign maintenance jobs to technicians.
+Build a simple and fun business app called Helios Bicycle Studio.
+Use bicycles, ride_sessions, pit_stop_tickets and mechanics from HeliosLake.
+Show bicycle readiness by station, allow quick pit-stop assignment,
+and add one rider mood view for operations quality.
 ```
 
 ### Coaching cues during the hack
-- If teams overbuild: bring them back to one user story and one flow.
-- If teams block on data: enforce simple table joins first.
+- If teams overbuild: bring them back to three screens maximum.
+- If teams block on data: enforce simple joins first.
 - If teams diverge: ask "what will your 5-minute demo prove?"
 
 ---

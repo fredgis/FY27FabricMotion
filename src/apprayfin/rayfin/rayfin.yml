@@ -1,5 +1,5 @@
-id: helios-fleet-ops
-name: helios-fleet-ops
+id: helios-bicycle-studio
+name: helios-bicycle-studio
 version: 1.0.0
 services:
   auth:

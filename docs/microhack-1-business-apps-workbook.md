@@ -1,7 +1,7 @@
 # Micro Hack 1 — Business Apps Workbook (Participants)
 
 Track: **End-customer Apps (Rayfin)**  
-Scenario: **Helios Mobility** (fictional final customer)
+Scenario: **Helios Bicycle** (fictional final customer)
 
 ---
 
@@ -16,9 +16,9 @@ Scenario: **Helios Mobility** (fictional final customer)
   'secondaryColor':'#E6F7F4'
 }}}%%
 flowchart TB
-    P["Pain<br/>Ops teams chase issues across spreadsheets"] --> G["Goal<br/>One Fabric app for fleet decisions"]
+    P["Pain<br/>Station teams manage bikes in fragmented tools"] --> G["Goal<br/>One Fabric app for daily bicycle operations"]
     G --> B["Build in hack<br/>Spec -> Rayfin -> App"]
-    B --> D["Demo outcome<br/>Detect, assign, resolve"]
+    B --> D["Demo outcome<br/>Detect, assign, close pit-stop tickets"]
     classDef p fill:#F3F7FB,stroke:#5B6B7B,color:#1B2A3A,stroke-width:2px;
     classDef g fill:#EAF3FB,stroke:#0078D4,color:#1B2A3A,stroke-width:2px;
     classDef b fill:#0B2447,stroke:#0B2447,color:#FFFFFF,stroke-width:2px;
@@ -63,14 +63,14 @@ flowchart TB
 
 ### Sprint 1 (13:30–15:30) — Build the core
 - [ ] Generate app from spec.
-- [ ] Display fleet list with status + battery.
-- [ ] Add city and attention filters.
+- [ ] Display bicycle board with status + station + mood.
+- [ ] Add station and status filters.
 - [ ] Validate one end-to-end path.
 
 ### Sprint 2 (15:45–16:45) — Extend
-- [ ] Add maintenance assignment flow.
-- [ ] Add role view split (manager / technician).
-- [ ] Add one summary insight tile.
+- [ ] Add pit-stop assignment flow.
+- [ ] Add role view split (manager / mechanic).
+- [ ] Add one rider mood insight tile.
 - [ ] Prepare demo story.
 
 ---
@@ -78,7 +78,7 @@ flowchart TB
 ## 5) Demo storyboard (5 minutes)
 
 1. **Context** (30s): Who is the user and what hurts today?
-2. **Flow** (3m): Show detect -> assign -> resolve.
+2. **Flow** (3m): Show detect -> assign -> close.
 3. **Architecture** (45s): How data and app are connected in Fabric.
 4. **Next step** (45s): What you would implement next in production.
 
@@ -96,5 +96,5 @@ flowchart TB
 ## 7) Reference assets (for teams and coaches)
 
 - Solution code: `src/apprayfin/`
-- Rayfin prompt baseline: `src/apprayfin/src/specs/helios-fleet-spec.md`
-- Trainer visual answer key: `docs/apprayfin-solution.md`
+- Rayfin prompt baseline: `src/apprayfin/src/specs/helios-bicycle-app-spec.md`
+- Trainer visual answer key: `docs/microhack-1-business-apps-solution.md`

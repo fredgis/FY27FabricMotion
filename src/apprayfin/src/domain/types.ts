@@ -1,40 +1,35 @@
-export type ScooterStatus =
-  | 'available'
-  | 'in-ride'
-  | 'maintenance-pending'
-  | 'blocked';
+export type BicycleStatus = 'ready' | 'in-ride' | 'pit-stop-needed';
+export type PitStopPriority = 'high' | 'normal';
+export type PitStopStatus = 'new' | 'assigned' | 'done';
 
-export type TicketPriority = 'critical' | 'high' | 'medium';
-export type TicketStatus = 'new' | 'assigned' | 'in-progress' | 'done';
-
-export type ScooterSnapshot = {
-  scooterId: string;
-  scooterCode: string;
-  city: string;
-  status: ScooterStatus;
-  chargePercent: number;
+export type BicycleSnapshot = {
+  bicycleId: string;
+  bikeCode: string;
+  station: string;
+  status: BicycleStatus;
+  moodScore: number;
 };
 
-export type MaintenanceTicketSnapshot = {
+export type PitStopTicketSnapshot = {
   ticketId: string;
-  scooterId: string;
-  city: string;
-  reason: string;
-  priority: TicketPriority;
-  status: TicketStatus;
-  assignedTechnicianId?: string;
+  bicycleId: string;
+  station: string;
+  issue: string;
+  priority: PitStopPriority;
+  status: PitStopStatus;
+  assignedMechanicId?: string;
 };
 
-export type TechnicianSnapshot = {
-  technicianId: string;
+export type MechanicSnapshot = {
+  mechanicId: string;
   displayName: string;
-  city: string;
+  station: string;
   activeTicketCount: number;
   active: boolean;
 };
 
 export type OpportunityKpiInput = {
   workshopsDelivered: number;
-  workshopsConvertedToPilot: number;
-  pilotsConvertedToOpportunity: number;
+  workshopsConvertedToPoC: number;
+  poCsConvertedToOpportunity: number;
 };

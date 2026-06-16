@@ -1,13 +1,13 @@
-import { BatteryReading } from './BatteryReading.js';
-import { MaintenanceTicket } from './MaintenanceTicket.js';
-import { Scooter } from './Scooter.js';
-import { TechnicianProfile } from './TechnicianProfile.js';
+import { Bicycle } from './Bicycle.js';
+import { MechanicProfile } from './MechanicProfile.js';
+import { PitStopTicket } from './PitStopTicket.js';
+import { RideSession } from './RideSession.js';
 
-export type HeliosFleetSchema = {
-  BatteryReading: BatteryReading;
-  MaintenanceTicket: MaintenanceTicket;
-  Scooter: Scooter;
-  TechnicianProfile: TechnicianProfile;
+export type HeliosBicycleSchema = {
+  Bicycle: Bicycle;
+  MechanicProfile: MechanicProfile;
+  PitStopTicket: PitStopTicket;
+  RideSession: RideSession;
 };
 
-export const schema = [BatteryReading, MaintenanceTicket, Scooter, TechnicianProfile];
+export const schema = [Bicycle, MechanicProfile, PitStopTicket, RideSession];
