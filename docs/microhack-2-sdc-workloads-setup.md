@@ -69,7 +69,7 @@ Minimum requirement:
 - [ ] **Developer mode** enabled (Fabric → Settings → Developer settings).
 - [ ] Extensibility Toolkit Starter-Kit cloned and bootstrapped.
 - [ ] Node.js + PowerShell 7 + Dotnet installed (toolkit prerequisites).
-- [ ] Entra app registration and scopes configured.
+- [ ] Entra app registration and scopes configured (required even in dev mode — the Dev Gateway routes the workload but does not provide identity; created by `Setup.ps1`).
 - [ ] A lakehouse in OneLake with the sites CSV loaded to `Files/sites.csv` (sample in `src/workloadsdc/data/sites.csv`).
 
 ### Delivery readiness

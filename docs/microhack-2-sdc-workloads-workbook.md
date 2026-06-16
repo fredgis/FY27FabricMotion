@@ -135,6 +135,12 @@ cd scripts/Setup
 > The `WorkloadName` must look like `Organization.Name` — use `Org.GreenGrid` for the hack.
 > On macOS/Linux run `pwsh ./Setup.ps1 -WorkloadName "Org.GreenGrid"`.
 
+> **Why an Entra app even with the Dev Gateway?** The Dev Gateway only **routes** your local
+> workload into Fabric — it does **not** provide identity. Your workload authenticates with
+> **Microsoft Entra**, and the Entra app is what lets it receive Fabric tokens and acquire the
+> **OBO token** to read OneLake (step 8). `Setup.ps1` creates this app for you (or reuses an
+> existing one).
+
 **✅ What you should see.** The script ends with "setup complete" and prints the next steps.
 
 ---
