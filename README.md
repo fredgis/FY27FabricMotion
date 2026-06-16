@@ -77,22 +77,20 @@ FY27FabricMotion/
 │   ├── motion-fabric.json          # slide content as data (edit this)
 │   ├── Motion-Fabric-Apps.pptx     # generated slide (commit it)
 │   └── preview/Motion-Fabric-Apps.png
-├── docs/
-│   ├── motion-brief.md             # short narrative brief
-│   ├── app-motion-overview.md      # full motion strategy (+ .pptx deck)
-│   ├── microhack-1-business-apps.* # Micro Hack 1 — agenda (.docx + .md)
-│   │                               #   + -setup.docx (prereqs) + -workbook.docx (participants)
-│   └── microhack-2-isv-workloads.* # Micro Hack 2 — agenda (.docx + .md)
-│                                   #   + -setup.docx (prereqs) + -workbook.docx (participants)
+├── docs/                           # markdown-only motion kit
+│   ├── motion-brief.md
+│   ├── app-motion-overview.md
+│   ├── microhack-1-business-apps-setup.md
+│   ├── microhack-1-business-apps-workbook.md
+│   ├── microhack-2-isv-workloads-setup.md
+│   └── microhack-2-isv-workloads-workbook.md
 ├── scripts/
 │   ├── build.sh                    # regenerate slide + preview (macOS/Linux)
 │   └── build.ps1                   # regenerate slide + preview (Windows)
 └── skill/pptxmotions/              # the generator (see collapsed section below)
 ```
 
-**Naming convention for `docs/`:** lowercase `kebab-case`; a document keeps the
-same base name across formats (e.g. `microhack-1-business-apps.docx` and
-`microhack-1-business-apps.md`).
+**Naming convention for `docs/`:** lowercase `kebab-case`, markdown only.
 
 ---
 

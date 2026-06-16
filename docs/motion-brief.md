@@ -1,48 +1,57 @@
 # Fabric Motion — Brief
 
-> Detailed narrative brief behind the one-slide summary. The slide is the
-> executive view; this document is the working detail.
+Concise working brief for FY27 EMEA Fabric Application Motion.
 
-## Objective
+## Goal
 
-Establish **Microsoft Fabric** as the platform for the next generation of
-business applications across **EMEA**, through two complementary go-to-market
-paths that ultimately converge into **one Microsoft program**.
+Build one coherent Microsoft Fabric application motion with two execution tracks:
 
-## Path 1 — Advisory / System Integrators
+1. **Advisory / SI track**: spec-driven business apps with Rayfin.
+2. **ISV / SDC track**: code-driven workloads with Fabric Extensibility Kit.
 
-- **Motion:** Use **Microsoft Fabric (Preview)** so that SIs build **Business
-  Apps** on top of Fabric.
-- **Approach:** Spec-driven.
-- **KPI:** Number of opportunities in **MSX / CRM**.
-  - Track **Stage 1 & 2** pipeline in MSX.
-  - **Vision:** ACR — Azure Consumed Revenue.
-- **Asset reference:** Rayfin (Business Apps).
+Both tracks converge into one operating model and one reporting rhythm.
 
-## Path 2 — ISV / SDC
+```mermaid
+%%{init: {'theme':'base','themeVariables':{
+  'primaryColor':'#EAF3FB',
+  'primaryTextColor':'#1B2A3A',
+  'primaryBorderColor':'#0078D4',
+  'lineColor':'#0B2447',
+  'secondaryColor':'#E6F7F4',
+  'tertiaryColor':'#F3F7FB'
+}}}%%
+flowchart LR
+    A["Advisory / SI<br/>Rayfin · spec-driven"] --> C["ONE Fabric Motion<br/>EMEA"]
+    B["ISV / SDC<br/>Extensibility Kit · code-driven"] --> C
+    C --> D["Micro Hack vehicle<br/>Morning demos · Afternoon build"]
+    D --> E["Outcomes<br/>Apps + Workloads + Adoption"]
+    classDef advisory fill:#EAF3FB,stroke:#0078D4,color:#1B2A3A,stroke-width:2px;
+    classDef isv fill:#E6F7F4,stroke:#00B4A6,color:#1B2A3A,stroke-width:2px;
+    classDef core fill:#0B2447,stroke:#0B2447,color:#FFFFFF,stroke-width:2px;
+    classDef out fill:#F3F7FB,stroke:#5B6B7B,color:#1B2A3A,stroke-width:2px;
+    class A advisory;
+    class B isv;
+    class C,D core;
+    class E out;
+```
 
-- **Motion:** ISVs **become Microsoft Fabric (GA)** by extending the platform.
-- **Approach:** Workload / code-driven (via the Fabric Extensibility Kit).
-- **KPI:** Number of **workloads per ISV**.
-  - Client opportunities tied to **Fabric consumption capacity**.
-  - **Vision:** Adoption — one workload per ISV.
+## KPI model
 
-## Activation — EMEA ecosystem
+| Track | Primary KPI | Secondary KPI |
+|---|---|---|
+| Advisory / SI | # opportunities (MSX / CRM) | Stage 1–2 quality + ACR proxy |
+| ISV / SDC | # workloads per ISV | workload adoption + Fabric capacity use |
 
-- **Partners:** PwC, KPMG, EY, HVMC, Bain, BCG, McKinsey.
-- **Enablement vehicle:** ⚡ **Micro Hack — 1 day** (hands-on activation format).
-- **Messaging:**
-  - "Shape your business' future applications with Microsoft Fabric."
-  - "Build the next page of your business with Microsoft Fabric."
+## Activation baseline
 
-## The ask
+- **Vehicle**: one-day Micro Hack format.
+- **Ecosystem**: PwC, KPMG, EY, HVMC, Bain, BCG, McKinsey.
+- **Ask**: sponsorship, funding, PM workloads alignment.
 
-- Sponsorship — Ahmed + EPS.
-- Funding secured.
-- Contact PM lead on workloads.
-- **ISV + Advisory → ONE Microsoft program.**
+## Working artifacts in `/docs`
 
-## Source
-
-This brief was distilled from a whiteboard working session. The structured data
-that drives the slide lives in [`../deck/motion-fabric.json`](../deck/motion-fabric.json).
+- `app-motion-overview.md`: full strategy template.
+- `microhack-1-business-apps-setup.md`: trainer setup guide (apps track).
+- `microhack-1-business-apps-workbook.md`: participant workbook (apps track).
+- `microhack-2-isv-workloads-setup.md`: trainer setup guide (ISV track).
+- `microhack-2-isv-workloads-workbook.md`: participant workbook (ISV track).
