@@ -52,6 +52,43 @@ function moodCell(mood: number): string {
   return `<span style="color:${color};font-weight:600">${stars}</span> <span class="muted">${mood.toFixed(1)}</span>`;
 }
 
+function bikeColor(status: BicycleSnapshot['status']): string {
+  return status === 'ready' ? '#00b4a6' : status === 'in-ride' ? '#0078d4' : '#e8584c';
+}
+
+function bikeSvg(color: string, w = 46, h = 30): string {
+  return `<svg width="${w}" height="${h}" viewBox="0 0 46 30" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="10" cy="20" r="8" stroke="${color}" stroke-width="2"/>
+    <circle cx="36" cy="20" r="8" stroke="${color}" stroke-width="2"/>
+    <path d="M10 20 L20 20 L28 8 M20 20 L28 8 L36 20 M28 8 L18 8" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="14" y1="8" x2="22" y2="8" stroke="${color}" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="20" cy="20" r="1.8" fill="${color}"/>
+  </svg>`;
+}
+
+function bikeThumb(status: BicycleSnapshot['status']): string {
+  const color = bikeColor(status);
+  const bg =
+    status === 'ready' ? '#e6f7f4' : status === 'in-ride' ? '#eaf3fb' : '#fdecea';
+  return `<span class="thumb" style="background:${bg}">${bikeSvg(color, 40, 26)}</span>`;
+}
+
+function moodFace(mood: number): string {
+  const color = mood < 3 ? '#b3261e' : mood >= 4 ? '#0a7a6e' : '#8a6100';
+  const mouth =
+    mood >= 4
+      ? 'M7 13 Q11 17 15 13'
+      : mood < 3
+      ? 'M7 15 Q11 11 15 15'
+      : 'M7 14 L15 14';
+  return `<svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+    <circle cx="11" cy="11" r="10" stroke="${color}" stroke-width="1.6"/>
+    <circle cx="8" cy="9" r="1.2" fill="${color}"/>
+    <circle cx="14" cy="9" r="1.2" fill="${color}"/>
+    <path d="${mouth}" stroke="${color}" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+  </svg>`;
+}
+
 function layout(title: string, activeNav: string, body: string): string {
   const navItems = [
     { id: 'board', label: 'Bicycle Board', icon: '🚲' },
@@ -104,6 +141,15 @@ function layout(title: string, activeNav: string, body: string): string {
   .pill { font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 20px; display:inline-block; }
   .muted { color:#7a8a9a; font-size:12px; }
   .mono { font-variant-numeric: tabular-nums; font-weight:600; }
+  .thumb { display:inline-flex; align-items:center; justify-content:center; width:54px; height:38px; border-radius:9px; }
+  .bikecell { display:flex; align-items:center; gap:12px; }
+  .hero { display:flex; align-items:center; gap:18px; background:linear-gradient(135deg,#0078d4,#00b4a6); color:#fff; border-radius:14px; padding:18px 22px; margin-bottom:18px; }
+  .hero .htext h3 { margin:0; font-size:18px; }
+  .hero .htext p { margin:4px 0 0; font-size:13px; opacity:.9; }
+  .hero .hstat { margin-left:auto; text-align:right; }
+  .hero .hstat b { font-size:26px; display:block; }
+  .hero .hstat span { font-size:12px; opacity:.9; }
+  .herobike { background:rgba(255,255,255,.18); border-radius:12px; padding:10px 14px; }
   .grid3 { display:grid; grid-template-columns: repeat(3,1fr); gap:16px; }
   .kanban { display:grid; grid-template-columns: repeat(3,1fr); gap:16px; padding:18px; }
   .col-h { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:#6b7b8b; margin-bottom:10px; display:flex; justify-content:space-between; }
@@ -111,7 +157,8 @@ function layout(title: string, activeNav: string, body: string): string {
   .ticket { background:#fff; border:1px solid ${BRAND.line}; border-left:4px solid ${BRAND.blue}; border-radius:10px; padding:12px 13px; margin-bottom:10px; }
   .ticket.high { border-left-color:#e8584c; }
   .ticket.normal { border-left-color:${BRAND.teal}; }
-  .ticket .code { font-weight:700; font-size:13px; }
+  .ticket .code { font-weight:700; font-size:13px; display:flex; align-items:center; gap:8px; }
+  .tbike { display:inline-flex; align-items:center; }
   .ticket .issue { font-size:13px; color:#3a4a5a; margin:6px 0; }
   .ticket .meta { font-size:12px; color:#7a8a9a; display:flex; align-items:center; gap:8px; }
   .prio { font-size:11px; font-weight:700; padding:2px 8px; border-radius:6px; }
@@ -147,11 +194,12 @@ function layout(title: string, activeNav: string, body: string): string {
 }
 
 export function renderBoard(): string {
+  const readyCount = heliosBicycles.filter((b) => b.status === 'ready').length;
   const rows = heliosBicycles
     .map((bike) => {
       const health = computeBikeHealth(bike);
       return `<tr>
-        <td><span class="mono">${escapeHtml(bike.bikeCode)}</span></td>
+        <td><div class="bikecell">${bikeThumb(bike.status)}<span class="mono">${escapeHtml(bike.bikeCode)}</span></div></td>
         <td>${escapeHtml(bike.station)}</td>
         <td>${statusPill(bike.status)}</td>
         <td>${moodCell(bike.moodScore)}</td>
@@ -169,6 +217,14 @@ export function renderBoard(): string {
       </div>
       <div class="user"><span>Operations Manager</span><span class="avatar">OM</span></div>
     </div>
+    <div class="hero">
+      <div class="herobike">${bikeSvg('#ffffff', 64, 42)}</div>
+      <div class="htext">
+        <h3>Helios Bicycle Studio</h3>
+        <p>See every bike, fix the right one first, keep riders smiling.</p>
+      </div>
+      <div class="hstat"><b>${readyCount}/${heliosBicycles.length}</b><span>bikes ready now</span></div>
+    </div>
     <div class="card">
       <div class="card-h">
         <h2>Bicycles (${heliosBicycles.length})</h2>
@@ -180,7 +236,7 @@ export function renderBoard(): string {
       </div>
       <table>
         <thead><tr>
-          <th>Bike code</th><th>Station</th><th>Status</th><th>Rider mood</th><th>Health</th><th>Tag</th>
+          <th>Bike</th><th>Station</th><th>Status</th><th>Rider mood</th><th>Health</th><th>Tag</th>
         </tr></thead>
         <tbody>${rows}</tbody>
       </table>
@@ -191,6 +247,7 @@ export function renderBoard(): string {
 export function renderQueue(): string {
   const assignments = assignPitStopTickets(heliosPitStopTickets, heliosMechanics);
   const mechanicById = new Map(heliosMechanics.map((m) => [m.mechanicId, m.displayName]));
+  const bikeById = new Map(heliosBicycles.map((b) => [b.bicycleId, b]));
 
   const enriched = heliosPitStopTickets.map((ticket) => {
     const result = assignments.find((a) => a.ticketId === ticket.ticketId);
@@ -209,8 +266,10 @@ export function renderQueue(): string {
 
   const renderTicket = (e: (typeof enriched)[number]): string => {
     const t = e.ticket;
+    const bike = bikeById.get(t.bicycleId);
+    const icon = bikeSvg(bike ? bikeColor(bike.status) : '#0078d4', 34, 22);
     return `<div class="ticket ${t.priority}">
-      <div class="code">${escapeHtml(ticketLabel(t.ticketId))}</div>
+      <div class="code"><span class="tbike">${icon}</span>${escapeHtml(ticketLabel(t.ticketId))}</div>
       <div class="issue">${escapeHtml(t.issue)}</div>
       <div class="meta">
         <span class="prio ${t.priority}">${t.priority.toUpperCase()}</span>
@@ -266,9 +325,9 @@ export function renderMood(): string {
   const moodRows = heliosBicycles
     .map(
       (b) => `<tr>
-        <td><span class="mono">${escapeHtml(b.bikeCode)}</span></td>
+        <td><div class="bikecell">${bikeThumb(b.status)}<span class="mono">${escapeHtml(b.bikeCode)}</span></div></td>
         <td>${escapeHtml(b.station)}</td>
-        <td>${moodCell(b.moodScore)}</td>
+        <td><span style="display:inline-flex;align-items:center;gap:8px">${moodFace(b.moodScore)}${moodCell(b.moodScore)}</span></td>
         <td>${
           b.moodScore < 3
             ? '<span class="pill" style="background:#fdecea;color:#b3261e">Low mood</span>'

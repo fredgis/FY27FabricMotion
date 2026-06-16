@@ -64,3 +64,28 @@ Create an app for city bicycle operations teams to:
 - A manager can create and assign a pit-stop ticket in less than 3 clicks.
 - A mechanic can close an assigned ticket.
 - KPI cards update after data refresh.
+
+## How to build it in Rayfin
+
+```bash
+npm create @microsoft/rayfin@latest -- --template field-technician
+npm run dev   # deploys to Fabric and provisions the database from rayfin/data/*.ts
+```
+
+The data model above is declared in `rayfin/data/*.ts`; Rayfin provisions and migrates
+the database. Build the UI conversationally with GitHub Copilot using this master prompt:
+
+```text
+Build "Helios Bicycle Studio", a fun bike-operations app on Rayfin.
+Data: Bicycle(bikeCode, station, status[ready|in-ride|pit-stop-needed], featured);
+RideSession(bicycle, riderAlias, moodScore, startedAt, endedAt);
+PitStopTicket(ticketCode, bicycle, station, priority[high|normal],
+              status[new|assigned|done], issue, openedAt, assignedMechanic);
+MechanicProfile(displayName, station, active).
+Screens: Bicycle Board (table by station, status pill, mood stars, health tag,
+filters station/status); Pit-Stop Queue (kanban new/assigned/done, create ticket
+from a bike, one-click assign preferring same-station least-loaded mechanic);
+Ride Mood & KPI (cards: average mood, bikes needing pit-stop, workshop->PoC->opportunity).
+Roles: Operations Manager full access; Mechanic sees only assigned tickets.
+Style: clean, friendly, Microsoft Fluent, blue #0078d4 + teal #00b4a6, bike icon per row.
+```

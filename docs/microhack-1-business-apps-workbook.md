@@ -93,8 +93,73 @@ flowchart TB
 
 ---
 
-## 7) Reference assets (for teams and coaches)
+## 7) Guided Rayfin prompts
+
+Build your app conversationally. Scaffold the project, then paste these prompts into
+**GitHub Copilot** inside the Rayfin project and iterate.
+
+### Step 0 — Scaffold & provision
+
+```bash
+npm create @microsoft/rayfin@latest -- --template field-technician
+npm run dev          # deploys to Fabric and provisions the database
+```
+
+> The data model you declare in `rayfin/data/*.ts` **is** your database — Rayfin creates
+> and migrates the tables for you.
+
+### Step 1 — Master prompt (data model + skeleton)
+
+```text
+Build "Helios Bicycle Studio", a fun bike-operations app on Rayfin.
+Data model:
+- Bicycle(bikeCode, station, status[ready|in-ride|pit-stop-needed], featured)
+- RideSession(bicycle, riderAlias, moodScore, startedAt, endedAt)
+- PitStopTicket(ticketCode, bicycle, station, priority[high|normal],
+                status[new|assigned|done], issue, openedAt, assignedMechanic)
+- MechanicProfile(displayName, station, active)
+Roles: Operations Manager full access; Mechanic sees only assigned tickets.
+Style: clean, friendly, Microsoft Fluent, blue #0078d4 + teal #00b4a6,
+with a small colored bike icon per row.
+```
+
+### Step 2 — Screen prompts (refine one at a time)
+
+```text
+Add a "Bicycle Board" screen: a table grouped by station showing a status pill,
+rider mood as stars, a health score and a tag (Star / Good / Watch).
+Add filters for station and status.
+```
+
+```text
+Add a "Pit-Stop Queue" screen as a kanban with columns new / assigned / done.
+Let me create a ticket from a bike, and assign a mechanic in one click,
+preferring the same-station and least-loaded mechanic.
+```
+
+```text
+Add a "Ride Mood & KPI" screen with cards for average rider mood,
+number of bikes needing a pit-stop, and a workshop -> PoC -> opportunity funnel.
+```
+
+### Step 3 — Polish prompts (pick what you need)
+
+```text
+Make the bike rows more visual: add a colored bike illustration whose color
+reflects the status (teal = ready, blue = in ride, red = pit-stop needed).
+```
+
+```text
+Enforce roles: a Mechanic user should only see pit-stop tickets assigned to them.
+```
+
+> Reference prompts and the canonical spec live in
+> [`src/apprayfin/src/specs/helios-bicycle-app-spec.md`](../src/apprayfin/src/specs/helios-bicycle-app-spec.md).
+
+---
+
+## 8) Reference assets (for teams and coaches)
 
 - Solution code: `src/apprayfin/`
 - Rayfin prompt baseline: `src/apprayfin/src/specs/helios-bicycle-app-spec.md`
-- Trainer visual answer key: `docs/microhack-1-business-apps-solution.md`
+- Trainer visual answer key + screenshots: `docs/microhack-1-business-apps-solution.md`

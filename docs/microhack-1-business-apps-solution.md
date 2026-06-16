@@ -1,14 +1,18 @@
 # Micro Hack 1 — Business Apps Solution (Helios Bicycle)
 
 Reference implementation for the **Business Apps (Rayfin)** micro-hack, scenario 1.
-This is the trainer-grade solution aligned with:
+This is the **complete reference example proposed as the solution**. Trainees build
+**their own** variant of the *same* scenario, guided by the prompts in section 5 and in
+the [participant workbook](microhack-1-business-apps-workbook.md).
+
+Aligned with:
 
 - [`docs/microhack-1-business-apps-setup.md`](microhack-1-business-apps-setup.md)
 - [`docs/microhack-1-business-apps-workbook.md`](microhack-1-business-apps-workbook.md)
 - [`src/apprayfin/`](../src/apprayfin)
 
-> The screenshots in section 6 are generated from the **real business logic and seed
-> data** of this kit — not static mockups. See section 8 to regenerate them.
+> The screenshots in section 7 are generated from the **real business logic and seed
+> data** of this kit — not static mockups. See section 9 to regenerate them.
 
 ---
 
@@ -152,7 +156,110 @@ Division-by-zero is guarded (returns `0`).
 
 ---
 
-## 5) End-to-end solution map
+## 5) How the app is built in Rayfin
+
+[Rayfin](https://github.com/microsoft/rayfin) is a fully managed **Backend-as-a-Service
+on Microsoft Fabric**. You **declare your data model in TypeScript** and Rayfin
+**provisions and manages the database, auth, data APIs, storage and hosting** for you.
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{
+  'primaryColor':'#EAF3FB','primaryTextColor':'#1B2A3A',
+  'primaryBorderColor':'#0078D4','lineColor':'#0B2447','secondaryColor':'#E6F7F4'
+}}}%%
+flowchart LR
+    A["1 · Scaffold<br/>npm create rayfin"] --> B["2 · Declare data model<br/>rayfin/data/*.ts"]
+    B --> C["3 · Rayfin provisions<br/>the Fabric database"]
+    C --> D["4 · Build the UI by prompt<br/>Copilot + Rayfin agent"]
+    D --> E["5 · Run<br/>npm run dev → Fabric"]
+    classDef a fill:#EAF3FB,stroke:#0078D4,color:#1B2A3A,stroke-width:2px;
+    classDef b fill:#E6F7F4,stroke:#00B4A6,color:#1B2A3A,stroke-width:2px;
+    classDef c fill:#0B2447,stroke:#0B2447,color:#FFFFFF,stroke-width:2px;
+    class A,B a;
+    class C,E b;
+    class D c;
+```
+
+### 5.1 Scaffold the project
+
+```bash
+npm create @microsoft/rayfin@latest -- --template field-technician
+```
+
+This creates a runnable Rayfin project (data models, auth, APIs, hosting).
+
+### 5.2 The data model **is** the database
+
+Yes — the data model lives in the **database provisioned for the Rayfin project**. Each
+class in [`rayfin/data/`](../src/apprayfin/rayfin/data) is a TypeScript entity decorated
+with field types; Rayfin reads them and **creates and migrates the matching tables**
+(SQL, `dialect: mssql` in [`rayfin.yml`](../src/apprayfin/rayfin/rayfin.yml)). You never
+write DDL by hand.
+
+```ts
+// src/apprayfin/rayfin/data/Bicycle.ts
+@entity()
+@role('authenticated', '*')
+export class Bicycle {
+  @uuid() id!: string;
+  @text({ unique: true }) bikeCode!: string;
+  @text() station!: string;
+  @set('ready', 'in-ride', 'pit-stop-needed') status!: BicycleStatus;
+  @boolean({ default: false }) featured!: boolean;
+}
+```
+
+Apply / refresh the schema:
+
+```bash
+npm run dev          # deploy to Fabric (rayfin up) → provisions the DB, then runs Vite
+# or, full local:
+npm run dev:local    # runs the Rayfin backend in Docker
+npm run rayfin:db    # apply database migrations locally
+```
+
+### 5.3 Build the UI **from a prompt**
+
+Rayfin templates ship **agent context** (`AGENTS.md`, `.agents/skills/rayfin/SKILL.md`
+and a `rayfin` MCP server). With **GitHub Copilot** pointed at the project, you describe
+the app in natural language and the agent generates the React screens against the typed
+Rayfin client — while Rayfin keeps managing the backend and database.
+
+**Master prompt — give this to Copilot in the scaffolded project:**
+
+```text
+Build "Helios Bicycle Studio", a fun bike-operations app on Rayfin.
+
+Data model:
+- Bicycle(bikeCode, station, status[ready|in-ride|pit-stop-needed], featured)
+- RideSession(bicycle, riderAlias, moodScore, startedAt, endedAt)
+- PitStopTicket(ticketCode, bicycle, station, priority[high|normal],
+                status[new|assigned|done], issue, openedAt, assignedMechanic)
+- MechanicProfile(displayName, station, active)
+
+Screens:
+1) Bicycle Board — table grouped by station with a status pill, rider mood (stars),
+   a health score and a tag (Star / Good / Watch). Filters: station, status.
+2) Pit-Stop Queue — kanban (new / assigned / done). Create a ticket from a bike and
+   assign a mechanic in one click (prefer same-station, least-loaded mechanic).
+3) Ride Mood & KPI — cards for average rider mood, bikes needing a pit-stop, and a
+   workshop → PoC → opportunity funnel.
+
+Roles: Operations Manager has full access; Mechanic sees only assigned tickets.
+Style: clean and friendly, Microsoft Fluent, blue #0078d4 + teal #00b4a6,
+with a small colored bike icon on each row.
+```
+
+Then refine screen by screen using the prompts in the
+[participant workbook](microhack-1-business-apps-workbook.md#7-guided-rayfin-prompts).
+
+> **Trainer note.** This kit is the *reference answer*. Teams are free to design a
+> different layout, but they should target the **same scenario, data model and roles** so
+> coaching, the seed data and the KPI story stay consistent.
+
+---
+
+## 6) End-to-end solution map
 
 ```mermaid
 %%{init: {'theme':'base','themeVariables':{
@@ -176,9 +283,9 @@ flowchart LR
 
 ---
 
-## 6) App screenshots (generated from real code)
+## 7) App screenshots (generated from real code)
 
-### 6.1 Bicycle Board — Operations Manager
+### 7.1 Bicycle Board — Operations Manager
 
 The board ranks readiness per station. `HB-AMS-014` (mood 4.7, ready) is a **★ Star
 bike** with a health score of 98; `HB-AMS-001` (pit-stop needed, mood 2.8) drops to a
@@ -186,14 +293,14 @@ bike** with a health score of 98; `HB-AMS-001` (pit-stop needed, mood 2.8) drops
 
 ![Bicycle Board screen](images/scenario1-bicycle-board.png)
 
-### 6.2 Pit-Stop Queue — auto-assignment
+### 7.2 Pit-Stop Queue — auto-assignment
 
 The two `high` tickets are processed first, then the `normal` one. Each ticket lands on
 the **same-station mechanic** because station match outweighs their current load.
 
 ![Pit-Stop Queue screen](images/scenario1-pit-stop-queue.png)
 
-### 6.3 Ride Mood & Business KPI
+### 7.3 Ride Mood & Business KPI
 
 Average rider mood is **3.7 / 5**, **2** bikes need a pit-stop, and the advisory funnel
 (8 workshops → 50% PoC → 75% opportunity) projects **3 opportunities** next quarter.
@@ -202,7 +309,7 @@ Average rider mood is **3.7 / 5**, **2** bikes need a pit-stop, and the advisory
 
 ---
 
-## 7) What is coded in `src/apprayfin`
+## 8) What is coded in `src/apprayfin`
 
 | Area | Files | Purpose |
 |---|---|---|
@@ -215,7 +322,7 @@ Average rider mood is **3.7 / 5**, **2** bikes need a pit-stop, and the advisory
 
 ---
 
-## 8) Audit & regenerate the screenshots
+## 9) Audit & regenerate the screenshots
 
 The screens are reproducible from the real services and seed data:
 
