@@ -1,0 +1,74 @@
+{
+  "title": "FY27 Fabric Motion - Envision Your Business with Microsoft Fabric",
+  "output": "Motion-Fabric-Apps.pptx",
+  "footer": "Microsoft Fabric  |  Rayfin (Business Apps)  \u2022  Fabric Extensibility Kit (Workloads)  |  EMEA",
+  "header": {
+    "tag": "FABRIC MOTION",
+    "title": "Envision Your Business with Microsoft Fabric",
+    "subtitle": "Building the next-generation application approach on Microsoft Fabric",
+    "badge": "EMEA"
+  },
+  "pathways": [
+    {
+      "tag": "ADVISORY / SI",
+      "audience": "System Integrators",
+      "accent": "0078D4",
+      "headline": [
+        { "t": "Use " },
+        { "t": "Microsoft Fabric ", "bold": true, "accent": true },
+        { "t": "(Preview) ", "italic": true, "color": "5B6B7B" },
+        { "t": "\u2014 SIs build " },
+        { "t": "Business Apps", "bold": true }
+      ],
+      "approach": "Spec-driven",
+      "kpi": "Number of opportunities (MSX / CRM)",
+      "bullets": [
+        "Stage 1 & 2 pipeline tracked in MSX",
+        "Vision: ACR \u2013 Azure Consumed Revenue"
+      ]
+    },
+    {
+      "tag": "ISV / SDC",
+      "audience": "Software Vendors",
+      "accent": "00B4A6",
+      "headline": [
+        { "t": "Become " },
+        { "t": "Microsoft Fabric ", "bold": true, "accent": true },
+        { "t": "(GA) ", "italic": true, "color": "5B6B7B" },
+        { "t": "\u2014 ISV " },
+        { "t": "platform extension", "bold": true }
+      ],
+      "approach": "Workload / Code-driven",
+      "kpi": "Number of workloads per ISV",
+      "bullets": [
+        "Client opty on Fabric consumption capacity",
+        "Vision: Adoption \u2013 one workload per ISV"
+      ]
+    }
+  ],
+  "bottom": {
+    "work": {
+      "title": "ACTIVATION \u2013 EMEA ECOSYSTEM",
+      "bullets": [
+        "Partners: PwC, KPMG, EY, HVMC, Bain, BCG, McKinsey",
+        "\u201CShape your business' future applications with Microsoft Fabric\u201D",
+        { "text": "\u201CBuild the next page of your business with Microsoft Fabric\u201D", "highlight": true }
+      ]
+    },
+    "vehicle": {
+      "icon": "\u26A1",
+      "name": "Micro Hack",
+      "subtitle": "1 Day \u2013 enablement",
+      "note": "Hands-on activation format"
+    },
+    "ask": {
+      "title": "THE ASK",
+      "bullets": [
+        "Sponsorship \u2014 Ahmed + EPS",
+        "Funding secured",
+        "Contact PM lead on workloads",
+        { "text": "ISV + Advisory \u2192 ONE Microsoft program", "highlight": true }
+      ]
+    }
+  }
+}
