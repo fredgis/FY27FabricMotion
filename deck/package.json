@@ -1,0 +1,12 @@
+{
+  "name": "fy27-fabric-apps-motion-deck",
+  "private": true,
+  "type": "module",
+  "description": "Generates the editable FY27 Fabric Apps Motion PowerPoint (real slides, not images) with PptxGenJS.",
+  "scripts": {
+    "build:pptx": "node build-motion-deck.mjs \"../docs/FY27 EMEA EPS - Fabric Apps Motion - Micro Hack.pptx\""
+  },
+  "dependencies": {
+    "pptxgenjs": "^3.12.0"
+  }
+}
