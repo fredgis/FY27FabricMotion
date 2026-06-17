@@ -46,6 +46,11 @@ npm install
 npm run saas:start          # local: http://localhost:8787
 ```
 
+Open **http://localhost:8787/** to confirm it works: the SaaS now serves a full **GreenGrid
+website** (company, product, *Developers* section and a **live demo** that calls `POST /score`
+on the server). It is a real front-end in front of the **same scoring algorithm** the workload
+calls — a good way to show participants what they are integrating with.
+
 For the workshop, deploy it to a public HTTPS endpoint (Azure Container Apps / App Service
 / any Node host — a Dockerfile is in `saas/README.md`). Capture its URL and API key.
 

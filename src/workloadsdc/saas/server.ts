@@ -9,12 +9,15 @@
  */
 import express from 'express';
 import type { Request, Response } from 'express';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { scoreSites } from '../src/services/green-score.js';
 import { buildPortfolio } from '../src/services/scorecard.js';
 import type { ScoreRequest } from '../src/domain/types.js';
 
 const PORT = Number(process.env.PORT ?? 8787);
 const API_KEY = process.env.GREENGRID_API_KEY ?? 'greengrid-demo-key';
+const PUBLIC_DIR = join(dirname(fileURLToPath(import.meta.url)), 'public');
 
 const app = express();
 app.use(express.json());
@@ -27,6 +30,11 @@ app.use((_req, res, next) => {
   next();
 });
 app.options('*', (_req, res) => res.sendStatus(204));
+
+// Marketing front-end: the GreenGrid corporate site (served at "/").
+// This makes the SaaS feel real — a polished landing page in front of the same
+// scoring algorithm the API (and the Fabric workload) consume.
+app.use(express.static(PUBLIC_DIR));
 
 app.get('/health', (_req: Request, res: Response) => {
   res.json({ status: 'ok', service: 'greengrid-score', version: '1.0.0' });
@@ -48,7 +56,8 @@ app.post('/score', (req: Request, res: Response) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`GreenGrid Score API listening on http://localhost:${PORT}`);
+  console.log(`GreenGrid SaaS listening on http://localhost:${PORT}`);
+  console.log(`  GET  /          (marketing site + live API demo)`);
   console.log(`  GET  /health`);
-  console.log(`  POST /score   (header: x-api-key: ${API_KEY})`);
+  console.log(`  POST /score     (header: x-api-key: ${API_KEY})`);
 });

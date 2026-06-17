@@ -115,6 +115,17 @@ A **major prerequisite** is that the SaaS is **deployed and running before the w
 it is coded and runnable in [`src/workloadsdc/saas/`](src/workloadsdc/saas). The workload is
 run in **dev mode via the Dev Gateway**.
 
+The SaaS ships with a real **GreenGrid website** (`GET /`) — a polished landing page with a
+*Developers* section and a **live demo** that calls `POST /score` on the server. It makes the
+prerequisite feel like a genuine product: a front-end in front of the **same scoring algorithm**
+the Fabric workload consumes (`npm run saas:start` → `http://localhost:8787/`).
+
+| GreenGrid website (the SaaS front-end) | Live `/score` demo (same algorithm the workload calls) |
+|---|---|
+| ![GreenGrid landing page](docs/images/scenario2-saas-landing.png) | ![GreenGrid live API demo](docs/images/scenario2-saas-demo.png) |
+
+And the workload that brings that algorithm into Fabric on the customer's OneLake data:
+
 | Sustainability Scorecard | Industrial sites map |
 |---|---|
 | ![GreenGrid Scorecard](docs/images/scenario2-scorecard.png) | ![Sites map](docs/images/scenario2-sites-map.png) |

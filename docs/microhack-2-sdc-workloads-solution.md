@@ -149,7 +149,10 @@ has the full copy-paste code for each step. The canonical implementation is in
    ```bash
    cd src/workloadsdc && npm install && npm run saas:start   # http://localhost:8787
    ```
-   Deploy to a public HTTPS endpoint for the workshop (Dockerfile in `saas/README.md`).
+   Open `http://localhost:8787/` to see the GreenGrid website + a live `/score` demo, then
+   deploy to a public HTTPS endpoint for the workshop (Dockerfile in `saas/README.md`).
+
+   ![GreenGrid SaaS landing page](images/scenario2-saas-landing.png)
 2. **Clone the toolkit and configure it.** `Setup.ps1` creates the Entra app (**required even
    with the Dev Gateway** — the gateway routes the workload, Entra provides identity/OBO).
    ```bash

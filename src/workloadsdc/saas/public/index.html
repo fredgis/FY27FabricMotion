@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GreenGrid — Sustainability scoring for every site</title>
+<meta name="description" content="GreenGrid scores the sustainability of your sites from their energy and renewable data — exposed as a simple API your apps and data workloads call at runtime." />
+<style>
+  :root{
+    --green:#0f9d6e; --green-700:#0b7d57; --green-300:#5fd0a6; --teal:#00b4a6;
+    --ink:#0e2a25; --slate:#5b6b6a; --line:#dfeae6; --bg:#f4faf7; --white:#fff;
+    --leaf:#e7f7ef; --amber:#e9a23b; --a:#0f9d6e; --b:#e9a23b; --c:#e0556b;
+    --navy:#0b2447; --radius:16px; --shadow:0 10px 30px rgba(11,90,66,.10);
+    --maxw:1140px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; font-family:'Segoe UI',Inter,system-ui,Arial,sans-serif; color:var(--ink);
+    background:var(--white); line-height:1.55; -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--green-700); text-decoration:none}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px}
+  .btn{display:inline-flex; align-items:center; gap:8px; font-weight:600; font-size:15px;
+    padding:12px 20px; border-radius:999px; border:1px solid transparent; cursor:pointer; transition:.15s}
+  .btn-primary{background:var(--green); color:#fff; box-shadow:0 6px 18px rgba(15,157,110,.35)}
+  .btn-primary:hover{background:var(--green-700); transform:translateY(-1px)}
+  .btn-ghost{background:#fff; color:var(--ink); border-color:var(--line)}
+  .btn-ghost:hover{border-color:var(--green-300)}
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; font-size:13px; font-weight:700;
+    letter-spacing:.08em; text-transform:uppercase; color:var(--green-700);
+    background:var(--leaf); padding:6px 14px; border-radius:999px}
+  h1,h2,h3{line-height:1.15; margin:0}
+  section{padding:84px 0}
+  .muted{color:var(--slate)}
+
+  /* NAV */
+  header.nav{position:sticky; top:0; z-index:50; backdrop-filter:saturate(140%) blur(8px);
+    background:rgba(255,255,255,.82); border-bottom:1px solid var(--line)}
+  .nav-inner{display:flex; align-items:center; justify-content:space-between; height:66px}
+  .brand{display:flex; align-items:center; gap:11px; font-weight:800; font-size:19px; color:var(--ink)}
+  .logo{width:34px; height:34px; border-radius:9px; display:grid; place-items:center;
+    background:linear-gradient(135deg,var(--green),var(--teal)); box-shadow:0 4px 12px rgba(0,180,166,.35)}
+  .logo svg{width:20px; height:20px}
+  .nav-links{display:flex; align-items:center; gap:28px}
+  .nav-links a{color:var(--ink); font-weight:500; font-size:15px}
+  .nav-links a:hover{color:var(--green-700)}
+  @media(max-width:860px){ .nav-links a:not(.btn){display:none} }
+
+  /* HERO */
+  .hero{position:relative; overflow:hidden; padding:96px 0 80px;
+    background:
+      radial-gradient(900px 420px at 78% -8%, rgba(0,180,166,.18), transparent 60%),
+      radial-gradient(700px 380px at 8% 16%, rgba(15,157,110,.14), transparent 55%),
+      linear-gradient(180deg,#f4faf7,#ffffff)}
+  .hero-grid{display:grid; grid-template-columns:1.05fr .95fr; gap:54px; align-items:center}
+  @media(max-width:920px){ .hero-grid{grid-template-columns:1fr; gap:40px} }
+  .hero h1{font-size:50px; letter-spacing:-.02em; margin:18px 0 16px}
+  .hero h1 .grad{background:linear-gradient(120deg,var(--green),var(--teal)); -webkit-background-clip:text; background-clip:text; color:transparent}
+  .hero p.lead{font-size:20px; color:var(--slate); max-width:540px; margin:0 0 28px}
+  .hero-cta{display:flex; gap:14px; flex-wrap:wrap; align-items:center}
+  .trust{margin-top:30px; display:flex; gap:26px; flex-wrap:wrap; align-items:center; color:var(--slate); font-size:14px}
+  .trust b{color:var(--ink)}
+
+  /* hero card: live scorecard preview */
+  .glass{background:#fff; border:1px solid var(--line); border-radius:22px; box-shadow:var(--shadow); overflow:hidden}
+  .glass .bar{display:flex; align-items:center; gap:8px; padding:13px 16px; border-bottom:1px solid var(--line); background:#fbfdfc}
+  .dot{width:11px;height:11px;border-radius:50%}
+  .pcard{padding:20px}
+  .pcard .h{display:flex; align-items:center; justify-content:space-between; margin-bottom:14px}
+  .pcard .h h3{font-size:16px}
+  .ring{--p:0; width:104px; height:104px; border-radius:50%; display:grid; place-items:center; margin:4px auto 8px;
+    background:conic-gradient(var(--green) calc(var(--p)*1%), #eef3f1 0)}
+  .ring span{width:80px;height:80px;border-radius:50%;background:#fff;display:grid;place-items:center;font-weight:800;font-size:26px;color:var(--ink)}
+  .legend{display:flex; gap:10px; justify-content:center; font-size:13px; color:var(--slate)}
+  .srow{display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-top:1px solid var(--line)}
+  .srow:first-of-type{border-top:0}
+  .site{display:flex; align-items:center; gap:10px}
+  .tier{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px}
+  .tier.A{background:var(--a)} .tier.B{background:var(--b)} .tier.C{background:var(--c)}
+  .sname{font-weight:600;font-size:14px} .scity{font-size:12px;color:var(--slate)}
+  .meter{width:120px;height:8px;border-radius:6px;background:#eef3f1;overflow:hidden}
+  .meter i{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--teal))}
+  .sval{font-weight:800;font-size:15px;width:34px;text-align:right}
+
+  /* logos */
+  .logos{padding:34px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:#fbfdfc}
+  .logos .row{display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; opacity:.72}
+  .logos .lo{display:flex; align-items:center; gap:9px; font-weight:700; color:#4a5a57; font-size:17px}
+  .logos .lo svg{width:22px;height:22px}
+  .logos .cap{width:100%; text-align:center; color:var(--slate); font-size:13px; letter-spacing:.05em; text-transform:uppercase; margin-bottom:18px}
+
+  /* sections */
+  .center{text-align:center; max-width:680px; margin:0 auto 52px}
+  .center h2{font-size:38px; letter-spacing:-.02em; margin:14px 0 12px}
+  .center p{font-size:18px; color:var(--slate)}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:22px}
+  @media(max-width:860px){ .grid3{grid-template-columns:1fr} }
+  .feature{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:26px; transition:.18s}
+  .feature:hover{transform:translateY(-3px); box-shadow:var(--shadow); border-color:var(--green-300)}
+  .fi{width:50px;height:50px;border-radius:13px;display:grid;place-items:center;margin-bottom:16px;
+    background:var(--leaf); color:var(--green-700)}
+  .fi svg{width:26px;height:26px}
+  .feature h3{font-size:19px; margin-bottom:8px}
+  .feature p{color:var(--slate); font-size:15px; margin:0}
+
+  /* how it works */
+  .how{background:linear-gradient(180deg,#fff,#f4faf7)}
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:0; position:relative}
+  @media(max-width:860px){ .steps{grid-template-columns:1fr; gap:20px} }
+  .step{padding:0 26px; position:relative}
+  .step:not(:last-child)::after{content:"\2192"; position:absolute; right:-12px; top:14px; color:var(--green-300); font-size:24px}
+  @media(max-width:860px){ .step:not(:last-child)::after{display:none} }
+  .snum{width:44px;height:44px;border-radius:50%; background:var(--green); color:#fff; font-weight:800;
+    display:grid; place-items:center; margin-bottom:14px; box-shadow:0 6px 16px rgba(15,157,110,.32)}
+  .step h3{font-size:18px; margin-bottom:6px}
+  .step p{color:var(--slate); font-size:15px}
+  .step code{background:#eef6f2; color:var(--green-700); padding:2px 7px; border-radius:6px; font-size:13px}
+
+  /* API / developer section */
+  .api{background:#08231c; color:#cfe9df; position:relative; overflow:hidden}
+  .api::before{content:""; position:absolute; inset:0;
+    background:radial-gradient(700px 300px at 85% 0%, rgba(0,180,166,.18), transparent 60%)}
+  .api .wrap{position:relative}
+  .api-grid{display:grid; grid-template-columns:1fr 1.1fr; gap:48px; align-items:center}
+  @media(max-width:920px){ .api-grid{grid-template-columns:1fr; gap:32px} }
+  .api .eyebrow{background:rgba(0,180,166,.16); color:#7fe9d3}
+  .api h2{font-size:36px; color:#fff; margin:14px 0 14px; letter-spacing:-.02em}
+  .api p{color:#a9cdc1; font-size:17px; max-width:520px}
+  .api ul{list-style:none; padding:0; margin:22px 0 0}
+  .api li{display:flex; gap:11px; align-items:flex-start; margin:12px 0; font-size:15px; color:#d7efe6}
+  .api li svg{flex:none; width:20px; height:20px; color:var(--green-300); margin-top:2px}
+  .api li code{color:#7fe9d3}
+  .code{background:#04140f; border:1px solid #16443a; border-radius:14px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,.35)}
+  .code .top{display:flex; align-items:center; gap:8px; padding:11px 15px; border-bottom:1px solid #16443a; background:#06190f}
+  .code .top .nm{margin-left:8px; font-size:13px; color:#8fb6aa; font-family:Consolas,monospace}
+  .code pre{margin:0; padding:18px; overflow:auto; font-family:Consolas,'Cascadia Code',monospace; font-size:13.5px; line-height:1.7}
+  .code .k{color:#67e8c3} .code .s{color:#e7c08a} .code .c{color:#5e8377} .code .p{color:#9fb4ad} .code .n{color:#8fd0ff}
+  .pill-api{display:inline-flex;gap:8px;align-items:center;background:#06190f;border:1px solid #16443a;border-radius:999px;padding:6px 12px;font-family:Consolas,monospace;font-size:12.5px;color:#7fe9d3;margin-right:8px;margin-bottom:8px}
+  .pill-api b{color:#fff}
+
+  /* live demo */
+  .demo .panel{background:#fff; border:1px solid var(--line); border-radius:20px; box-shadow:var(--shadow); overflow:hidden}
+  .demo .panel-h{display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;
+    padding:18px 22px; border-bottom:1px solid var(--line); background:#fbfdfc}
+  .demo .panel-h .ep{font-family:Consolas,monospace; font-size:13.5px; color:var(--slate)}
+  .demo .panel-h .ep b{color:var(--green-700)}
+  .demo .body{display:grid; grid-template-columns:1fr 1fr; gap:0}
+  @media(max-width:860px){ .demo .body{grid-template-columns:1fr} }
+  .demo .col{padding:22px}
+  .demo .col.req{border-right:1px solid var(--line); background:#fcfefd}
+  @media(max-width:860px){ .demo .col.req{border-right:0; border-bottom:1px solid var(--line)} }
+  .demo h4{margin:0 0 12px; font-size:13px; letter-spacing:.06em; text-transform:uppercase; color:var(--slate)}
+  .demo pre{margin:0 0 14px; background:#0e2a25; color:#cfe9df; border-radius:12px; padding:14px; font-family:Consolas,monospace; font-size:12.5px; max-height:230px; overflow:auto}
+  .kpis{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:14px}
+  .kpi{flex:1; min-width:110px; background:var(--leaf); border-radius:12px; padding:12px 14px}
+  .kpi .v{font-size:26px; font-weight:800; color:var(--green-700)} .kpi .l{font-size:12px; color:var(--slate)}
+  .result-row{display:flex; align-items:center; justify-content:space-between; padding:9px 0; border-top:1px solid var(--line); font-size:14px}
+  .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;background:var(--leaf);color:var(--green-700)}
+
+  /* stats band */
+  .stats{background:linear-gradient(120deg,var(--green),var(--teal)); color:#fff}
+  .stats .grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px; text-align:center}
+  @media(max-width:760px){ .stats .grid{grid-template-columns:repeat(2,1fr); gap:28px} }
+  .stats .n{font-size:42px; font-weight:800; letter-spacing:-.02em}
+  .stats .l{opacity:.9; font-size:15px}
+
+  /* CTA */
+  .cta{text-align:center}
+  .cta .box{background:#0e2a25; color:#fff; border-radius:24px; padding:56px 28px;
+    background-image:radial-gradient(600px 240px at 80% 0%, rgba(0,180,166,.25), transparent 60%)}
+  .cta h2{font-size:34px; margin-bottom:12px}
+  .cta p{color:#a9cdc1; font-size:17px; max-width:560px; margin:0 auto 26px}
+
+  /* footer */
+  footer{border-top:1px solid var(--line); padding:46px 0; color:var(--slate); font-size:14px; background:#fbfdfc}
+  .foot-grid{display:flex; align-items:flex-start; justify-content:space-between; gap:30px; flex-wrap:wrap}
+  .foot-links{display:flex; gap:54px; flex-wrap:wrap}
+  .foot-col h5{margin:0 0 10px; font-size:13px; letter-spacing:.05em; text-transform:uppercase; color:var(--ink)}
+  .foot-col a{display:block; color:var(--slate); margin:6px 0}
+  .foot-col a:hover{color:var(--green-700)}
+  .note{margin-top:26px; padding-top:18px; border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap}
+  .demo-tag{display:inline-flex;align-items:center;gap:7px;background:var(--leaf);color:var(--green-700);font-weight:700;font-size:12px;padding:5px 11px;border-radius:999px}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 21c5-2 8-5.5 8-11V4l-8 2-8-2v6c0 5.5 3 9 8 11Z" fill="#fff" opacity=".9"/><path d="M12 17V8M9 11l3-3 3 3" stroke="#0f9d6e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      GreenGrid
+    </div>
+    <nav class="nav-links">
+      <a href="#product">Product</a>
+      <a href="#how">How it works</a>
+      <a href="#api">Developers</a>
+      <a href="#demo">Live demo</a>
+      <a class="btn btn-primary" href="#api">Get API access</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="eyebrow">&#127793; Sustainability intelligence</span>
+      <h1>Score the sustainability of <span class="grad">every site</span>, in one API call.</h1>
+      <p class="lead">GreenGrid turns each site's energy and renewable data into a clear
+        green score and an A&#8211;B&#8211;C tier &#8212; so your teams, apps and data workloads act on facts, not guesses.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#api">Explore the API
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="btn btn-ghost" href="#demo">See a live score</a>
+      </div>
+      <div class="trust">
+        <span><b>500+</b> sites scored</span>
+        <span><b>A&#183;B&#183;C</b> tiering</span>
+        <span><b>OneLake-ready</b> for Microsoft Fabric</span>
+      </div>
+    </div>
+
+    <!-- live preview card -->
+    <div class="glass" aria-label="Example scorecard">
+      <div class="bar"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span>
+        <span style="margin-left:10px;font-size:12px;color:#7d918c;font-family:Consolas,monospace">app.greengrid.io/portfolio</span></div>
+      <div class="pcard">
+        <div class="h"><h3>Portfolio scorecard</h3><span class="demo-tag">live</span></div>
+        <div class="ring" style="--p:60"><span>60</span></div>
+        <div class="legend"><span>&#9679; A&nbsp;1</span><span>&#9679; B&nbsp;3</span><span>&#9679; C&nbsp;1</span><span>avg renewable&nbsp;65%</span></div>
+        <div style="margin-top:14px">
+          <div class="srow"><div class="site"><span class="tier A">A</span><span><span class="sname">Helsinki Data Center</span><br><span class="scity">Helsinki</span></span></div><div style="display:flex;align-items:center;gap:10px"><span class="meter"><i style="width:80%"></i></span><span class="sval">80</span></div></div>
+          <div class="srow"><div class="site"><span class="tier B">B</span><span><span class="sname">Munich Lab</span><br><span class="scity">Munich</span></span></div><div style="display:flex;align-items:center;gap:10px"><span class="meter"><i style="width:68%"></i></span><span class="sval">68</span></div></div>
+          <div class="srow"><div class="site"><span class="tier B">B</span><span><span class="sname">Lisbon Office</span><br><span class="scity">Lisbon</span></span></div><div style="display:flex;align-items:center;gap:10px"><span class="meter"><i style="width:63%"></i></span><span class="sval">63</span></div></div>
+          <div class="srow"><div class="site"><span class="tier C">C</span><span><span class="sname">Warsaw Plant</span><br><span class="scity">Warsaw</span></span></div><div style="display:flex;align-items:center;gap:10px"><span class="meter"><i style="width:19%"></i></span><span class="sval">19</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<div class="logos">
+  <div class="wrap">
+    <div class="cap">Trusted by sustainability &amp; operations teams</div>
+    <div class="row">
+      <span class="lo"><svg viewBox="0 0 24 24" fill="#0f9d6e"><circle cx="12" cy="12" r="9"/></svg>NordEnergy</span>
+      <span class="lo"><svg viewBox="0 0 24 24" fill="#00b4a6"><rect x="3" y="3" width="18" height="18" rx="5"/></svg>Helio Retail</span>
+      <span class="lo"><svg viewBox="0 0 24 24" fill="#0b7d57"><path d="M12 2l9 18H3z"/></svg>Atlas Logistics</span>
+      <span class="lo"><svg viewBox="0 0 24 24" fill="#0f9d6e"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 4v12"/></svg>Vela Manufacturing</span>
+      <span class="lo"><svg viewBox="0 0 24 24" fill="#00b4a6"><rect x="4" y="4" width="16" height="16" rx="8"/></svg>Foster Estates</span>
+    </div>
+  </div>
+</div>
+
+<!-- PRODUCT / FEATURES -->
+<section id="product">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">The product</span>
+      <h2>One score that everyone understands</h2>
+      <p>GreenGrid blends renewable sourcing and energy efficiency into a single 0&#8211;100 green score
+        and an A/B/C tier, with a clear next-best action for each site.</p>
+    </div>
+    <div class="grid3">
+      <div class="feature">
+        <div class="fi"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0z" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>Transparent scoring</h3>
+        <p>Green score = 60% renewable sourcing + 40% energy efficiency. No black box &#8212; the
+          same formula your auditors and your engineers can both read.</p>
+      </div>
+      <div class="feature">
+        <div class="fi"><svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5M4 19h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><rect x="7" y="11" width="3" height="5" fill="currentColor"/><rect x="12" y="8" width="3" height="8" fill="currentColor"/><rect x="17" y="13" width="3" height="3" fill="currentColor"/></svg></div>
+        <h3>A &#183; B &#183; C tiering</h3>
+        <p>Every site lands in an actionable tier &#8212; A (75+), B (50&#8211;74), C (&lt;50) &#8212; so leaders
+          instantly see where to focus the next investment.</p>
+      </div>
+      <div class="feature">
+        <div class="fi"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M3 8l9-5 9 5M5 10v8h14v-8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Portfolio rollups</h3>
+        <p>Aggregate hundreds of sites into one portfolio view: average score, renewable mix,
+          tier distribution, and best/worst performers.</p>
+      </div>
+      <div class="feature">
+        <div class="fi"><svg viewBox="0 0 24 24" fill="none"><path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/></svg></div>
+        <h3>Next-best action</h3>
+        <p>Each site comes with a concrete tip &#8212; &#8220;increase renewable sourcing&#8221;, &#8220;improve
+          efficiency&#8221;, or &#8220;on track&#8221; &#8212; turning data into a plan.</p>
+      </div>
+      <div class="feature">
+        <div class="fi"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="16" rx="3" stroke="currentColor" stroke-width="1.6"/><path d="M3 9h18M8 14h8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>API-first</h3>
+        <p>Everything is a REST call. Score a single site or a whole portfolio in one request &#8212;
+          ready to embed in any app, BI tool or data workload.</p>
+      </div>
+      <div class="feature">
+        <div class="fi"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21c5-2 8-5.5 8-11V4l-8 2-8-2v6c0 5.5 3 9 8 11z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+        <h3>Runs where your data lives</h3>
+        <p>Point GreenGrid at your site data in <b>Microsoft Fabric / OneLake</b> and score it in
+          place &#8212; no copies, no extract jobs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="how">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">How it works</span>
+      <h2>From raw site data to a green score in three steps</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="snum">1</div>
+        <h3>Send your sites</h3>
+        <p>POST a list of sites with their <code>energyKwh</code> and <code>renewablePct</code>
+          to the GreenGrid API &#8212; directly from your app or your data platform.</p>
+      </div>
+      <div class="step">
+        <div class="snum">2</div>
+        <h3>We score them</h3>
+        <p>GreenGrid runs the scoring algorithm and returns a green score, an A/B/C tier and a
+          next-best action <b>per site</b>.</p>
+      </div>
+      <div class="step">
+        <div class="snum">3</div>
+        <h3>Act on the portfolio</h3>
+        <p>Get a portfolio rollup &#8212; average score, renewable mix, best &amp; worst sites &#8212; to
+          drive your sustainability decisions.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- API / DEVELOPERS -->
+<section id="api" class="api">
+  <div class="wrap api-grid">
+    <div>
+      <span class="eyebrow">For developers</span>
+      <h2>The algorithm, exposed as a clean API</h2>
+      <p>GreenGrid is API-first: the scoring engine that powers our product is the same one your
+        applications and <b>Microsoft Fabric data workloads</b> call at runtime. One key, two endpoints.</p>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Stateless &amp; deterministic &#8212; same input, same score, every time.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Simple <code>x-api-key</code> auth, permissive CORS for embedded apps.</span></li>
+        <li><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l4 4 10-10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>Scores a single site or a whole portfolio in one request.</span></li>
+      </ul>
+      <div style="margin-top:24px">
+        <span class="pill-api"><b>GET</b> /health</span>
+        <span class="pill-api"><b>POST</b> /score</span>
+      </div>
+    </div>
+
+    <div class="code">
+      <div class="top"><span class="dot" style="background:#ff5f57"></span><span class="dot" style="background:#febc2e"></span><span class="dot" style="background:#28c840"></span><span class="nm">POST /score</span></div>
+<pre><span class="c"># Score a portfolio of sites</span>
+<span class="k">curl</span> -X POST https://api.greengrid.io/<span class="n">score</span> \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -H <span class="s">"x-api-key: greengrid-demo-key"</span> \
+  -d <span class="s">'{
+    "sites": [
+      { "siteId": "site-hel", "name": "Helsinki DC",
+        "city": "Helsinki", "energyKwh": 320, "renewablePct": 88 }
+    ]
+  }'</span>
+
+<span class="c"># &#8594; response</span>
+{
+  <span class="p">"sites"</span>: [
+    { <span class="p">"name"</span>: <span class="s">"Helsinki DC"</span>, <span class="p">"greenScore"</span>: <span class="n">80</span>,
+      <span class="p">"tier"</span>: <span class="s">"A"</span>, <span class="p">"tip"</span>: <span class="s">"On track"</span> }
+  ],
+  <span class="p">"summary"</span>: { <span class="p">"avgScore"</span>: <span class="n">80</span>, <span class="p">"tierCounts"</span>: { <span class="p">"A"</span>: <span class="n">1</span> } }
+}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE DEMO -->
+<section id="demo" class="demo">
+  <div class="wrap">
+    <div class="center">
+      <span class="eyebrow">Live demo</span>
+      <h2>Score a real portfolio, right now</h2>
+      <p>This calls the running GreenGrid API on this very server &#8212; the same endpoint a Fabric
+        workload would hit. Press the button to score five sample sites.</p>
+    </div>
+    <div class="panel">
+      <div class="panel-h">
+        <div class="ep"><b>POST</b> /score &nbsp;&#183;&nbsp; <span class="muted">x-api-key: greengrid-demo-key</span></div>
+        <button class="btn btn-primary" id="runBtn" onclick="runScore()">&#9654; Run /score</button>
+      </div>
+      <div class="body">
+        <div class="col req">
+          <h4>Request body</h4>
+          <pre id="reqBody"></pre>
+          <span class="demo-tag">5 sample sites from OneLake</span>
+        </div>
+        <div class="col res">
+          <h4>Live response</h4>
+          <div id="result"><p class="muted" style="margin:0">Press <b>Run /score</b> to call the API&#8230;</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="wrap">
+    <div class="grid">
+      <div><div class="n">0&#8211;100</div><div class="l">Green score scale</div></div>
+      <div><div class="n">A&#183;B&#183;C</div><div class="l">Actionable tiers</div></div>
+      <div><div class="n">1 call</div><div class="l">Whole portfolio</div></div>
+      <div><div class="n">OneLake</div><div class="l">Scores data in place</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="wrap">
+    <div class="box">
+      <h2>Bring sustainability scoring to your data</h2>
+      <p>Embed GreenGrid in your apps and Microsoft Fabric workloads &#8212; and turn site data into
+        decisions in a single API call.</p>
+      <a class="btn btn-primary" href="#api">Get API access</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div style="max-width:300px">
+        <div class="brand" style="font-size:18px;margin-bottom:10px">
+          <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 21c5-2 8-5.5 8-11V4l-8 2-8-2v6c0 5.5 3 9 8 11Z" fill="#fff" opacity=".9"/><path d="M12 17V8M9 11l3-3 3 3" stroke="#0f9d6e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          GreenGrid
+        </div>
+        <p class="muted" style="margin:0">Sustainability scoring for every site &#8212; API-first, OneLake-ready.</p>
+      </div>
+      <div class="foot-links">
+        <div class="foot-col"><h5>Product</h5><a href="#product">Features</a><a href="#how">How it works</a><a href="#demo">Live demo</a></div>
+        <div class="foot-col"><h5>Developers</h5><a href="#api">API overview</a><a href="/health">Status / health</a><a href="#api">Authentication</a></div>
+        <div class="foot-col"><h5>Company</h5><a href="#">About</a><a href="#">Careers</a><a href="#">Contact</a></div>
+      </div>
+    </div>
+    <div class="note">
+      <span>&#169; 2026 GreenGrid Inc. &#8212; A fictional SaaS used for the FY27 EPS Fabric Apps Motion micro-hack.</span>
+      <span class="demo-tag">Demo SaaS &#183; not a real company</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // The 5 sample sites (mirror of the customer's OneLake `sites` table used in the workload).
+  const SAMPLE = { sites: [
+    { siteId:'site-hel', name:'Helsinki Data Center', city:'Helsinki', energyKwh:320, renewablePct:88 },
+    { siteId:'site-lis', name:'Lisbon Office',        city:'Lisbon',   energyKwh:210, renewablePct:71 },
+    { siteId:'site-muc', name:'Munich Lab',           city:'Munich',   energyKwh:430, renewablePct:80 },
+    { siteId:'site-dub', name:'Dublin Hub',           city:'Dublin',   energyKwh:540, renewablePct:62 },
+    { siteId:'site-waw', name:'Warsaw Plant',         city:'Warsaw',   energyKwh:880, renewablePct:24 },
+  ]};
+  document.getElementById('reqBody').textContent = JSON.stringify(SAMPLE, null, 2);
+
+  function tierClass(t){ return t === 'A' ? 'A' : t === 'B' ? 'B' : 'C'; }
+
+  async function runScore(){
+    const btn = document.getElementById('runBtn');
+    const out = document.getElementById('result');
+    btn.disabled = true; btn.textContent = '\u2026 scoring';
+    out.innerHTML = '<p class="muted" style="margin:0">Calling <b>POST /score</b> \u2026</p>';
+    try{
+      const r = await fetch('/score', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json', 'x-api-key':'greengrid-demo-key' },
+        body: JSON.stringify(SAMPLE)
+      });
+      if(!r.ok) throw new Error('HTTP ' + r.status);
+      const data = await r.json();
+      renderResult(out, data);
+    }catch(e){
+      out.innerHTML = '<p style="color:#e0556b;margin:0">Request failed: ' + e.message +
+        '<br><span class="muted">Make sure the SaaS is running (npm run saas:start).</span></p>';
+    }finally{
+      btn.disabled = false; btn.textContent = '\u25B6 Run /score';
+    }
+  }
+
+  function renderResult(out, data){
+    const s = data.summary;
+    let html = '<div class="kpis">' +
+      '<div class="kpi"><div class="v">' + s.avgScore + '</div><div class="l">Avg green score</div></div>' +
+      '<div class="kpi"><div class="v">' + s.avgRenewablePct + '%</div><div class="l">Avg renewable</div></div>' +
+      '<div class="kpi"><div class="v">' + s.tierCounts.A + '\u00b7' + s.tierCounts.B + '\u00b7' + s.tierCounts.C + '</div><div class="l">A \u00b7 B \u00b7 C</div></div>' +
+      '</div>';
+    for(const site of data.sites){
+      html += '<div class="result-row">' +
+        '<span><span class="tier ' + tierClass(site.tier) + '" style="display:inline-grid;width:22px;height:22px;vertical-align:middle;margin-right:8px">' + site.tier + '</span>' +
+        '<b>' + site.name + '</b> <span class="muted">\u00b7 ' + site.city + '</span></span>' +
+        '<span><span class="badge">' + site.tip + '</span> <b style="margin-left:10px">' + site.greenScore + '</b></span>' +
+        '</div>';
+    }
+    out.innerHTML = html;
+  }
+</script>
+</body>
+</html>

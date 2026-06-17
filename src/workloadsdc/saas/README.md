@@ -10,8 +10,15 @@ It is intentionally tiny and easy to run.
 
 | Method | Path | Auth | Purpose |
 |---|---|---|---|
+| `GET` | `/` | none | **Marketing website** — the GreenGrid corporate front-end + a live API demo |
 | `GET` | `/health` | none | Liveness check |
 | `POST` | `/score` | `x-api-key` header | Score a list of sites, return per-site scores + a portfolio summary |
+
+> **Front-end + API in one service.** Opening `http://localhost:8787/` shows a polished
+> GreenGrid landing page (company, product, how it works, a Developers section and a **live
+> demo** that actually calls `POST /score` on this server). This makes the prerequisite feel
+> like a real SaaS: a website in front of the **same scoring algorithm** the Fabric workload
+> consumes at runtime. The page is a static file in [`public/index.html`](public/index.html).
 
 ### `POST /score` request
 
@@ -48,7 +55,8 @@ npm install
 npm run saas:start          # http://localhost:8787
 ```
 
-Environment variables:
+Then open **http://localhost:8787/** in a browser to see the GreenGrid website and run the
+live `/score` demo. Environment variables:
 
 - `PORT` (default `8787`)
 - `GREENGRID_API_KEY` (default `greengrid-demo-key`)
