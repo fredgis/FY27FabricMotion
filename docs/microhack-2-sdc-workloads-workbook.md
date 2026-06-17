@@ -81,12 +81,44 @@ flowchart LR
 - **OBO token** (On-Behalf-Of): a secure token the workload gets so it can read the user's
   OneLake data **as that user** — no passwords, no data copies.
 
-## 4) Before you start — checklist
+## 4) Prerequisites & environment setup (do this first)
 
-- [ ] **Node.js**, **PowerShell 7**, **.NET (x64)**, **Azure CLI**, **VS Code** installed.
-- [ ] A **Fabric workspace** with a **capacity** assigned (from the trainer).
-- [ ] Permission to create an **Entra app** (or one provided by the trainer).
-- [ ] The **GreenGrid SaaS URL + API key** (from the trainer).
+Modeled on Microsoft's
+[Build LAB514](https://github.com/microsoft/Build26-LAB514-ship-ai-apps-fast-with-a-managed-backend-in-microsoft-fabric)
+setup. On a lab VM most tools are pre-installed.
+
+**Tools you need:**
+
+- Node.js 20+ and npm
+- **PowerShell 7**, **.NET (x64)**, **Azure CLI** (the toolkit setup script uses them)
+- Visual Studio Code
+- **GitHub Copilot CLI** (the `copilot` terminal agent) — used for the graphical polish step
+
+**Sign in (two accounts):**
+
+1. **GitHub Copilot** — run `copilot`, then `/login`, choose **GitHub.com**, finish the browser
+   sign-in, confirm *"Signed in successfully"*, then `/exit`.
+2. **Microsoft Fabric** — open `https://app.fabric.microsoft.com` and sign in. *(If it shows
+   "Power BI" bottom-left, switch it to "Fabric".)*
+
+**From the trainer / your tenant:**
+
+- A **Fabric workspace** with a **capacity** assigned (where the workload runs).
+- Permission to create an **Entra app** (or one provided) — required even with the Dev Gateway;
+  `Setup.ps1` creates it.
+- The **GreenGrid SaaS URL + API key**.
+
+**Verify your setup:**
+
+```shell
+node --version
+npm --version
+copilot --version
+pwsh --version
+```
+
+**✅ What you should see.** All print a version, you're signed in to GitHub Copilot and Fabric,
+and you have the SaaS URL + key in hand.
 
 ## 5) Team framing (fill this in 2 minutes, then build)
 

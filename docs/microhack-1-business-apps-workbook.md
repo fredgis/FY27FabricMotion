@@ -80,13 +80,48 @@ By the end of the afternoon your app should look like this — a **Bicycle Board
 
 ---
 
+## 🧰 Step 0 — Prerequisites & environment setup (do this first)
+
+Modeled on Microsoft's
+[Build LAB514](https://github.com/microsoft/Build26-LAB514-ship-ai-apps-fast-with-a-managed-backend-in-microsoft-fabric)
+setup. On a lab VM most tools are pre-installed.
+
+**Tools you need:**
+
+- Node.js 20+ (24 recommended) and npm
+- Visual Studio Code
+- **GitHub Copilot CLI** (the `copilot` terminal agent)
+
+**Sign in (two accounts):**
+
+1. **GitHub Copilot** — in a terminal run `copilot`, then `/login`, choose **GitHub.com**, finish
+   the browser sign-in, confirm *"Signed in successfully"*, then `/exit`.
+2. **Microsoft Fabric** — open `https://app.fabric.microsoft.com` and sign in. *(If it shows
+   "Power BI" bottom-left, switch it to "Fabric".)*
+
+**Fabric workspace:** create (or use) a workspace with a **Fabric capacity** assigned — this is
+where your app deploys.
+
+**Verify your setup:**
+
+```shell
+node --version
+npm --version
+copilot --version
+```
+
+**✅ What you should see.** All three print a version, and you're signed in to GitHub Copilot and
+to Fabric with a capacity-backed workspace.
+
+---
+
 # Part B — Build it step by step
 
 > **How to work.** **There is no repository to clone** for this track — Rayfin scaffolds the
 > whole project for you with one command (Step 1). After that you build the app
-> **conversationally**: you paste a short prompt into **GitHub Copilot** inside the project,
-> Copilot writes the code, and you check the result in the browser. Each step below = one
-> action + **what you should see**.
+> **conversationally** with the **GitHub Copilot CLI** (`copilot` in your terminal): you give it
+> a short prompt, it writes the code, and you check the result in the browser. Each step below =
+> one action + **what you should see**.
 
 ### Who does what — Copilot vs. the Rayfin CLI (read once)
 
