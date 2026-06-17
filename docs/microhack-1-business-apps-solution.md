@@ -157,7 +157,7 @@ Division-by-zero is guarded (returns `0`).
 
 ---
 
-## 5) How the app is built in Rayfin
+## 5) How the app is built in Rayfin (step by step)
 
 [Rayfin](https://github.com/microsoft/rayfin) is a fully managed **Backend-as-a-Service
 on Microsoft Fabric**. You **declare your data model in TypeScript** and Rayfin
@@ -182,6 +182,14 @@ flowchart LR
 ```
 
 ### 5.1 Scaffold the project
+
+> **No repo to clone** — Rayfin scaffolds the project for you. The participant
+> [workbook](microhack-1-business-apps-workbook.md#part-b--build-it-step-by-step) has the full
+> step-by-step; the canonical implementation is in [`src/apprayfin/`](../src/apprayfin).
+>
+> **Reference path (same as the workbook):** 1) create the project · 2) run the empty app
+> (`npm run dev`) to confirm it works · 3) declare the data model · 4) Bicycle Board ·
+> 5) Pit-Stop Queue · 6) Ride Mood & KPI · 7) Live Map · 8) polish (bike icons + roles).
 
 ```bash
 npm create @microsoft/rayfin@latest -- --template field-technician
