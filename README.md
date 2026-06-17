@@ -31,7 +31,10 @@ converge into **one Microsoft program**.
 - Contact PM lead on workloads.
 - **SDC + Advisory → ONE Microsoft program.**
 
-Full detail in [`docs/motion-brief.md`](docs/motion-brief.md).
+Full detail in [`docs/motion-brief.md`](docs/motion-brief.md). The complete motion write-up is
+in [`docs/FY27-EPS-Fabric-Apps-Motion-Micro-Hack.md`](docs/FY27-EPS-Fabric-Apps-Motion-Micro-Hack.md),
+and the condensed slide deck is [`deck/FY27-Fabric-Apps-Motion-Slides.md`](deck/FY27-Fabric-Apps-Motion-Slides.md)
+(exported to [`docs/FY27 EMEA EPS - Fabric Apps Motion - Micro Hack.pptx`](docs/FY27%20EMEA%20EPS%20-%20Fabric%20Apps%20Motion%20-%20Micro%20Hack.pptx)).
 
 ---
 
