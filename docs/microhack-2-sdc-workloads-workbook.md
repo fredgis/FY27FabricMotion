@@ -474,21 +474,33 @@ export function Scorecard({ getSites }: { getSites: () => Promise<SiteRecord[]> 
 
 ### 7e. Render it from the generated editor
 
-**`GreenGridScorecardItemEditor.tsx`** is the file `CreateNewItem.ps1` generated in **Step 5** —
-the component Fabric shows when your item opens. Open it and render your `Scorecard` with the
-**fake** seed data (replace the placeholder the toolkit put in the editor's JSX):
+**What this is.** Steps 7a–7d created the building blocks (types, SaaS client, seed data, the
+`Scorecard` component) — but nothing displays them yet. 7e **wires `Scorecard` into the item's
+editor** so it shows inside Fabric. This is the step that turns files-on-disk into a visible item.
 
-```tsx
-import { Scorecard } from './Scorecard';
-import { seedSites } from './seed';
+The scaffold splits the editor into **views**: `GreenGridScorecardItemEmptyView.tsx` (the blank
+page shown for a brand-new item — that's the "empty page" you see first) and
+`GreenGridScorecardItemDefaultView.tsx` (the main view). Render your `Scorecard` in the
+**DefaultView's `center`**, then make the item open that view:
 
-// inside the editor component's returned JSX:
-<Scorecard getSites={() => Promise.resolve(seedSites)} />
-```
+1. In **`GreenGridScorecardItemDefaultView.tsx`** — import your component + seed data and put the
+   `Scorecard` in the `center` slot (you can keep or remove the `left` "Getting Started" panel):
+   ```tsx
+   import { Scorecard } from "./Scorecard";
+   import { seedSites } from "./seed";
+   // ...
+   center={{ content: <Scorecard getSites={() => Promise.resolve(seedSites)} /> }}
+   ```
 
-**Save the file.** The dev server hot-reloads, so the GreenGridScorecard **item you already opened
-in Fabric** (Step 5) now shows the scorecard — no need to re-create it. *(If you closed it, reopen
-it from the Workload Hub as in Step 5.)*
+2. In **`GreenGridScorecardItemEditor.tsx`** — a fresh item opens the blank *EmptyView*. In the
+   post-load `useEffect` that picks the view, force the DEFAULT (scorecard) view:
+   ```tsx
+   const correctView = EDITOR_VIEW_TYPES.DEFAULT;
+   ```
+
+**Save.** The dev server hot-reloads; refresh your open GreenGrid item in Fabric (keep the **SaaS**
+at `http://localhost:8787` **and both** Dev Server + Dev Gateway running). *(If you closed the item,
+reopen it from the Workload Hub as in Step 5.)*
 
 **✅ What you should see — 🎯 Milestone M1.** The item shows the portfolio score and 5 site
 cards with their tier, **inside Fabric**. The whole chain works on fake data. This is demoable.
@@ -554,16 +566,19 @@ export async function readSites(
 
 ### 8b. Swap one line in the editor
 
-The generated editor exposes the workload client and the item's context. Change the render to:
+In **`GreenGridScorecardItemDefaultView.tsx`** (where you put the `Scorecard` in 7e), change the
+`center` line to read from OneLake. `workloadClient` is already a prop of this view; for the IDs,
+add `item` back to the props and use `item.workspaceId` / the lakehouse id (from the item or the
+selected lakehouse):
 
 ```tsx
 import { readSites } from './onelake';
 
 // before (fake):
-<Scorecard getSites={() => Promise.resolve(seedSites)} />
+center={{ content: <Scorecard getSites={() => Promise.resolve(seedSites)} /> }}
 
 // after (real OneLake CSV):
-<Scorecard getSites={() => readSites(workloadClient, workspaceId, lakehouseId)} />
+center={{ content: <Scorecard getSites={() => readSites(workloadClient, workspaceId, lakehouseId)} /> }}
 ```
 
 **✅ What you should see — 🎯 Milestone M2.** The same scorecard, now built from the **OneLake
