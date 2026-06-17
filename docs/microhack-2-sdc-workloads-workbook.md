@@ -67,7 +67,8 @@ flowchart LR
 
 - **OneLake** = where the **customer's data** lives.
 - **GreenGrid SaaS** = a small web service that **holds the scoring algorithm** (GreenGrid's
-  IP). *The trainer deploys it for you — it is a prerequisite.*
+  IP). *The trainer usually hosts it; if you run solo, you start it yourself in **Step 6a** —
+  `cd src/workloadsdc && npm run saas:start`.*
 - **The workload** = the piece **you build today**: a Fabric *item* that reads OneLake, calls
   the SaaS, and draws the scorecard.
 
@@ -251,9 +252,45 @@ This creates `Workload/app/items/GreenGridScorecardItem/`, including
 
 ---
 
-## Step 6 — Check the SaaS is alive
+## Step 6 — Start & check the GreenGrid SaaS
 
-**What this is.** A quick test that GreenGrid's algorithm service answers.
+**What this is.** The SaaS holds GreenGrid's scoring algorithm — your workload is useless without
+it, so it must be **running and reachable** before you build.
+
+### 6a. Start the SaaS
+
+If the **trainer hosts it**, just grab the **SaaS URL + API key** they give you and skip to 6b.
+
+If you're **running it yourself** (solo, or as a local fallback), start it from the kit:
+
+```bash
+cd src/workloadsdc
+npm install
+npm run saas:start
+```
+
+It starts on **`http://localhost:8787`** with the default API key **`greengrid-demo-key`**
+(override with the `GREENGRID_API_KEY` env var). The console should print:
+
+```text
+GreenGrid SaaS listening on http://localhost:8787
+  GET  /          (marketing site + live API demo)
+  GET  /health
+  POST /score     (header: x-api-key: greengrid-demo-key)
+```
+
+> Keep this terminal open — the SaaS must stay running for the whole hack. Open
+> **http://localhost:8787/** in a browser to see the GreenGrid website + a **live `/score` demo**
+> (same algorithm your workload will call).
+
+![GreenGrid SaaS — website (the algorithm you'll call)](images/scenario2-saas-landing.png)
+
+![GreenGrid SaaS — live /score demo](images/scenario2-saas-demo.png)
+
+### 6b. Check it's alive
+
+Replace `<SAAS_URL>` with your URL (local: `http://localhost:8787`) and `<API_KEY>` with your key
+(local: `greengrid-demo-key`):
 
 ```bash
 curl -i <SAAS_URL>/health        # expect: 200
@@ -262,17 +299,18 @@ curl -s -X POST <SAAS_URL>/score \
   -d '{"sites":[{"siteId":"s1","name":"Helsinki DC","city":"Helsinki","energyKwh":320,"renewablePct":88}]}'
 ```
 
-**✅ What you should see.** `/score` returns a `greenScore` and a `tier`. *(Local fallback:
-`cd src/workloadsdc && npm install && npm run saas:start`, URL `http://localhost:8787`, key
-`greengrid-demo-key`.)*
+> 🪟 **On Windows PowerShell**, `curl` is an alias for `Invoke-WebRequest` and won't accept the
+> flags above — use **`curl.exe`** (real curl), or the native form:
+> ```powershell
+> Invoke-RestMethod http://localhost:8787/health
+> Invoke-RestMethod -Method Post -Uri http://localhost:8787/score `
+>   -Headers @{ 'x-api-key' = 'greengrid-demo-key' } -ContentType 'application/json' `
+>   -Body '{"sites":[{"siteId":"s1","name":"Helsinki DC","city":"Helsinki","energyKwh":320,"renewablePct":88}]}'
+> ```
 
-> 💡 Open `<SAAS_URL>/` (e.g. `http://localhost:8787/`) in a browser: the SaaS also serves the
-> **GreenGrid website** with a *Developers* section and a **live demo** that calls `/score`. It's
-> the same scoring algorithm your workload is about to consume.
-
-![GreenGrid SaaS — website (the algorithm you'll call)](images/scenario2-saas-landing.png)
-
-![GreenGrid SaaS — live /score demo](images/scenario2-saas-demo.png)
+**✅ What you should see.** `/health` returns `200`, and `/score` returns a `greenScore` and a
+`tier` (Helsinki → `greenScore 80`, `tier A`). Note your working **SAAS_URL + API_KEY** — you'll
+paste them into the workload client in Step 7.
 
 ---
 
