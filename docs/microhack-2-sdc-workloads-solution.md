@@ -187,9 +187,12 @@ has the full copy-paste code for each step. The canonical implementation is in
    > Then **restart both** the Dev Server **and** the Dev Gateway and refresh Fabric. (The benign
    > `BuildManifestPackage … CursorPosition: The handle is invalid` warning can be ignored.) Full
    > participant steps + the tenant `FeatureNotAvailable` prerequisite are in the setup guide §6.
-6. **Read OneLake** — add `onelake.ts` (OBO token) to read & parse `Files/sites.csv`, then swap
-   the one render line from seed to OneLake (Milestone M2).
-7. **Polish** — gauge, A/B/C tiers, provenance chips and the sites map (Milestone M3).
+6. **Read OneLake** *(optional — do it at the end)* — add `onelake.ts` (OBO token) to read & parse
+   `Files/sites.csv`, then swap the one render line from seed to OneLake (Milestone M2). M1 and the
+   Step-7 polish both work on seed data, so this can be deferred to the end of the day.
+7. **Polish** — gauge, A/B/C tiers, provenance chips and the sites map (Milestone M3). Run **GitHub
+   Copilot in the `fabric-extensibility-toolkit` repo**; front-end `.tsx` edits hot-reload (refresh
+   Fabric, **no Dev Gateway restart**).
 
 **Master prompt** (for the AI-assisted path — the toolkit ships `.github/copilot-instructions.md`):
 

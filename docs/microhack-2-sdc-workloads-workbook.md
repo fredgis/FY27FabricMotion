@@ -535,7 +535,12 @@ cards with their tier, **inside Fabric**.
 
 ---
 
-## Step 8 — Switch to real OneLake data (Milestone M2)
+## Step 8 — Switch to real OneLake data (Milestone M2) — *optional, do it at the end*
+
+> ⏭️ **Optional — do this last (or skip for now).** M1 (Step 7e) already proves the full
+> *screen → SaaS → screen* chain, and **Step 9 works on seed data too**, so you can **jump straight
+> to Step 9** and come back to wire OneLake at the end (or if time allows). The only thing Step 8
+> changes is *where the input sites come from* (seed array → OneLake CSV) — one line in the view.
 
 **What this is.** Replace the fake `seedSites` with the customer's **real** site data in OneLake.
 
@@ -625,6 +630,19 @@ an A/B/C tier distribution, provenance chips "Data from OneLake" then "Scored by
 and a second view showing the sites as factory markers on a simple map, colored by tier.
 Style: Fluent UI, teal #00b4a6 + green accents. Keep the getSites data flow.
 ```
+
+> 🛠️ **Where do I run Copilot, and do I restart anything?**
+> - **Directory:** run Copilot in the **`fabric-extensibility-toolkit` repo** (your workload
+>   front-end) — open that folder in VS Code, or run the GitHub Copilot CLI **from that folder**.
+>   It edits the React/TSX under `Workload/app/items/GreenGridScorecardItem/` (`Scorecard.tsx`,
+>   `GreenGridScorecardItemDefaultView.tsx`). **Not** the SaaS repo, **not** the FY27 motion repo.
+> - **After the prompt: nothing to restart.** Front-end `.tsx` edits are picked up by the **Dev
+>   Server hot reload** — just refresh the Fabric item (Ctrl+Shift+R). Keep the **SaaS** and **both**
+>   the Dev Server and Dev Gateway running.
+> - You only restart the **Dev Gateway** for *manifest/back-end* changes (ITEM_NAMES, `Product.json`,
+>   locale keys, item icon) — **never** for UI code changes.
+> - 🔒 **Keep the `getSites` data flow** (as the prompt says) so the SaaS call still happens — only
+>   the *visuals* change, not the chain.
 
 **✅ What you should see — 🎯 Milestone M3.** A gauge, A/B/C tiers and the sites map, rendered
 natively inside Fabric:
