@@ -478,12 +478,22 @@ export function Scorecard({ getSites }: { getSites: () => Promise<SiteRecord[]> 
 `Scorecard` component) — but nothing displays them yet. 7e **wires `Scorecard` into the item's
 editor** so it shows inside Fabric. This is the step that turns files-on-disk into a visible item.
 
-The scaffold splits the editor into **views**: `GreenGridScorecardItemEmptyView.tsx` (the blank
-page shown for a brand-new item — that's the "empty page" you see first) and
-`GreenGridScorecardItemDefaultView.tsx` (the main view). Render your `Scorecard` in the
-**DefaultView's `center`**, then make the item open that view:
+The scaffold splits the editor into **views**: `GreenGridScorecardItemEmptyView.tsx` and
+`GreenGridScorecardItemDefaultView.tsx` (the main view). You (1) register the editor's **route**,
+(2) render your `Scorecard` in the DefaultView's `center`, and (3) make the item open that view:
 
-1. In **`GreenGridScorecardItemDefaultView.tsx`** — import your component + seed data and put the
+1. In **`App.tsx`** — register the editor route, or the item opens to a **blank page** (Fabric
+   navigates to `/<Item>-editor/:itemObjectId` but no `<Route>` matches → nothing renders, *with no
+   error in the console*). `CreateNewItem.ps1` does **not** add this. Mirror the HelloWorld route:
+   ```tsx
+   import { GreenGridScorecardItemEditor } from "./items/GreenGridScorecardItem";
+   // ...inside <Switch>, next to the HelloWorld route:
+   <Route path="/GreenGridScorecardItem-editor/:itemObjectId">
+     <GreenGridScorecardItemEditor workloadClient={workloadClient} data-testid="GreenGridScorecardItem-editor" />
+   </Route>
+   ```
+
+2. In **`GreenGridScorecardItemDefaultView.tsx`** — import your component + seed data and put the
    `Scorecard` in the `center` slot (you can keep or remove the `left` "Getting Started" panel):
    ```tsx
    import { Scorecard } from "./Scorecard";
@@ -492,19 +502,22 @@ page shown for a brand-new item — that's the "empty page" you see first) and
    center={{ content: <Scorecard getSites={() => Promise.resolve(seedSites)} /> }}
    ```
 
-2. In **`GreenGridScorecardItemEditor.tsx`** — by default a fresh item renders **no view at all**
-   (a blank page), because `ItemEditor` starts with `currentView = initialView || null` and the
-   scaffold sets the view only via a fragile post-load effect. Make it open the scorecard view
-   directly by adding **`initialView`** to the `<ItemEditor>` component:
+3. In **`GreenGridScorecardItemEditor.tsx`** — by default the editor renders **no view** (also a
+   blank page) because `ItemEditor` starts with `currentView = initialView || null`. Add
+   **`initialView`** so it opens the scorecard view directly:
    ```tsx
    <ItemEditor
      isLoading={isLoading}
      loadingMessage={...}
-     initialView={EDITOR_VIEW_TYPES.DEFAULT}   // ← add this: without it the page is blank
+     initialView={EDITOR_VIEW_TYPES.DEFAULT}   // ← without it the page is blank
      ribbon={...}
      views={views}
    />
    ```
+
+> 🩺 **Blank page with no console error?** It's almost always **#1 (the missing `App.tsx` route)** —
+> the console shows a navigation to `/<Item>-editor/...` but nothing renders. Then **#3** (no
+> `initialView`).
 
 **Save.** The dev server hot-reloads; refresh your open GreenGrid item in Fabric (keep the **SaaS**
 at `http://localhost:8787` **and both** Dev Server + Dev Gateway running). *(If you closed the item,
