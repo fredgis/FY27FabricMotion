@@ -645,10 +645,14 @@ Style: Fluent UI, teal #00b4a6 + green accents. Keep the getSites data flow.
 >   locale keys, item icon) — **never** for UI code changes.
 > - 🔒 **Keep the `getSites` data flow** (as the prompt says) so the SaaS call still happens — only
 >   the *visuals* change, not the chain.
-> - 🧊 **Restarted the Dev Server but Fabric still shows the old UI?** It's **browser/iframe cache**
->   (a plain Ctrl+Shift+R often doesn't bust the workload iframe). Open **F12 → Network → tick
->   "Disable cache"** (keep DevTools open) and reload, or right-click the reload button →
->   **"Empty Cache and Hard Reload"**, or **close the item tab and reopen it** (or use Incognito).
+> - 🧊 **Restarted the Dev Server but Fabric still shows the old UI?** Two layers of cache:
+>   1. **Build cache** — webpack keeps a persistent cache at `Workload/node_modules/.cache` that can
+>      serve **stale compiled modules** even after a restart (especially after a big change like the
+>      Copilot upgrade). **Delete `Workload/node_modules/.cache`** then restart the Dev Server (the
+>      rebuild is slower — wait for `compiled successfully`).
+>   2. **Browser/iframe cache** — then **F12 → Network → tick "Disable cache"** and reload, or
+>      right-click reload → **"Empty Cache and Hard Reload"**, or **close & reopen the item** (or
+>      Incognito). A plain Ctrl+Shift+R often isn't enough.
 
 **✅ What you should see — 🎯 Milestone M3.** A gauge, A/B/C tiers and the sites map, rendered
 natively inside Fabric:
