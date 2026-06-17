@@ -189,6 +189,25 @@ section.title small{ color:#9fb6ce; }
 
 ---
 
+<span class="kicker">PATH B — MICRO HACK 2</span>
+
+## The Workloads Micro Hack — a fixed, repeatable day
+
+<div class="rule"></div>
+
+| When | Block | Content |
+|------|-------|---------|
+| **Morning** | Why build a workload | Reach every Fabric customer via the Workload Hub; run on OneLake |
+| | Extensibility Toolkit foundations | Workload structure, Entra app, Dev Gateway, manifest, OBO token |
+| | Demo | GreenGrid Scorecard running live inside Fabric |
+| **Afternoon** | ⭐ Build sprint 1 | Clone toolkit, `Setup.ps1` (Entra app), Dev server + gateway, Hello World, `CreateNewItem` |
+| | ⭐ Build sprint 2 | Read `Files/sites.csv` from OneLake, call the backend, render the scorecard, polish |
+| | Plan & next steps | Embed the workload in the SDC offer + path to **publish on the Workload Hub** |
+
+*Same shape as Micro Hack 1 — but the artifact is a Fabric workload the SDC embeds in its offer, so every customer adopts Fabric.* · Primary KPI: **# workloads per SDC**.
+
+---
+
 <span class="kicker">THE BUILD</span>
 
 ## The Micro Hack kit — the one asset we create
