@@ -253,6 +253,14 @@ curl -s -X POST <SAAS_URL>/score \
 `cd src/workloadsdc && npm install && npm run saas:start`, URL `http://localhost:8787`, key
 `greengrid-demo-key`.)*
 
+> 💡 Open `<SAAS_URL>/` (e.g. `http://localhost:8787/`) in a browser: the SaaS also serves the
+> **GreenGrid website** with a *Developers* section and a **live demo** that calls `/score`. It's
+> the same scoring algorithm your workload is about to consume.
+
+![GreenGrid SaaS — website (the algorithm you'll call)](images/scenario2-saas-landing.png)
+
+![GreenGrid SaaS — live /score demo](images/scenario2-saas-demo.png)
+
 ---
 
 ## Step 7 — Make it work with fake data (Milestone M1)
@@ -462,8 +470,14 @@ and a second view showing the sites as factory markers on a simple map, colored 
 Style: Fluent UI, teal #00b4a6 + green accents. Keep the getSites data flow.
 ```
 
-**✅ What you should see — 🎯 Milestone M3.** A gauge, A/B/C tiers and the sites map — matching
-the example images at the top.
+**✅ What you should see — 🎯 Milestone M3.** A gauge, A/B/C tiers and the sites map, rendered
+natively inside Fabric:
+
+![GreenGrid Scorecard — final result in Fabric](images/scenario2-scorecard.png)
+
+![GreenGrid sites map — final result in Fabric](images/scenario2-sites-map.png)
+
+![GreenGrid site detail — per-site score & recommendation](images/scenario2-site-detail.png)
 
 ---
 

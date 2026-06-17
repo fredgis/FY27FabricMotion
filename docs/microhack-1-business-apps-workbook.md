@@ -262,7 +262,9 @@ Add filters for station and status.
 score/tag is computed from status + mood so the manager sees priorities at a glance.
 
 **✅ What you should see.** A table of bikes by station with coloured status pills and a
-tag. You can filter by station and status. (Compare with the first example image above.)
+tag. You can filter by station and status.
+
+![Helios Bicycle Board — example result](images/scenario1-bicycle-board.png)
 
 ---
 
@@ -281,6 +283,8 @@ manager fast; preferring the same-station, least-busy mechanic is a simple, sens
 
 **✅ What you should see.** A three-column board. Creating a ticket from a bike places a card
 in **New**; assigning moves it to **Assigned** with the mechanic's name.
+
+![Helios Pit-Stop Queue — example result](images/scenario1-pit-stop-queue.png)
 
 > 🎯 **Milestone (Sprint 1):** Steps 1–5 give you a working app — detect a bike, open a
 > ticket, assign it. If you reach here, you can already demo.
@@ -304,6 +308,8 @@ maintenance activity into a **fleet-readiness KPI** (how fast issues get bikes b
 **✅ What you should see.** A row of KPI cards with the average mood, the count of bikes
 needing a pit-stop, and the pit-stop pipeline percentages (flag rate, resolution rate, bikes back to ready).
 
+![Helios Ride Mood & Fleet KPI — example result](images/scenario1-ride-mood-kpi.png)
+
 ---
 
 ## Step 7 — Add the Live Map (make it shine)
@@ -320,7 +326,9 @@ summary panel.
 and close to how operations teams think about a city fleet.
 
 **✅ What you should see.** A map with coloured bike markers and a side panel counting bikes
-per station (compare with the second example image above).
+per station.
+
+![Helios Live Map — example result](images/scenario1-live-map.png)
 
 ---
 
