@@ -492,10 +492,18 @@ page shown for a brand-new item — that's the "empty page" you see first) and
    center={{ content: <Scorecard getSites={() => Promise.resolve(seedSites)} /> }}
    ```
 
-2. In **`GreenGridScorecardItemEditor.tsx`** — a fresh item opens the blank *EmptyView*. In the
-   post-load `useEffect` that picks the view, force the DEFAULT (scorecard) view:
+2. In **`GreenGridScorecardItemEditor.tsx`** — by default a fresh item renders **no view at all**
+   (a blank page), because `ItemEditor` starts with `currentView = initialView || null` and the
+   scaffold sets the view only via a fragile post-load effect. Make it open the scorecard view
+   directly by adding **`initialView`** to the `<ItemEditor>` component:
    ```tsx
-   const correctView = EDITOR_VIEW_TYPES.DEFAULT;
+   <ItemEditor
+     isLoading={isLoading}
+     loadingMessage={...}
+     initialView={EDITOR_VIEW_TYPES.DEFAULT}   // ← add this: without it the page is blank
+     ribbon={...}
+     views={views}
+   />
    ```
 
 **Save.** The dev server hot-reloads; refresh your open GreenGrid item in Fabric (keep the **SaaS**
