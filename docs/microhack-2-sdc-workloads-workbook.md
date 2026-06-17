@@ -645,6 +645,10 @@ Style: Fluent UI, teal #00b4a6 + green accents. Keep the getSites data flow.
 >   locale keys, item icon) — **never** for UI code changes.
 > - 🔒 **Keep the `getSites` data flow** (as the prompt says) so the SaaS call still happens — only
 >   the *visuals* change, not the chain.
+> - 🧊 **Restarted the Dev Server but Fabric still shows the old UI?** It's **browser/iframe cache**
+>   (a plain Ctrl+Shift+R often doesn't bust the workload iframe). Open **F12 → Network → tick
+>   "Disable cache"** (keep DevTools open) and reload, or right-click the reload button →
+>   **"Empty Cache and Hard Reload"**, or **close the item tab and reopen it** (or use Incognito).
 
 **✅ What you should see — 🎯 Milestone M3.** A gauge, A/B/C tiers and the sites map, rendered
 natively inside Fabric:
