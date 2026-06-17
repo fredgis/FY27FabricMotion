@@ -248,28 +248,29 @@ This creates `Workload/app/items/GreenGridScorecardItem/` on your machine, inclu
 **`GreenGridScorecardItemEditor.tsx`** — the **React component Fabric renders when your item is
 opened** (this is "the editor"; it starts nearly empty).
 
-> 🚨 **Critical — register the item in `ITEM_NAMES`, or Fabric won't show it.** The toolkit only
-> packages items listed in the `ITEM_NAMES` variable. `CreateNewItem.ps1` prints this in red — do
-> it now. Edit **all three** env files `Workload/.env.dev`, `.env.test`, `.env.prod` and add the
-> new item (the value you passed to `-Name`, here `GreenGridScorecard`) to the comma-separated list:
+> 🚨 **`CreateNewItem.ps1` scaffolds the code but leaves 3 things for you to add — do all three now,
+> or the Dev Gateway / Fabric will reject the item.**
 >
+> **1. Register it in `ITEM_NAMES`** (else it isn't packaged → not shown in Fabric). Edit **all three**
+> `Workload/.env.dev`, `.env.test`, `.env.prod` and append the `-Name` value:
 > ```diff
 > - ITEM_NAMES=HelloWorld
 > + ITEM_NAMES=HelloWorld,GreenGridScorecard
 > ```
-
-> 🌐 **Also add the item's display-name keys to the locale file**, or the Dev Gateway fails with
-> `Missing keys in en-US locale: GreenGridScorecardItem_DisplayName, ..._DisplayName_Plural`.
-> Edit `Workload/Manifest/assets/locales/en-US/translations.json` and add **exactly the two keys
-> the item manifest references** (a default `CreateNewItem` item only references `displayName`):
 >
+> **2. Add the display-name locale keys** (else the gateway fails with `Missing keys in en-US
+> locale: ..._DisplayName, ..._DisplayName_Plural`). In `Workload/Manifest/assets/locales/en-US/translations.json`
+> add **exactly the keys the item manifest references** — a default item references only `displayName`:
 > ```json
 > "GreenGridScorecardItem_DisplayName": "GreenGrid Scorecard",
 > "GreenGridScorecardItem_DisplayName_Plural": "GreenGrid Scorecards"
 > ```
-> Mind the JSON commas, and repeat for any other `locales/<lang>/` folders. ⚠️ The match must be
-> **exact**: don't add a `_Description` key unless the item manifest references it, or the gateway
-> rejects it with `Unused keys in en-US locale: ..._Description`.
+> Mind the JSON commas; repeat for any other `locales/<lang>/`. ⚠️ Don't add extra keys (e.g.
+> `_Description`) unless the manifest references them, or you get `Unused keys in en-US locale`.
+>
+> **3. Add the item icon** (else `MissingAssets: 'assets/images/GreenGridScorecardItem_Icon.png'`).
+> Drop a 48×48 PNG named `<Item>_Icon.png` into `Workload/Manifest/assets/images/` (quickest fix:
+> copy `HelloWorldItem_Icon.png` to `GreenGridScorecardItem_Icon.png`, swap a nicer icon in later).
 
 **Restart *both* terminals** so the manifest is rebuilt and re-delivered to Fabric — the Dev Server
 (Ctrl+C, `./StartDevServer.ps1`) **and** the Dev Gateway (Ctrl+C, `./StartDevGateway.ps1`). On

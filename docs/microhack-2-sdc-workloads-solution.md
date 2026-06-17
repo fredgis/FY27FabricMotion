@@ -170,6 +170,20 @@ has the full copy-paste code for each step. The canonical implementation is in
 5. **Create the item and add the code** — `./CreateNewItem.ps1 -Name "GreenGridScorecard"`,
    then add `contracts.ts`, `greengridClient.ts`, `seed.ts`, `Scorecard.tsx` and render with
    **seed data first** (Milestone M1).
+
+   > ⚠️ **Trainer-critical — `CreateNewItem.ps1` scaffolds the code but leaves 3 manual additions;
+   > skip any and the Dev Gateway / Fabric rejects the item (the most common day-of blockers):**
+   > 1. **`ITEM_NAMES`** — add the item to the comma-separated list in **all three** `Workload/.env.{dev,test,prod}`
+   >    (e.g. `HelloWorld,GreenGridScorecard`), or it isn't packaged → absent from Fabric's *New item*.
+   > 2. **Locale keys** — add `<Item>_DisplayName` + `<Item>_DisplayName_Plural` to
+   >    `Workload/Manifest/assets/locales/en-US/translations.json` (exactly the keys the manifest
+   >    references — no extras, or `Unused keys in en-US locale`).
+   > 3. **Item icon** — drop a 48×48 PNG `Workload/Manifest/assets/images/<Item>_Icon.png` (copy the
+   >    HelloWorld icon to start), or `MissingAssets: '..._Icon.png'`.
+   >
+   > Then **restart both** the Dev Server **and** the Dev Gateway and refresh Fabric. (The benign
+   > `BuildManifestPackage … CursorPosition: The handle is invalid` warning can be ignored.) Full
+   > participant steps + the tenant `FeatureNotAvailable` prerequisite are in the setup guide §6.
 6. **Read OneLake** — add `onelake.ts` (OBO token) to read & parse `Files/sites.csv`, then swap
    the one render line from seed to OneLake (Milestone M2).
 7. **Polish** — gauge, A/B/C tiers, provenance chips and the sites map (Milestone M3).
