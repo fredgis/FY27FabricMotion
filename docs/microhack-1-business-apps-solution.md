@@ -261,7 +261,7 @@ with a small colored bike icon on each row.
 ```
 
 Then refine screen by screen using the prompts in the
-[participant workbook](microhack-1-business-apps-workbook.md#7-guided-rayfin-prompts).
+[participant workbook](microhack-1-business-apps-workbook.md#part-b--build-it-step-by-step).
 
 ### 5.4 Commands & who does what
 

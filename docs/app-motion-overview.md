@@ -57,7 +57,7 @@ sequenceDiagram
 ## 4) Asset map in `/docs`
 
 - `motion-brief.md`: concise narrative baseline.
-- `microhack-1-business-apps-solution.md`: full Business Apps solution with screen simulations.
+- `microhack-1-business-apps-solution.md`: full Business Apps solution with screenshots.
 - `microhack-1-business-apps-setup.md`: trainer setup for end-customer apps.
 - `microhack-1-business-apps-workbook.md`: participant workbook for apps.
 - `microhack-2-sdc-workloads-solution.md`: full SDC workload solution with screenshots.

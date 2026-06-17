@@ -26,11 +26,11 @@ flowchart LR
     C --> D["Micro Hack vehicle<br/>Morning demos · Afternoon build"]
     D --> E["Outcomes<br/>Apps + Workloads + Adoption"]
     classDef advisory fill:#EAF3FB,stroke:#0078D4,color:#1B2A3A,stroke-width:2px;
-    classDef isv fill:#E6F7F4,stroke:#00B4A6,color:#1B2A3A,stroke-width:2px;
+    classDef sdc fill:#E6F7F4,stroke:#00B4A6,color:#1B2A3A,stroke-width:2px;
     classDef core fill:#0B2447,stroke:#0B2447,color:#FFFFFF,stroke-width:2px;
     classDef out fill:#F3F7FB,stroke:#5B6B7B,color:#1B2A3A,stroke-width:2px;
     class A advisory;
-    class B isv;
+    class B sdc;
     class C,D core;
     class E out;
 ```

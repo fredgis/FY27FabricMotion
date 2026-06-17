@@ -16,7 +16,7 @@ Scenario: **GreenGrid Analytics** (fictional SDC)
   'secondaryColor':'#EAF3FB'
 }}}%%
 flowchart LR
-    O["Customer OneLake<br/>sites table"] --> W["Fabric workload<br/>GreenGrid Scorecard"]
+    O["Customer OneLake<br/>Files/sites.csv"] --> W["Fabric workload<br/>GreenGrid Scorecard"]
     S["GreenGrid SaaS<br/>/score (pre-deployed)"] --> W
     W --> U["In-Fabric scorecard<br/>(graphical)"]
     DEV["SDC dev team<br/>Dev Gateway"] --> W
@@ -121,7 +121,7 @@ Expected:
 |---|---|---|---|
 | D-2 | SDC tech lead | Deploy GreenGrid SaaS | Public HTTPS `/health` returns 200 |
 | D-1 (morning) | Trainer | Fabric workspace + capacity ready | Workspace usable by all trainer accounts |
-| D-1 (morning) | Data coach | Load `sites` table into a lakehouse | Table visible in OneLake |
+| D-1 (morning) | Data coach | Upload `Files/sites.csv` into a lakehouse | File visible in OneLake |
 | D-1 (afternoon) | Platform coach | Dev Gateway + dev server validated | Dev workload renders in Fabric |
 | D-1 (afternoon) | Trainer | End-to-end smoke run | OneLake → SaaS → scorecard works |
 | D-day 08:30 | Trainer | Recheck tokens/credentials | Auth works for all demo accounts |
@@ -136,7 +136,7 @@ Expected:
 
 ### Expected baseline implementation
 - One item type: `GreenGridScorecard`.
-- On open: read `sites` from OneLake (OBO token).
+- On open: read `Files/sites.csv` from OneLake (OBO token).
 - Call SaaS `POST /score`.
 - Render one graphical scorecard (gauge + tiers + site cards).
 
@@ -160,5 +160,5 @@ Expected:
 |---|---|---|
 | 401 from SaaS | Wrong/missing `x-api-key` | Re-issue key, re-test with curl |
 | CORS errors | Origin not whitelisted | SaaS already sends `*`; check proxy |
-| Workload not loading | Developer mode / Dev Gateway off | Enable dev mode, restart `start:devGateway` |
-| Empty scorecard | OneLake `sites` table missing | Load the sample `sites` data |
+| Workload not loading | Developer mode / Dev Gateway off | Enable dev mode, restart `StartDevGateway.ps1` |
+| Empty scorecard | `Files/sites.csv` missing in OneLake | Upload the sample CSV (`src/workloadsdc/data/sites.csv`) |
