@@ -524,7 +524,14 @@ at `http://localhost:8787` **and both** Dev Server + Dev Gateway running). *(If 
 reopen it from the Workload Hub as in Step 5.)*
 
 **✅ What you should see — 🎯 Milestone M1.** The item shows the portfolio score and 5 site
-cards with their tier, **inside Fabric**. The whole chain works on fake data. This is demoable.
+cards with their tier, **inside Fabric**.
+
+> 🔎 **Fake data or real backend?** Both — that's the point of M1. The **5 sites are fake**
+> (`seedSites`; they become real OneLake data in Step 8), but the **scoring is a real call to the
+> SaaS** you started: `Scorecard` POSTs the sites to `http://localhost:8787/score`, which runs the
+> GreenGrid algorithm and returns the scores you see. Verify it: **F12 → Network** shows a `score`
+> request (200) to `localhost:8787`, and the **SaaS terminal logs** `POST /score — 5 site(s) → avg …`.
+> Stop the SaaS and refresh → the card shows `Failed: …`, proving it depends on the backend.
 
 ---
 

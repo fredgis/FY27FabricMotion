@@ -52,6 +52,10 @@ app.post('/score', (req: Request, res: Response) => {
 
   const sites = scoreSites(body.sites);
   const summary = buildPortfolio(sites);
+  console.log(
+    `POST /score - ${body.sites.length} site(s) -> avg ${summary.avgScore}/100, ` +
+    `tiers A:${summary.tierCounts.A} B:${summary.tierCounts.B} C:${summary.tierCounts.C}`
+  );
   return res.json({ sites, summary });
 });
 
