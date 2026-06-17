@@ -221,6 +221,28 @@ regular user **cannot** self-enable it. Pick one of these:
    **Fabric tenant you administer** — e.g. a personal/dev tenant or a **demo tenant** (for Microsoft
    field: a CDX / demo.microsoft.com Fabric tenant). Start a **Fabric Trial** there (Account manager
    → *Start trial*), and you can flip the settings yourself.
+
+   <details><summary><b>How to grant someone the Fabric Administrator role</b> (you must already be Global Administrator)</summary>
+
+   Fabric "tenant admin" = the Entra ID **Fabric Administrator** role (formerly *Power BI
+   Administrator*, role template `a9ea8996-122f-4c74-9520-8edcd192826c`). It unlocks the Admin
+   portal → Tenant settings (it does **not** by itself grant capacity/workspace admin).
+
+   - **Portal:** [entra.microsoft.com](https://entra.microsoft.com) → *Identity → Users* → pick the
+     user → *Assigned roles → Add assignments* → **Fabric Administrator**.
+   - **PowerShell (Microsoft Graph):**
+     ```powershell
+     Connect-MgGraph -Scopes "RoleManagement.ReadWrite.Directory","User.Read.All"
+     $tpl = "a9ea8996-122f-4c74-9520-8edcd192826c"   # Fabric Administrator
+     if (-not (Get-MgDirectoryRole -All | Where-Object RoleTemplateId -eq $tpl)) { New-MgDirectoryRole -RoleTemplateId $tpl }
+     $role   = Get-MgDirectoryRole -All | Where-Object RoleTemplateId -eq $tpl
+     $userId = (Get-MgUser -UserId "user@tenant.onmicrosoft.com").Id
+     New-MgDirectoryRoleMemberByRef -DirectoryRoleId $role.Id -BodyParameter @{ "@odata.id" = "https://graph.microsoft.com/v1.0/directoryObjects/$userId" }
+     ```
+   Assigning a directory role itself requires **Global Administrator** / *Privileged Role
+   Administrator* — so this only works in a tenant where you already hold that. Propagation takes a
+   few minutes.
+   </details>
 3. **No-Fabric fallback — keep building & seeing the scorecard locally.** You can still build and
    *see* the GreenGrid UI without Developer Mode (you just won't be running inside the Fabric portal
    / OneLake):
