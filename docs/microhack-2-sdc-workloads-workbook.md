@@ -246,13 +246,26 @@ cd scripts/Setup
 
 This creates `Workload/app/items/GreenGridScorecardItem/` on your machine, including
 **`GreenGridScorecardItemEditor.tsx`** — the **React component Fabric renders when your item is
-opened** (this is "the editor"; it starts nearly empty). **Restart the dev server** (Ctrl+C in
-Terminal 1, then `./StartDevServer.ps1` again).
+opened** (this is "the editor"; it starts nearly empty).
+
+> 🚨 **Critical — register the item in `ITEM_NAMES`, or Fabric won't show it.** The toolkit only
+> packages items listed in the `ITEM_NAMES` variable. `CreateNewItem.ps1` prints this in red — do
+> it now. Edit **all three** env files `Workload/.env.dev`, `.env.test`, `.env.prod` and add the
+> new item (the value you passed to `-Name`, here `GreenGridScorecard`) to the comma-separated list:
+>
+> ```diff
+> - ITEM_NAMES=HelloWorld
+> + ITEM_NAMES=HelloWorld,GreenGridScorecard
+> ```
+
+**Restart *both* terminals** so the manifest is rebuilt and re-delivered to Fabric — the Dev Server
+(Ctrl+C, `./StartDevServer.ps1`) **and** the Dev Gateway (Ctrl+C, `./StartDevGateway.ps1`). On
+restart the gateway should log `Configured items from ITEM_NAMES: HelloWorld, GreenGridScorecard`.
 
 Now **create an instance** of your item *in the Fabric portal* so you have something to render
 into:
 
-1. Open the Workload Hub:
+1. **Refresh** Fabric (F5), then open the Workload Hub:
    `https://app.fabric.microsoft.com/workloadhub/detail/Org.GreenGrid.Product?experience=fabric-developer`
    (same place as Hello World in Step 4).
 2. Click the **GreenGridScorecard** item type → pick your **dev workspace** → the editor opens.
@@ -261,6 +274,12 @@ into:
 > your machine). Creating it in Fabric makes an **instance** that runs that code inside Fabric.
 > Keep this instance open: every time you save the editor `.tsx`, the dev server hot-reloads and
 > this open item re-renders — you do **not** re-create the item for each change.
+
+> ⚠️ **Don't see GreenGridScorecard in "New item"?** 99% of the time it's the `ITEM_NAMES` step
+> above: confirm the item is added in **all three** `.env` files, restart **both** the Dev Server
+> **and** the Dev Gateway, then **refresh** Fabric. *(The `BuildManifestPackage … CursorPosition:
+> The handle is invalid` warning is harmless — it's a console-cursor quirk; `Delivered manifest
+> package successfully` means the build is fine.)*
 
 **✅ What you should see.** An empty GreenGridScorecard editor opens in Fabric (your code, rendered
 in the portal).
