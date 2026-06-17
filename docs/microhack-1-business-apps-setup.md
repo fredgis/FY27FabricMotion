@@ -138,7 +138,7 @@ Style: clean, friendly, Microsoft Fluent, blue #0078d4 + teal #00b4a6.
 | Symptom | Likely cause | Fast fix |
 |---|---|---|
 | `template "field-technician" not found` | That's a gallery template, not built-in | Use `--template dataapp` (or run with no `--template`) |
-| Deploy fails with 401/403 | Rayfin session expired | `npx rayfin login`, then `npm run dev` |
+| Deploy fails with 401/403 | Rayfin session expired | `npx rayfin login --tenant <tenant-id>`, then `npm run dev` |
 | Data-model change not reflected | Schema not applied | `npx rayfin up db apply` (`--force` only if you accept data loss) |
 | Sign-in issues to the app once deployed | Email/password is local-dev only | Use Fabric brokered auth (Entra SSO); set `auth.fabric.enabled: true` in `rayfin.yml` |
 | Participants blocked | Missing workspace permission or capacity | Re-check workspace role + that the capacity is running |

@@ -26,7 +26,7 @@ one-day micro-hack for the Business Apps (Rayfin) track**.
 | 12:00 | Lunch |
 | 13:30 | **Hack · Sprint 1** — build the core app (steps 1–5) |
 | 15:30 | Break |
-| 15:45 | **Hack · Sprint 2** — extend & polish (steps 6–8) |
+| 15:45 | **Hack · Sprint 2** — extend, polish & deploy (steps 6–9) |
 | 16:45 | Team demos (5 min each) |
 | 17:00 | Wrap-up, KPIs & next steps |
 
@@ -144,10 +144,24 @@ at the app.*
 | `npx rayfin up staticapp deploy` | Redeploy only the frontend (faster). |
 | `npx rayfin up status` | Show the current deployment. |
 | `npx rayfin up --dry-run` | Preview a deploy without changing anything. |
-| `npx rayfin login` | Re-authenticate if you hit a 401/403. |
+| `npx rayfin login --tenant <tenant-id>` | Re-authenticate if you hit a 401/403 (scope to your Entra tenant). |
 
 > **Auth note.** Email/password sign-in only works in local dev. Once deployed to Fabric, only
 > **Fabric brokered auth (Entra SSO)** works — `rayfin.yml` must have `auth.fabric.enabled: true`.
+
+### The build loop (what happens between prompts)
+
+Every build step follows the same rhythm:
+
+1. **You** give the GitHub Copilot CLI a short prompt.
+2. **Copilot** writes/edits the code **and validates it for you** — it type-checks (`tsc`),
+   lints (`eslint`), builds (`npm run build`) and runs the unit tests, fixing issues until green.
+3. **You** run `npm run dev` to see the change in the browser (it re-deploys and re-provisions
+   the database if the data model changed).
+4. **You** sanity-check the screen, then move to the next prompt.
+
+> If Copilot reports build/test errors it couldn't fix on its own, paste the error back to it —
+> that's the normal loop. Don't move on while the build is red.
 
 ---
 
@@ -210,8 +224,27 @@ Style: clean, friendly, Microsoft Fluent, blue #0078d4 + teal #00b4a6.
 **Why.** These four types become four tables. `Bicycle.status` is a fixed list of values,
 so the app can colour bikes by status later.
 
-**✅ What you should see.** Copilot creates the data files; running the app re-provisions the
-database with the new tables (still empty screens — that's normal).
+**✅ What you should see.** Copilot creates `rayfin/data/*.ts` — one `@entity()` class per type,
+marked `@authenticated('*')`, with relationships (e.g. a `@one` link from `PitStopTicket` to
+`Bicycle`, and an **optional/nullable** `assignedMechanic`) — exports them from `schema.ts`, and
+enables the data service in `rayfin.yml` (`dialect: mssql`).
+
+**Then — apply the schema.** Re-run `npm run dev` (or `npx rayfin up db apply`) so Rayfin
+provisions the matching tables. The screens are still empty — that's expected.
+
+> 👥 **Roles are app-level — important.** Rayfin's data layer only knows `authenticated` /
+> `anonymous`; there are no per-row database roles. So the **Operations Manager vs Mechanic**
+> split is enforced **in the app** (a role context + a header switcher; the Mechanic gets a
+> focused "My Pit-Stops" worklist). When you ask Copilot for roles in Step 8, expect this
+> app-layer logic — not database roles.
+
+> 🗃️ **Load demo data — your DB starts empty.** Before the screens can show anything, add data.
+> Ask Copilot for a **Manager-only "Load demo fleet" button** that writes real rows through the
+> data API (no hardcoded display data), then click it once:
+> ```text
+> Add a Manager-only "Load demo fleet" button that seeds the database with a few bikes,
+> mechanics, ride sessions and pit-stop tickets via the Rayfin data API (no hardcoded UI data).
+> ```
 
 ---
 
@@ -309,6 +342,29 @@ rollout.
 sees its own tickets.
 
 > 🎯 **Milestone (Sprint 2):** the app is graphical and role-aware — ready for the 5-minute demo.
+
+---
+
+## Step 9 — Go live (deploy to Fabric)
+
+**What you do.** Ship the app so it runs embedded in the Fabric portal with a shareable URL.
+
+```bash
+npx rayfin login --tenant <your-tenant-id>   # interactive Entra sign-in, scoped to your tenant
+npx rayfin up                                # deploys the static app + applies the schema migration
+```
+
+> Pass your **tenant ID** (a GUID, or your `contoso.onmicrosoft.com` domain) to `--tenant` so the
+> sign-in targets the right Entra tenant — useful when your account belongs to several tenants.
+
+**Why.** Browser validation in Fabric needs the portal embed (interactive Entra sign-in + a
+workspace). `npx rayfin up` does the deploy **and** the database migration in one step, and
+injects the runtime `VITE_*` env vars the client needs.
+
+**✅ What you should see.** The CLI prints the **live app URL** and a Fabric portal link. Open it,
+sign in, and your Helios Bicycle Studio runs inside Fabric.
+
+> 🎯 **Milestone (ship):** the app is deployed and demoable from a real Fabric URL.
 
 ---
 

@@ -275,7 +275,7 @@ Then refine screen by screen using the prompts in the
 | `npx rayfin up db apply` | Push only data-model/schema changes (`--force` if destructive) |
 | `npx rayfin up staticapp deploy` | Redeploy only the frontend |
 | `npx rayfin up status` | Show the current deployment |
-| `npx rayfin login` | Re-authenticate on 401/403 |
+| `npx rayfin login --tenant <tenant-id>` | Re-authenticate on 401/403 (scope to your tenant) |
 
 Only **Fabric brokered auth (Entra SSO)** works once deployed (email/password is local-dev
 only). Reference: [Deploy a Fabric App](https://learn.microsoft.com/en-us/fabric/apps/deploy-app).
