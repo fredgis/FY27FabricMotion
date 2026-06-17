@@ -56,7 +56,11 @@ function icon(s, x, y, d, fill, emoji) {
   s.addText(emoji, { x, y: y - 0.01, w: d, h: d, align: 'center', valign: 'middle', fontFace: FE, fontSize: Math.round(d * 26), color: C.white });
 }
 function arrow(s, x, y, w, h, color) {
-  s.addShape(LN(), { x, y, w, h, line: { color: color || '93A6BE', width: 1.75, endArrowType: 'triangle' } });
+  // Always emit a non-negative bounding box; express direction via flipH/flipV.
+  // PowerPoint rejects negative <a:ext> values (triggers a file repair).
+  const flipH = w < 0, flipV = h < 0;
+  const ax = w < 0 ? x + w : x, ay = h < 0 ? y + h : y;
+  s.addShape(LN(), { x: ax, y: ay, w: Math.abs(w), h: Math.abs(h), flipH, flipV, line: { color: color || '93A6BE', width: 1.75, endArrowType: 'triangle' } });
 }
 function topCard(s, x, y, w, h, accent) {
   s.addShape(RR(), { x, y, w, h, rectRadius: 0.08, fill: { color: C.white }, line: { color: C.line, width: 1 }, shadow: { type: 'outer', color: '8AA0BC', opacity: 0.28, blur: 7, offset: 2, angle: 90 } });
