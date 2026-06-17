@@ -244,11 +244,26 @@ cd scripts/Setup
 ./CreateNewItem.ps1 -Name "GreenGridScorecard"
 ```
 
-This creates `Workload/app/items/GreenGridScorecardItem/`, including
-`GreenGridScorecardItemEditor.tsx`. **Restart the dev server** (Ctrl+C in Terminal 1, then
-`./StartDevServer.ps1` again). In Fabric, create a **GreenGridScorecard** item.
+This creates `Workload/app/items/GreenGridScorecardItem/` on your machine, including
+**`GreenGridScorecardItemEditor.tsx`** — the **React component Fabric renders when your item is
+opened** (this is "the editor"; it starts nearly empty). **Restart the dev server** (Ctrl+C in
+Terminal 1, then `./StartDevServer.ps1` again).
 
-**✅ What you should see.** An empty GreenGridScorecard editor opens in Fabric.
+Now **create an instance** of your item *in the Fabric portal* so you have something to render
+into:
+
+1. Open the Workload Hub:
+   `https://app.fabric.microsoft.com/workloadhub/detail/Org.GreenGrid.Product?experience=fabric-developer`
+   (same place as Hello World in Step 4).
+2. Click the **GreenGridScorecard** item type → pick your **dev workspace** → the editor opens.
+
+> 💡 **Type vs instance.** `CreateNewItem.ps1` scaffolds the item **type + its editor code** (on
+> your machine). Creating it in Fabric makes an **instance** that runs that code inside Fabric.
+> Keep this instance open: every time you save the editor `.tsx`, the dev server hot-reloads and
+> this open item re-renders — you do **not** re-create the item for each change.
+
+**✅ What you should see.** An empty GreenGridScorecard editor opens in Fabric (your code, rendered
+in the portal).
 
 ---
 
@@ -418,15 +433,21 @@ export function Scorecard({ getSites }: { getSites: () => Promise<SiteRecord[]> 
 
 ### 7e. Render it from the generated editor
 
-Open `GreenGridScorecardItemEditor.tsx` and render the `Scorecard` with the **fake** data:
+**`GreenGridScorecardItemEditor.tsx`** is the file `CreateNewItem.ps1` generated in **Step 5** —
+the component Fabric shows when your item opens. Open it and render your `Scorecard` with the
+**fake** seed data (replace the placeholder the toolkit put in the editor's JSX):
 
 ```tsx
 import { Scorecard } from './Scorecard';
 import { seedSites } from './seed';
 
-// inside the editor's returned JSX:
+// inside the editor component's returned JSX:
 <Scorecard getSites={() => Promise.resolve(seedSites)} />
 ```
+
+**Save the file.** The dev server hot-reloads, so the GreenGridScorecard **item you already opened
+in Fabric** (Step 5) now shows the scorecard — no need to re-create it. *(If you closed it, reopen
+it from the Workload Hub as in Step 5.)*
 
 **✅ What you should see — 🎯 Milestone M1.** The item shows the portfolio score and 5 site
 cards with their tier, **inside Fabric**. The whole chain works on fake data. This is demoable.
