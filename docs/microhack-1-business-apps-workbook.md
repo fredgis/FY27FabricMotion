@@ -88,6 +88,32 @@ By the end of the afternoon your app should look like this — a **Bicycle Board
 > Copilot writes the code, and you check the result in the browser. Each step below = one
 > action + **what you should see**.
 
+### Who does what — Copilot vs. the Rayfin CLI (read once)
+
+This is the key thing to understand: **the prompt + Copilot do NOT deploy anything by
+themselves.**
+
+- **GitHub Copilot** = writes/edits your TypeScript: the data model in `rayfin/data/` and the
+  screens. It does **not** touch Fabric or your database.
+- **The Rayfin CLI** = *you* run it. It deploys to Fabric, **provisions the database from your
+  data model**, and hosts the app. `npm run dev` wraps this for the dev loop.
+
+So the rhythm is: *ask Copilot to write code -> run a CLI command to deploy/provision -> look
+at the app.*
+
+| Command | What it does |
+|:-------------------------------|:-----------------------------------------------------|
+| `npm run dev` | Dev loop: deploys (`rayfin up`) + serves the app for fast iteration. **Use this most of the time.** |
+| `npx rayfin up` | Full deploy to Fabric: creates the app item, applies the DB schema from your data model, builds & uploads the UI, prints the live URL. |
+| `npx rayfin up db apply` | After you change `rayfin/data/`, push only the new schema (add `--force` if it warns about data loss). |
+| `npx rayfin up staticapp deploy` | Redeploy only the frontend (faster). |
+| `npx rayfin up status` | Show the current deployment. |
+| `npx rayfin up --dry-run` | Preview a deploy without changing anything. |
+| `npx rayfin login` | Re-authenticate if you hit a 401/403. |
+
+> **Auth note.** Email/password sign-in only works in local dev. Once deployed to Fabric, only
+> **Fabric brokered auth (Entra SSO)** works — `rayfin.yml` must have `auth.fabric.enabled: true`.
+
 ---
 
 ## Step 1 — Create the project (no clone needed)

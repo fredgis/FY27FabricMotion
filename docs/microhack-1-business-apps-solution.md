@@ -263,6 +263,23 @@ with a small colored bike icon on each row.
 Then refine screen by screen using the prompts in the
 [participant workbook](microhack-1-business-apps-workbook.md#7-guided-rayfin-prompts).
 
+### 5.4 Commands & who does what
+
+**The prompt + Copilot do not deploy.** Copilot writes the TypeScript (data model + screens);
+**you** run the Rayfin CLI to deploy and provision the database.
+
+| Command | What it does |
+|:-------------------------------|:-----------------------------------------------------|
+| `npm run dev` | Dev loop: deploys (`rayfin up`) + serves the app — use most of the time |
+| `npx rayfin up` | Full deploy: creates the Fabric app item, applies the DB schema from the data model, builds & uploads the UI |
+| `npx rayfin up db apply` | Push only data-model/schema changes (`--force` if destructive) |
+| `npx rayfin up staticapp deploy` | Redeploy only the frontend |
+| `npx rayfin up status` | Show the current deployment |
+| `npx rayfin login` | Re-authenticate on 401/403 |
+
+Only **Fabric brokered auth (Entra SSO)** works once deployed (email/password is local-dev
+only). Reference: [Deploy a Fabric App](https://learn.microsoft.com/en-us/fabric/apps/deploy-app).
+
 > **Trainer note.** This kit is the *reference answer*. Teams are free to design a
 > different layout, but they should target the **same scenario, data model and roles** so
 > coaching, the seed data and the KPI story stay consistent.
