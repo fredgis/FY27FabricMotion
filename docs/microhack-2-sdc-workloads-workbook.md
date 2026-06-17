@@ -207,6 +207,11 @@ ON in Fabric.
 > can develop workloads*, and *Users can see and work with additional workloads not validated by
 > Microsoft* — **and** the workspace must be on a **Fabric/Trial capacity** (not Pro/PPU). Full
 > steps in the setup guide (§6.1). It is not a code issue — the gateway is refused by Fabric.
+>
+> **Not a tenant admin?** You can't self-enable it — either ask your admin for those toggles, run
+> the hack in a tenant **you** administer (a Fabric Trial / demo tenant), or keep building locally
+> without Fabric: `npm run saas:start` + `npm run demo:build`, then open
+> `src/workloadsdc/demo/out/scorecard.html` (same algorithm, no Fabric needed). See setup §6.1.1.
 
 ---
 

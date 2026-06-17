@@ -205,3 +205,32 @@ in this order:
 > If you are **not** a Fabric admin, this is a blocker only an admin can lift — send them the three
 > tenant-setting names above. There is no code change that bypasses it (the gateway is rejected
 > server-side by Fabric).
+
+#### 6.1.1) You're **not** a tenant admin — what to do
+
+Enabling those tenant settings and Developer Mode is **tenant-admin only** — a workspace admin or
+regular user **cannot** self-enable it. Pick one of these:
+
+1. **Minimal ask to your tenant admin.** You don't need everything — ask them to turn on, *for a
+   security group that contains your account*, just:
+   *"Workspace admins can develop workloads"* + *"Capacity admins and contributors can add and
+   remove additional workloads"* + *"Users can see and work with additional workloads not validated
+   by Microsoft"* (Admin portal → Tenant settings → Additional workloads). Then make sure your
+   workspace is on a **Trial/Fabric capacity** and you're its **admin**.
+2. **Use a tenant where you *are* the admin.** The fastest self-serve path: run the hack in a
+   **Fabric tenant you administer** — e.g. a personal/dev tenant or a **demo tenant** (for Microsoft
+   field: a CDX / demo.microsoft.com Fabric tenant). Start a **Fabric Trial** there (Account manager
+   → *Start trial*), and you can flip the settings yourself.
+3. **No-Fabric fallback — keep building & seeing the scorecard locally.** You can still build and
+   *see* the GreenGrid UI without Developer Mode (you just won't be running inside the Fabric portal
+   / OneLake):
+   ```bash
+   cd src/workloadsdc
+   npm install
+   npm run saas:start      # GreenGrid SaaS + website + live /score demo → http://localhost:8787/
+   npm run demo:build      # renders the workload screens as standalone HTML in demo/out/
+   ```
+   Open `demo/out/scorecard.html`, `sites-map.html` and `site-detail.html` in a browser — they
+   render the **real scorecard, sites map and site detail** from the **same scoring algorithm** the
+   Fabric workload uses. Great for following the build and demoing the UX while the Fabric dev-mode
+   access is being sorted out.
