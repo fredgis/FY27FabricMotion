@@ -67,7 +67,7 @@ operations:
 - **Bicycle Board** — fleet readiness per station with a computed health score and tag.
 - **Live Map** — every bike on a city map, colored by status (ready / in ride / pit-stop).
 - **Pit-Stop Queue** — quick repair tickets, auto-assigned to the best mechanic.
-- **Ride Mood & KPI** — rider satisfaction signal plus the workshop → PoC → opportunity funnel.
+- **Ride Mood & KPI** — rider satisfaction signal plus the pit-stop pipeline (rides → pit-stops raised → resolved) with a fleet-readiness score.
 
 Roles: an **Operations Manager** sees and manages everything; a **Mechanic** only sees
 their assigned tickets.
@@ -75,6 +75,8 @@ their assigned tickets.
 | Bicycle Board | Live Map |
 |---|---|
 | ![Bicycle Board](docs/images/scenario1-bicycle-board.png) | ![Live Map](docs/images/scenario1-live-map.png) |
+| **Pit-Stop Queue** | **Ride Mood & Fleet KPI** |
+| ![Pit-Stop Queue](docs/images/scenario1-pit-stop-queue.png) | ![Ride Mood & Fleet KPI](docs/images/scenario1-ride-mood-kpi.png) |
 
 **Dive in:**
 - Full solution & screenshots: [`docs/microhack-1-business-apps-solution.md`](docs/microhack-1-business-apps-solution.md)

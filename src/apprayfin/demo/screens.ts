@@ -437,9 +437,9 @@ export function renderMood(): string {
   const pitStopCount = heliosBicycles.filter((b) => b.status === 'pit-stop-needed').length;
 
   const kpi = buildBusinessKpiSnapshot({
-    workshopsDelivered: 8,
-    workshopsConvertedToPoC: 4,
-    poCsConvertedToOpportunity: 3,
+    ridesCompleted: 40,
+    pitStopsRaised: 10,
+    pitStopsResolved: 8,
   });
 
   const moodRows = heliosBicycles
@@ -460,8 +460,8 @@ export function renderMood(): string {
   const body = `
     <div class="topbar">
       <div>
-        <h1>Ride Mood &amp; Business KPI</h1>
-        <div class="sub">Operational quality signal + advisory pipeline outlook</div>
+        <h1>Ride Mood &amp; Fleet KPI</h1>
+        <div class="sub">Operational quality signal + fleet readiness outlook</div>
       </div>
       <div class="user"><span>Operations Manager</span><span class="avatar">OM</span></div>
     </div>
@@ -478,27 +478,27 @@ export function renderMood(): string {
         <div class="delta" style="color:#b3261e">Action needed today</div>
       </div>
       <div class="card kpi accent">
-        <div class="label">Projected opportunities (next quarter)</div>
-        <div class="value">${kpi.projectedOpportunitiesNextQuarter}</div>
-        <div class="delta">From ${kpi.workshopsDelivered} workshops delivered</div>
+        <div class="label">Bikes back to ready (this week)</div>
+        <div class="value">${kpi.bikesBackToReady}</div>
+        <div class="delta">From ${kpi.ridesCompleted} rides completed</div>
       </div>
     </div>
 
-    <div class="section-title">Advisory KPI funnel (MSX view)</div>
+    <div class="section-title">Pit-stop pipeline (fleet readiness)</div>
     <div class="grid3">
       <div class="card kpi">
-        <div class="label">Workshops delivered</div>
-        <div class="value">${kpi.workshopsDelivered}</div>
+        <div class="label">Rides completed</div>
+        <div class="value">${kpi.ridesCompleted}</div>
       </div>
       <div class="card kpi">
-        <div class="label">PoC conversion</div>
-        <div class="value">${Math.round(kpi.poCRate * 100)}%</div>
-        <div class="delta">${kpi.workshopsConvertedToPoC} PoCs</div>
+        <div class="label">Pit-stop flag rate</div>
+        <div class="value">${Math.round(kpi.flagRate * 100)}%</div>
+        <div class="delta">${kpi.pitStopsRaised} pit-stops raised</div>
       </div>
       <div class="card kpi">
-        <div class="label">Opportunity conversion</div>
-        <div class="value">${Math.round(kpi.opportunityRate * 100)}%</div>
-        <div class="delta">${kpi.poCsConvertedToOpportunity} opportunities</div>
+        <div class="label">Resolution rate</div>
+        <div class="value">${Math.round(kpi.resolveRate * 100)}%</div>
+        <div class="delta">${kpi.pitStopsResolved} resolved</div>
       </div>
     </div>
 

@@ -28,8 +28,8 @@ export type MechanicSnapshot = {
   active: boolean;
 };
 
-export type OpportunityKpiInput = {
-  workshopsDelivered: number;
-  workshopsConvertedToPoC: number;
-  poCsConvertedToOpportunity: number;
+export type FleetReadinessKpiInput = {
+  ridesCompleted: number;
+  pitStopsRaised: number;
+  pitStopsResolved: number;
 };

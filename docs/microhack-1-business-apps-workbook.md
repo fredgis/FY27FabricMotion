@@ -293,14 +293,16 @@ in **New**; assigning moves it to **Assigned** with the mechanic's name.
 
 ```text
 Add a "Ride Mood & KPI" screen with cards for average rider mood,
-number of bikes needing a pit-stop, and a workshop -> PoC -> opportunity funnel.
+number of bikes needing a pit-stop, and a pit-stop pipeline funnel
+(rides completed -> pit-stops raised -> pit-stops resolved) with a
+flag rate, a resolution rate, and the number of bikes back to ready.
 ```
 
-**Why.** Rider mood is an early quality signal; the funnel cards connect the app to the
-**business KPI** of the motion (workshops turning into opportunities).
+**Why.** Rider mood is an early quality signal; the pit-stop pipeline cards turn raw
+maintenance activity into a **fleet-readiness KPI** (how fast issues get bikes back on the road).
 
 **✅ What you should see.** A row of KPI cards with the average mood, the count of bikes
-needing a pit-stop, and the funnel percentages.
+needing a pit-stop, and the pit-stop pipeline percentages (flag rate, resolution rate, bikes back to ready).
 
 ---
 
@@ -394,3 +396,84 @@ sign in, and your Helios Bicycle Studio runs inside Fabric.
 - Reference solution code: `src/apprayfin/`
 - Rayfin prompt baseline (canonical spec): `src/apprayfin/src/specs/helios-bicycle-app-spec.md`
 - Trainer answer key + screenshots: `docs/microhack-1-business-apps-solution.md`
+
+---
+
+# Annex A — Redeploy cleanly after deleting the Rayfin item in Fabric
+
+> Use this when you want to **re-demo the deployment from scratch** (e.g. for a new session), or
+> when a previous `npx rayfin up` fails with a **404** because the deployed item no longer exists.
+
+**Key fact.** The Rayfin CLI has **no command to delete a deployed item** (`rayfin connector remove`
+exists but is unrelated). A clean teardown is done **in Fabric**, then you **clear the local state** —
+and the **order matters** to avoid the 404.
+
+## 🔑 The golden rule
+
+A `rayfin up` 404 happens when the item was **deleted in Fabric but the local registry was kept**, so
+`rayfin up` tries to reuse a **dead item**. Always tear down in this order:
+
+> **1) Delete the item in Fabric → 2) clear `rayfin/.deployments.json` (and `.env`) → 3) `rayfin up`.**
+
+## Where your deployment lives
+
+After a deploy, `npx rayfin up` records the live target in **`rayfin/.deployments.json`** — it holds the
+**item ID**, the **workspace** (id + name), the **live app URL**, and a **`fabricDeepLink`**. Open that file
+to find exactly what to delete. (Example shape — your IDs will differ.)
+
+```text
+item        : <item-id>            e.g. bdeca1fb-…-abaada0   (helios-bicycle)
+workspace   : <workspace-name>     e.g. FGI-MAIN  (<workspace-id> afd36cec-…-fddf74a)
+live URL    : https://<sub>.webapp.fabricapps.net
+fabricDeepLink : <open this to jump straight to the item in the portal>
+```
+
+## Step 1 — Delete the item in Fabric
+
+**Option A — Portal (simplest).**
+`app.fabric.microsoft.com` → your workspace (e.g. **FGI-MAIN**) → the **`helios-bicycle`** item →
+**⋯ → Delete**. (Or just open the **`fabricDeepLink`** from `rayfin/.deployments.json`.)
+
+**Option B — REST (automatable, needs `az login`).**
+
+```powershell
+$tok = az account get-access-token --resource https://api.fabric.microsoft.com --query accessToken -o tsv
+Invoke-RestMethod -Method Delete `
+  -Uri "https://api.fabric.microsoft.com/v1/workspaces/<workspace-id>/items/<item-id>" `
+  -Headers @{ Authorization = "Bearer $tok" }
+```
+
+> 👉 Deleting the item also removes its **database (your seeded data)** and the **static hosting** —
+> exactly what you want for a clean "from-scratch" demo.
+
+## Step 2 — Clear the local state (do this **after** the Fabric delete)
+
+This is the step that's easy to forget — and the cause of the 404 if skipped.
+
+```powershell
+Remove-Item rayfin\.deployments.json -ErrorAction SilentlyContinue
+Remove-Item rayfin\.env             -ErrorAction SilentlyContinue   # auto-regenerated on the next up
+```
+
+Then in **`rayfin/rayfin.yml`**, remove the old deployed URL from **`allowedRedirectUris`** and keep only
+`http://localhost:5173`. The next deploy re-adds the new URL automatically.
+
+```yaml
+allowedRedirectUris:
+  - http://localhost:5173
+  # (the old https://<sub>.webapp.fabricapps.net line is removed — rayfin up will re-add the new one)
+```
+
+## Step 3 — Redeploy on demo day
+
+```bash
+npx rayfin login --tenant <your-tenant-id>   # if needed
+npx rayfin up                                 # you now show the CREATION of a brand-new item
+```
+
+Then open the app from the **Fabric portal** and click **"Load demo fleet"** to repopulate the database
+(the new item starts empty — see Step 9).
+
+> 🎯 **Milestone (fresh demo):** a new item is created live, and the seeded data is reloaded on demand —
+> nothing reused from the previous run.
+

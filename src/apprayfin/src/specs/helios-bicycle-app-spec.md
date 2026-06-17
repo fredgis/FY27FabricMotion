@@ -9,7 +9,7 @@ Create an app for city bicycle operations teams to:
 1. Monitor bicycle readiness by station.
 2. Open and assign quick pit-stop tickets.
 3. Track rider mood as a quality signal.
-4. Follow simple business KPIs for workshop conversion.
+4. Follow a simple fleet-readiness KPI (pit-stop pipeline).
 
 ## Data entities
 
@@ -53,8 +53,8 @@ Create an app for city bicycle operations teams to:
 4. **Ride Mood**
    - Last sessions with mood trend.
    - Flag low mood bicycles.
-5. **Business KPI**
-   - Cards: workshops, PoCs, opportunities.
+5. **Fleet KPI**
+   - Cards: rides completed, pit-stop flag rate, resolution rate, bikes back to ready.
 
 ## Roles
 
@@ -88,7 +88,8 @@ MechanicProfile(displayName, station, active).
 Screens: Bicycle Board (table by station, status pill, mood stars, health tag,
 filters station/status); Pit-Stop Queue (kanban new/assigned/done, create ticket
 from a bike, one-click assign preferring same-station least-loaded mechanic);
-Ride Mood & KPI (cards: average mood, bikes needing pit-stop, workshop->PoC->opportunity).
+Ride Mood & KPI (cards: average mood, bikes needing pit-stop, pit-stop pipeline:
+rides->pit-stops raised->resolved with a fleet-readiness % and bikes back to ready).
 Roles: Operations Manager full access; Mechanic sees only assigned tickets.
 Style: clean, friendly, Microsoft Fluent, blue #0078d4 + teal #00b4a6, bike icon per row.
 ```

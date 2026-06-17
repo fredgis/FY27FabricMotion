@@ -35,7 +35,7 @@ simple, fun operations app** to run the daily routine.
 | 2 | **Live Map** — every bike on a city map, colored by status | See the whole city fleet at a glance |
 | 3 | **Pit-Stop Queue** — quick tickets auto-assigned to mechanics | Repairs reach the right person, fast |
 | 4 | **Ride Mood** — rider satisfaction signal per bike | Catch quality issues before riders complain |
-| 5 | **Business KPI** — workshop → PoC → opportunity funnel | Advisory teams see pipeline impact (MSX/ACR view) |
+| 5 | **Fleet KPI** — pit-stop pipeline (rides → raised → resolved) | Ops teams see fleet readiness and repair throughput |
 
 ---
 
@@ -145,12 +145,12 @@ fit = priorityWeight(high=100, normal=60)
 inactive mechanics are excluded
 ```
 
-### 4.3 Business KPI — `business-kpi.ts`
+### 4.3 Fleet KPI — `business-kpi.ts`
 
 ```
-poCRate          = workshopsConvertedToPoC / workshopsDelivered
-opportunityRate  = poCsConvertedToOpportunity / workshopsConvertedToPoC
-projected (next quarter) = round(workshopsDelivered × poCRate × opportunityRate)
+flagRate         = pitStopsRaised / ridesCompleted
+resolveRate      = pitStopsResolved / pitStopsRaised
+bikesBackToReady = round(ridesCompleted × flagRate × resolveRate)
 ```
 
 Division-by-zero is guarded (returns `0`).
@@ -253,7 +253,7 @@ Screens:
 2) Pit-Stop Queue — kanban (new / assigned / done). Create a ticket from a bike and
    assign a mechanic in one click (prefer same-station, least-loaded mechanic).
 3) Ride Mood & KPI — cards for average rider mood, bikes needing a pit-stop, and a
-   workshop → PoC → opportunity funnel.
+   pit-stop pipeline (rides → pit-stops raised → resolved) with a fleet-readiness score.
 
 Roles: Operations Manager has full access; Mechanic sees only assigned tickets.
 Style: clean and friendly, Microsoft Fluent, blue #0078d4 + teal #00b4a6,
@@ -297,7 +297,7 @@ flowchart LR
     D["Helios Bicycle data<br/>Bikes + Ride sessions + Pit-stop tickets"] --> M["Rayfin data model<br/>src/apprayfin/rayfin/data"]
     M --> S["Business services<br/>health + assignment + KPI"]
     S --> U["Rayfin-generated app UX<br/>Bicycle board · Pit-stop queue · Ride mood"]
-    U --> K["Advisory KPI output<br/>MSX opportunity pipeline"]
+    U --> K["Fleet readiness KPI<br/>pit-stop pipeline"]
     classDef data fill:#F3F7FB,stroke:#5B6B7B,color:#1B2A3A,stroke-width:2px;
     classDef model fill:#EAF3FB,stroke:#0078D4,color:#1B2A3A,stroke-width:2px;
     classDef service fill:#0B2447,stroke:#0B2447,color:#FFFFFF,stroke-width:2px;
@@ -334,10 +334,10 @@ the **same-station mechanic** because station match outweighs their current load
 
 ![Pit-Stop Queue screen](images/scenario1-pit-stop-queue.png)
 
-### 7.4 Ride Mood & Business KPI
+### 7.4 Ride Mood & Fleet KPI
 
-Average rider mood is **3.7 / 5**, **2** bikes need a pit-stop, and the advisory funnel
-(8 workshops → 50% PoC → 75% opportunity) projects **3 opportunities** next quarter.
+Average rider mood is **3.7 / 5**, **2** bikes need a pit-stop, and the pit-stop pipeline
+(40 rides → 25% flag rate → 80% resolution) puts **8 bikes back to ready** this week.
 
 ![Ride Mood and KPI screen](images/scenario1-ride-mood-kpi.png)
 

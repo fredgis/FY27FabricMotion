@@ -1,12 +1,12 @@
-import { OpportunityKpiInput } from '../domain/types.js';
+import { FleetReadinessKpiInput } from '../domain/types.js';
 
-export type BusinessKpiSnapshot = {
-  workshopsDelivered: number;
-  workshopsConvertedToPoC: number;
-  poCsConvertedToOpportunity: number;
-  poCRate: number;
-  opportunityRate: number;
-  projectedOpportunitiesNextQuarter: number;
+export type FleetReadinessKpiSnapshot = {
+  ridesCompleted: number;
+  pitStopsRaised: number;
+  pitStopsResolved: number;
+  flagRate: number;
+  resolveRate: number;
+  bikesBackToReady: number;
 };
 
 function toRate(numerator: number, denominator: number): number {
@@ -17,21 +17,18 @@ function toRate(numerator: number, denominator: number): number {
   return numerator / denominator;
 }
 
-export function buildBusinessKpiSnapshot(input: OpportunityKpiInput): BusinessKpiSnapshot {
-  const poCRate = toRate(input.workshopsConvertedToPoC, input.workshopsDelivered);
-  const opportunityRate = toRate(
-    input.poCsConvertedToOpportunity,
-    input.workshopsConvertedToPoC
-  );
+export function buildBusinessKpiSnapshot(input: FleetReadinessKpiInput): FleetReadinessKpiSnapshot {
+  const flagRate = toRate(input.pitStopsRaised, input.ridesCompleted);
+  const resolveRate = toRate(input.pitStopsResolved, input.pitStopsRaised);
 
   return {
-    workshopsDelivered: input.workshopsDelivered,
-    workshopsConvertedToPoC: input.workshopsConvertedToPoC,
-    poCsConvertedToOpportunity: input.poCsConvertedToOpportunity,
-    poCRate,
-    opportunityRate,
-    projectedOpportunitiesNextQuarter: Math.round(
-      input.workshopsDelivered * poCRate * opportunityRate
+    ridesCompleted: input.ridesCompleted,
+    pitStopsRaised: input.pitStopsRaised,
+    pitStopsResolved: input.pitStopsResolved,
+    flagRate,
+    resolveRate,
+    bikesBackToReady: Math.round(
+      input.ridesCompleted * flagRate * resolveRate
     ),
   };
 }

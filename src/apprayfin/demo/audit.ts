@@ -55,14 +55,14 @@ check('all tickets received a mechanic (capacity available)', allAssigned);
 
 console.log('Auditing business-kpi service');
 const kpi = buildBusinessKpiSnapshot({
-  workshopsDelivered: 8,
-  workshopsConvertedToPoC: 4,
-  poCsConvertedToOpportunity: 3,
+  ridesCompleted: 40,
+  pitStopsRaised: 10,
+  pitStopsResolved: 8,
 });
-check('PoC rate = 0.5', kpi.poCRate === 0.5, `got ${kpi.poCRate}`);
-check('opportunity rate = 0.75', kpi.opportunityRate === 0.75, `got ${kpi.opportunityRate}`);
-check('projected opportunities = 3', kpi.projectedOpportunitiesNextQuarter === 3, `got ${kpi.projectedOpportunitiesNextQuarter}`);
-check('zero workshops yields zero rate (no divide-by-zero)', buildBusinessKpiSnapshot({ workshopsDelivered: 0, workshopsConvertedToPoC: 0, poCsConvertedToOpportunity: 0 }).poCRate === 0);
+check('pit-stop flag rate = 0.25', kpi.flagRate === 0.25, `got ${kpi.flagRate}`);
+check('resolution rate = 0.8', kpi.resolveRate === 0.8, `got ${kpi.resolveRate}`);
+check('bikes back to ready = 8', kpi.bikesBackToReady === 8, `got ${kpi.bikesBackToReady}`);
+check('zero rides yields zero rate (no divide-by-zero)', buildBusinessKpiSnapshot({ ridesCompleted: 0, pitStopsRaised: 0, pitStopsResolved: 0 }).flagRate === 0);
 
 if (failures > 0) {
   console.error(`\nAudit FAILED with ${failures} failing check(s).`);
