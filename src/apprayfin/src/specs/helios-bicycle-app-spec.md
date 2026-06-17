@@ -71,7 +71,7 @@ Create an app for city bicycle operations teams to:
 ## How to build it in Rayfin
 
 ```bash
-npm create @microsoft/rayfin@latest -- --template field-technician
+npm create @microsoft/rayfin@latest -- --template dataapp
 npm run dev   # deploys to Fabric and provisions the database from rayfin/data/*.ts
 ```
 

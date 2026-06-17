@@ -96,9 +96,14 @@ By the end of the afternoon your app should look like this — a **Bicycle Board
 project* — you do **not** clone any repo.
 
 ```bash
-npm create @microsoft/rayfin@latest -- --template field-technician
+npm create @microsoft/rayfin@latest -- --template dataapp
 cd <the-folder-it-created>
 ```
+
+> **Pick a valid template.** `dataapp` is the recommended base (a Fabric-authenticated
+> React + Vite app wired for Rayfin data — you add entities in `rayfin/data/`). Running
+> `npm create @microsoft/rayfin@latest` with no `--template` lets you choose interactively
+> from `blankapp`, `dataapp`, `gettingstartedauth`, `todoapp`.
 
 **Why.** Rayfin gives you a complete app skeleton (data layer + UI) so you start from
 something that already runs.

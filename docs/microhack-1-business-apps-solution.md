@@ -192,10 +192,11 @@ flowchart LR
 > 5) Pit-Stop Queue · 6) Ride Mood & KPI · 7) Live Map · 8) polish (bike icons + roles).
 
 ```bash
-npm create @microsoft/rayfin@latest -- --template field-technician
+npm create @microsoft/rayfin@latest -- --template dataapp
 ```
 
-This creates a runnable Rayfin project (data models, auth, APIs, hosting).
+This creates a runnable Rayfin project (data models, auth, APIs, hosting). `dataapp` is the
+recommended built-in template (others: `blankapp`, `gettingstartedauth`, `todoapp`).
 
 ### 5.2 The data model **is** the database
 
