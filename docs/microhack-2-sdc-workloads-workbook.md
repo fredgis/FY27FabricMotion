@@ -200,6 +200,14 @@ tenant settings, then **Settings -> Developer settings -> enable Fabric Develope
 **✅ What you should see.** Both terminals keep running without errors, and Developer Mode is
 ON in Fabric.
 
+> ⚠️ **If `StartDevGateway.ps1` fails with** `Dev instance registration ... Forbidden,
+> errorCode: FeatureNotAvailable` **:** your tenant hasn't enabled customer-developed workloads.
+> An **admin** must turn on, under **Admin portal → Tenant settings → Additional workloads**:
+> *Capacity admins and contributors can add and remove additional workloads*, *Workspace admins
+> can develop workloads*, and *Users can see and work with additional workloads not validated by
+> Microsoft* — **and** the workspace must be on a **Fabric/Trial capacity** (not Pro/PPU). Full
+> steps in the setup guide (§6.1). It is not a code issue — the gateway is refused by Fabric.
+
 ---
 
 ## Step 4 — Hello World test (prove the gateway works, before building anything)

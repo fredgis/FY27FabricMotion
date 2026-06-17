@@ -70,8 +70,9 @@ Minimum requirement:
 - [ ] CORS allows the Fabric workload origin.
 
 ### Fabric + developer environment
-- [ ] Fabric workspace with capacity.
-- [ ] **Developer mode** enabled (Fabric → Settings → Developer settings).
+- [ ] Fabric workspace **on a Fabric or Trial capacity** (Pro/PPU only → Dev Gateway fails with `FeatureNotAvailable`).
+- [ ] **Tenant settings → Additional workloads** enabled by an admin (see §6.1): *Capacity admins and contributors can add and remove additional workloads*, *Workspace admins can develop workloads*, *Users can see and work with additional workloads not validated by Microsoft*.
+- [ ] **Developer mode** enabled per user (Fabric → Settings → Developer settings → *Fabric developer mode*).
 - [ ] Extensibility Toolkit Starter-Kit cloned and bootstrapped.
 - [ ] Node.js + PowerShell 7 + Dotnet installed (toolkit prerequisites).
 - [ ] Entra app registration and scopes configured (required even in dev mode — the Dev Gateway routes the workload but does not provide identity; created by `Setup.ps1`).
@@ -93,7 +94,8 @@ Minimum requirement:
 4. `cd scripts/Setup; ./Setup.ps1 -WorkloadName "Org.GreenGrid"` (creates the Entra app,
    writes `.env`, downloads the Dev Gateway).
 5. `cd scripts/Run; ./StartDevServer.ps1` and (second terminal) `./StartDevGateway.ps1`.
-6. In Fabric, enable the developer tenant settings (Admin portal) and **Fabric Developer Mode**.
+6. In Fabric, enable the **Additional workloads** tenant settings (Admin portal — see §6.1),
+   put the workspace **on a Fabric/Trial capacity**, and turn on **Fabric Developer Mode** (per user).
 7. Create the **Hello World** item to confirm the gateway works, then build the
    `GreenGridScorecard` item.
 8. Confirm the item reads `Files/sites.csv` from OneLake and renders the SaaS scores.
@@ -167,3 +169,39 @@ Expected:
 | CORS errors | Origin not whitelisted | SaaS already sends `*`; check proxy |
 | Workload not loading | Developer mode / Dev Gateway off | Enable dev mode, restart `StartDevGateway.ps1` |
 | Empty scorecard | `Files/sites.csv` missing in OneLake | Upload the sample CSV (`src/workloadsdc/data/sites.csv`) |
+| **`StartDevGateway.ps1` → `Dev instance registration ... Forbidden, errorCode: FeatureNotAvailable`** | **Tenant has not enabled customer-developed workloads** (the Dev Gateway can't register a dev instance) | **Enable the tenant settings below** (admin), put the workspace on a **Fabric/Trial capacity**, and turn on **Developer mode** — see §6.1 |
+
+### 6.1) Dev Gateway: `FeatureNotAvailable` on dev-instance registration
+
+`StartDevGateway.ps1` builds the manifest NuGet fine, signs you in, then fails at:
+
+```text
+fail: Dev instance registration call was not successful, HTTP status code: Forbidden,
+      reason: Forbidden, response: { "errorCode":"FeatureNotAvailable",
+      "message":"The feature is not available" }
+```
+
+This is **not** a repo/code problem — the Dev Gateway is being **refused by the Fabric backend**
+because the tenant has not opted in to **customer-developed workloads / developer mode**. Fix it
+in this order:
+
+1. **Tenant admin settings** (Fabric **Admin portal → Tenant settings → Additional workloads**) —
+   a Fabric **administrator** must enable, for the security group containing the trainee accounts:
+   - **"Capacity admins and contributors can add and remove additional workloads"**
+   - **"Workspace admins can develop ... workloads"** (a.k.a. *develop partner workloads*)
+   - **"Users can see and work with additional workloads not validated by Microsoft"**
+
+   Reference: [Tenant settings for additional workloads](https://learn.microsoft.com/en-us/fabric/admin/service-admin-portal-additional-workloads).
+   Tenant-setting changes can take a few minutes to propagate.
+2. **Capacity** — the **workspace must be on a Fabric capacity** (a **Trial** capacity works, or an
+   **F-SKU**). A Pro/PPU-only workspace cannot host a dev workload → `FeatureNotAvailable`.
+   Workspace → *Settings → License info* should show a Fabric/Trial capacity.
+3. **Developer mode (per user)** — in Fabric: **Settings (gear) → Developer settings →** toggle
+   **"Fabric developer mode"** on, for the **same account** running `StartDevGateway.ps1`.
+4. **Permissions** — that account must be an **admin of the workspace** (and ideally the capacity).
+5. Re-run `./StartDevGateway.ps1`. Success looks like `info: Dev instance registered` (no
+   `Forbidden`), and the Hello World item then loads in Fabric.
+
+> If you are **not** a Fabric admin, this is a blocker only an admin can lift — send them the three
+> tenant-setting names above. There is no code change that bypasses it (the gateway is rejected
+> server-side by Fabric).
