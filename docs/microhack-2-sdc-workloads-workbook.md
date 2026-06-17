@@ -27,7 +27,7 @@ one-day micro-hack for the SDC Workloads (Extensibility Toolkit) track**.
 | 12:00 | Lunch |
 | 13:30 | **Hack · Sprint 1** — clone, run Hello World, render with fake data (steps 1–7) |
 | 15:30 | Break |
-| 15:45 | **Hack · Sprint 2** — switch to OneLake & polish (steps 8–9) |
+| 15:45 | **Hack · Sprint 2** — make it graphical (step 9); *optionally* switch to OneLake (step 8) |
 | 16:45 | Team demos (5 min each) |
 | 17:00 | Wrap-up, KPIs & next steps |
 

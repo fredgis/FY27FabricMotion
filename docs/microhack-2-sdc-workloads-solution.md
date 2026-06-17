@@ -209,6 +209,17 @@ Style: Fluent UI, teal #00b4a6 + green accents, clean and friendly. One screen.
 > **Trainer note.** This kit is the *reference answer*. Teams can design a different layout but
 > should keep the **same scenario, contract and OneLake → SaaS flow**.
 
+> 🩺 **Trainer note — frontend wiring & caches (the day's hardest blockers).** Beyond the four
+> manifest steps in Step 5, getting the editor to *render* needs three more edits the scaffold
+> doesn't do (full detail in the workbook Step 7e): **(1)** register the editor route in
+> `Workload/app/App.tsx` (mirror HelloWorld) — without it the item opens to a **blank page with no
+> console error**; **(2)** render `<Scorecard>` in the **DefaultView `center`**; **(3)** set
+> `initialView={EDITOR_VIEW_TYPES.DEFAULT}` on `<ItemEditor>`. And if **UI changes don't show**
+> after a Copilot upgrade, it's caches: **delete `Workload/node_modules/.cache`** + restart the Dev
+> Server, then bust the **browser/iframe cache** (DevTools → Disable cache / Empty Cache and Hard
+> Reload). Never restart the Dev Gateway for UI changes. The full troubleshooting matrix is in the
+> setup guide §6.
+
 ---
 
 ## 6) What is coded in `src/workloadsdc`
