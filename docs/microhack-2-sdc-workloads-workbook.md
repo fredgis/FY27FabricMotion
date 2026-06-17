@@ -258,9 +258,22 @@ opened** (this is "the editor"; it starts nearly empty).
 > + ITEM_NAMES=HelloWorld,GreenGridScorecard
 > ```
 
+> 🌐 **Also add the item's display-name keys to the locale file**, or the Dev Gateway fails with
+> `Missing keys in en-US locale: GreenGridScorecardItem_DisplayName, ..._DisplayName_Plural`.
+> Edit `Workload/Manifest/assets/locales/en-US/translations.json` and add (next to the HelloWorld
+> ones):
+>
+> ```json
+> "GreenGridScorecardItem_DisplayName": "GreenGrid Scorecard",
+> "GreenGridScorecardItem_DisplayName_Plural": "GreenGrid Scorecards",
+> "GreenGridScorecardItem_Description": "Score the sustainability of your sites in Fabric."
+> ```
+> (Mind the JSON commas. Repeat for any other `locales/<lang>/` folders you have.)
+
 **Restart *both* terminals** so the manifest is rebuilt and re-delivered to Fabric — the Dev Server
 (Ctrl+C, `./StartDevServer.ps1`) **and** the Dev Gateway (Ctrl+C, `./StartDevGateway.ps1`). On
-restart the gateway should log `Configured items from ITEM_NAMES: HelloWorld, GreenGridScorecard`.
+restart the gateway should log `Configured items from ITEM_NAMES: HelloWorldItem, GreenGridScorecardItem`
+and `Registering dev instance...` should **succeed** (no `fail`).
 
 Now **create an instance** of your item *in the Fabric portal* so you have something to render
 into:

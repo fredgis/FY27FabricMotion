@@ -171,6 +171,7 @@ Expected:
 | Empty scorecard | `Files/sites.csv` missing in OneLake | Upload the sample CSV (`src/workloadsdc/data/sites.csv`) |
 | **`StartDevGateway.ps1` → `Dev instance registration ... Forbidden, errorCode: FeatureNotAvailable`** | **Tenant has not enabled customer-developed workloads** (the Dev Gateway can't register a dev instance) | **Enable the tenant settings below** (admin), put the workspace on a **Fabric/Trial capacity**, and turn on **Developer mode** — see §6.1 |
 | **New item type (e.g. `GreenGridScorecard`) not showing in Fabric → New item** | Item not listed in `ITEM_NAMES` (the toolkit only packages configured items) | Add it to `ITEM_NAMES` in **all three** `Workload/.env.{dev,test,prod}` (e.g. `HelloWorld,GreenGridScorecard`), restart **both** Dev Server + Dev Gateway, refresh Fabric |
+| `StartDevGateway.ps1` → `Missing keys in en-US locale: <Item>_DisplayName, <Item>_DisplayName_Plural` | The new item's display-name keys aren't in the locale file | Add `<Item>_DisplayName`, `_DisplayName_Plural` (and `_Description`) to `Workload/Manifest/assets/locales/en-US/translations.json`, restart the Dev Gateway |
 | `BuildManifestPackage … CursorPosition: The handle is invalid` | Cosmetic — script resets the console cursor in a host with no real console (VS Code / Windows Terminal) | **Ignore it** — `Delivered manifest package successfully` means the build worked |
 
 ### 6.1) Dev Gateway: `FeatureNotAvailable` on dev-instance registration
