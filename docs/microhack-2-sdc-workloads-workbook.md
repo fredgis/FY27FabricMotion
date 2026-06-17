@@ -260,15 +260,16 @@ opened** (this is "the editor"; it starts nearly empty).
 
 > 🌐 **Also add the item's display-name keys to the locale file**, or the Dev Gateway fails with
 > `Missing keys in en-US locale: GreenGridScorecardItem_DisplayName, ..._DisplayName_Plural`.
-> Edit `Workload/Manifest/assets/locales/en-US/translations.json` and add (next to the HelloWorld
-> ones):
+> Edit `Workload/Manifest/assets/locales/en-US/translations.json` and add **exactly the two keys
+> the item manifest references** (a default `CreateNewItem` item only references `displayName`):
 >
 > ```json
 > "GreenGridScorecardItem_DisplayName": "GreenGrid Scorecard",
-> "GreenGridScorecardItem_DisplayName_Plural": "GreenGrid Scorecards",
-> "GreenGridScorecardItem_Description": "Score the sustainability of your sites in Fabric."
+> "GreenGridScorecardItem_DisplayName_Plural": "GreenGrid Scorecards"
 > ```
-> (Mind the JSON commas. Repeat for any other `locales/<lang>/` folders you have.)
+> Mind the JSON commas, and repeat for any other `locales/<lang>/` folders. ⚠️ The match must be
+> **exact**: don't add a `_Description` key unless the item manifest references it, or the gateway
+> rejects it with `Unused keys in en-US locale: ..._Description`.
 
 **Restart *both* terminals** so the manifest is rebuilt and re-delivered to Fabric — the Dev Server
 (Ctrl+C, `./StartDevServer.ps1`) **and** the Dev Gateway (Ctrl+C, `./StartDevGateway.ps1`). On
