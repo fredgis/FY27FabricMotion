@@ -388,7 +388,7 @@ agendaSlide(
     const cx = rx + i * (ckw + 0.18);
     arrow(s, cx + ckw / 2, yy - 0.16, 0, 0.16, C.teal);
     s.addShape(RR(), { x: cx, y: yy, w: ckw, h: 0.6, rectRadius: 0.05, fill: { color: C.white }, line: { color: C.line, width: 1 } });
-    s.addText([{ text: c + '\n', options: { bold: true, color: C.navy, fontSize: 11 } }, { text: 'data workload', options: { color: C.teal, fontSize: 9, italic: true } }], { x: cx + 0.08, y: yy, w: ckw - 0.16, h: 0.6, valign: 'middle', align: 'center', fontFace: F });
+    s.addText([{ text: c, options: { bold: true, color: C.navy, fontSize: 11, breakLine: true } }, { text: 'data workload', options: { color: C.teal, fontSize: 9, italic: true } }], { x: cx + 0.08, y: yy, w: ckw - 0.16, h: 0.6, valign: 'middle', align: 'center', fontFace: F });
     arrow(s, cx + ckw / 2, yy + 0.6, 0, 0.16, C.teal);
   });
   yy += 0.78;
