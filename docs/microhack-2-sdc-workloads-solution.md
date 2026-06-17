@@ -171,15 +171,18 @@ has the full copy-paste code for each step. The canonical implementation is in
    then add `contracts.ts`, `greengridClient.ts`, `seed.ts`, `Scorecard.tsx` and render with
    **seed data first** (Milestone M1).
 
-   > ⚠️ **Trainer-critical — `CreateNewItem.ps1` scaffolds the code but leaves 3 manual additions;
-   > skip any and the Dev Gateway / Fabric rejects the item (the most common day-of blockers):**
+   > ⚠️ **Trainer-critical — `CreateNewItem.ps1` scaffolds the code but leaves 4 manual wire-ups;
+   > skip any and the Dev Gateway / Fabric rejects or hides the item (the most common day-of blockers):**
    > 1. **`ITEM_NAMES`** — add the item to the comma-separated list in **all three** `Workload/.env.{dev,test,prod}`
-   >    (e.g. `HelloWorld,GreenGridScorecard`), or it isn't packaged → absent from Fabric's *New item*.
-   > 2. **Locale keys** — add `<Item>_DisplayName` + `<Item>_DisplayName_Plural` to
-   >    `Workload/Manifest/assets/locales/en-US/translations.json` (exactly the keys the manifest
-   >    references — no extras, or `Unused keys in en-US locale`).
+   >    (e.g. `HelloWorld,GreenGridScorecard`), or it isn't packaged.
+   > 2. **Locale keys** — add `<Item>_DisplayName` + `_DisplayName_Plural` (+ `_Description` if you add
+   >    the create-card in #4) to `Workload/Manifest/assets/locales/en-US/translations.json`. Every key
+   >    must be referenced, or `Missing`/`Unused keys in en-US locale`.
    > 3. **Item icon** — drop a 48×48 PNG `Workload/Manifest/assets/images/<Item>_Icon.png` (copy the
    >    HelloWorld icon to start), or `MissingAssets: '..._Icon.png'`.
+   > 4. **`Product.json` create-card** — add the item to `homePage.recommendedItemTypes` and a card to
+   >    `createExperience.cards` (mirror HelloWorld, `"itemType": "GreenGridScorecard"`). **Without
+   >    this the gateway registers fine and Hello World shows, but your item never appears in *New item*.**
    >
    > Then **restart both** the Dev Server **and** the Dev Gateway and refresh Fabric. (The benign
    > `BuildManifestPackage … CursorPosition: The handle is invalid` warning can be ignored.) Full

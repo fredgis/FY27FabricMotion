@@ -248,29 +248,36 @@ This creates `Workload/app/items/GreenGridScorecardItem/` on your machine, inclu
 **`GreenGridScorecardItemEditor.tsx`** — the **React component Fabric renders when your item is
 opened** (this is "the editor"; it starts nearly empty).
 
-> 🚨 **`CreateNewItem.ps1` scaffolds the code but leaves 3 things for you to add — do all three now,
-> or the Dev Gateway / Fabric will reject the item.**
+> 🚨 **`CreateNewItem.ps1` scaffolds the code but leaves 4 things for you to wire up — do all four
+> now, or the Dev Gateway rejects the item / Fabric won't surface it.**
 >
-> **1. Register it in `ITEM_NAMES`** (else it isn't packaged → not shown in Fabric). Edit **all three**
+> **1. Register it in `ITEM_NAMES`** (else it isn't packaged → not in the manifest). Edit **all three**
 > `Workload/.env.dev`, `.env.test`, `.env.prod` and append the `-Name` value:
 > ```diff
 > - ITEM_NAMES=HelloWorld
 > + ITEM_NAMES=HelloWorld,GreenGridScorecard
 > ```
 >
-> **2. Add the display-name locale keys** (else the gateway fails with `Missing keys in en-US
-> locale: ..._DisplayName, ..._DisplayName_Plural`). In `Workload/Manifest/assets/locales/en-US/translations.json`
-> add **exactly the keys the item manifest references** — a default item references only `displayName`:
+> **2. Add the locale keys** (else `Missing keys in en-US locale: ..._DisplayName, ..._DisplayName_Plural`).
+> In `Workload/Manifest/assets/locales/en-US/translations.json` add three keys (Display/Plural are
+> used by the item manifest, Description by the create-card in step 4):
 > ```json
 > "GreenGridScorecardItem_DisplayName": "GreenGrid Scorecard",
-> "GreenGridScorecardItem_DisplayName_Plural": "GreenGrid Scorecards"
+> "GreenGridScorecardItem_DisplayName_Plural": "GreenGrid Scorecards",
+> "GreenGridScorecardItem_Description": "Score the sustainability of your sites in Fabric."
 > ```
-> Mind the JSON commas; repeat for any other `locales/<lang>/`. ⚠️ Don't add extra keys (e.g.
-> `_Description`) unless the manifest references them, or you get `Unused keys in en-US locale`.
+> ⚠️ Every key must be **referenced somewhere** — an unreferenced key gives `Unused keys in en-US locale`.
 >
 > **3. Add the item icon** (else `MissingAssets: 'assets/images/GreenGridScorecardItem_Icon.png'`).
 > Drop a 48×48 PNG named `<Item>_Icon.png` into `Workload/Manifest/assets/images/` (quickest fix:
-> copy `HelloWorldItem_Icon.png` to `GreenGridScorecardItem_Icon.png`, swap a nicer icon in later).
+> copy `HelloWorldItem_Icon.png`, swap a nicer icon later).
+>
+> **4. Add a create-card to `Product.json`** (else the gateway registers fine and Hello World shows,
+> but **your item never appears in *New item***). In `Workload/Manifest/Product.json` add your item
+> to `homePage.recommendedItemTypes` **and** add a card to `createExperience.cards` mirroring the
+> HelloWorld one — set `title`/`description`/`icon` to your `GreenGridScorecardItem_*` keys/asset,
+> `availableIn: ["home","create-hub","workspace-plus-new","workspace-plus-new-teams"]`, and
+> `"itemType": "GreenGridScorecard"`.
 
 **Restart *both* terminals** so the manifest is rebuilt and re-delivered to Fabric — the Dev Server
 (Ctrl+C, `./StartDevServer.ps1`) **and** the Dev Gateway (Ctrl+C, `./StartDevGateway.ps1`). On
