@@ -636,9 +636,11 @@ Style: Fluent UI, teal #00b4a6 + green accents. Keep the getSites data flow.
 >   front-end) — open that folder in VS Code, or run the GitHub Copilot CLI **from that folder**.
 >   It edits the React/TSX under `Workload/app/items/GreenGridScorecardItem/` (`Scorecard.tsx`,
 >   `GreenGridScorecardItemDefaultView.tsx`). **Not** the SaaS repo, **not** the FY27 motion repo.
-> - **After the prompt: nothing to restart.** Front-end `.tsx` edits are picked up by the **Dev
->   Server hot reload** — just refresh the Fabric item (Ctrl+Shift+R). Keep the **SaaS** and **both**
->   the Dev Server and Dev Gateway running.
+> - **After the prompt:** small edits to *existing* `.tsx` are picked up by **Dev Server hot
+>   reload** — just refresh the Fabric item (Ctrl+Shift+R). But if Copilot **added new files or a
+>   new view** (likely for the gauge/map), **restart the Dev Server** so the new modules get bundled:
+>   Ctrl+C in its terminal, then `cd scripts\Run && .\StartDevServer.ps1`; then refresh Fabric. Keep
+>   the **SaaS** and the **Dev Gateway** running.
 > - You only restart the **Dev Gateway** for *manifest/back-end* changes (ITEM_NAMES, `Product.json`,
 >   locale keys, item icon) — **never** for UI code changes.
 > - 🔒 **Keep the `getSites` data flow** (as the prompt says) so the SaaS call still happens — only
