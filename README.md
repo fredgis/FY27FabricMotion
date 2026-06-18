@@ -54,6 +54,34 @@ regenerate, and the slide stays consistent.
 
 ---
 
+## 🎞️ The full motion deck
+
+[![FY27 EMEA EPS — Fabric Apps Motion deck cover](docs/preview/fabric-apps-motion-deck-cover.png)](docs/FY27%20EMEA%20EPS%20-%20Fabric%20Apps%20Motion%20-%20Micro%20Hack.pptx)
+
+📥 **[FY27 EMEA EPS — Fabric Apps Motion — Micro Hack.pptx](docs/FY27%20EMEA%20EPS%20-%20Fabric%20Apps%20Motion%20-%20Micro%20Hack.pptx)** *(15 editable slides, click the cover above to download)*
+
+Where the one-slide summary is the elevator pitch, this **15-slide deck** is the full
+v-team / leadership story behind the motion. It opens with an executive summary
+("one motion, two execution paths, one repeatable vehicle — the *Micro Hack*") and a
+*Motion at a Glance* view — **"We build it, the partner repeats it."**
+
+It then walks both paths end to end:
+
+- **Path A — SI / Advisory (Apps):** GSIs first; partners build & ship customer
+  business apps on Fabric (Rayfin), with the **Micro Hack 1** one-day agenda and the
+  *"Micro Hack in a Box"* kit that lets the SI repeat runs #2…N without Microsoft.
+- **Path B — SDC / ISV (Workloads):** grow the Fabric footprint through ISV offers —
+  embed a workload once (Extensibility Toolkit) and consume it mechanically across the
+  ISV's customer base, via the same repeatable **Micro Hack 2** shape.
+
+It closes with **what we reuse instead of rebuild**, the **two-scoreboard KPI model**
+(north-star = share of apps and workloads that are *partner-led*, not Microsoft-led —
+MSX/ACR for SIs, adoption / one-workload-per-ISV for SDCs), the **FY27 execution
+roadmap**, and **The Ask** — adopt this motion as the execution layer for building apps
+& workloads on Fabric across EMEA.
+
+---
+
 ## 🚲 Business Apps track (Rayfin)
 
 The Advisory / SI path is delivered through a **business app built on
