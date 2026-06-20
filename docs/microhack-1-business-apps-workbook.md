@@ -282,6 +282,8 @@ provisions the matching tables. The screens are still empty — that's expected.
 > mechanics, ride sessions and pit-stop tickets via the Rayfin data API (no hardcoded UI data).
 > ```
 
+> 🚀 **Now deploy & check it in Fabric.** Push this change live with **[Step 9](#step-9--go-live-deploy-to-fabric)** and open the app **from the Fabric portal**. Since the app is already deployed, do a **clean redeploy every time**: first run **[Annex A](#annex-a--redeploy-cleanly-after-deleting-the-rayfin-item-in-fabric)** (delete the item in Fabric → clear local state → `npx rayfin up`) so the next deploy doesn't fail with a **404**.
+
 ---
 
 ## Step 4 — Build the Bicycle Board (your first screen)
