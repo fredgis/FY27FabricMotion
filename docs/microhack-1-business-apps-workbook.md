@@ -8,6 +8,13 @@ Scenario: **Helios Bicycle** (fictional final customer)
 This is a **didactic** micro-hack. You don't need prior Rayfin experience — every step
 explains **what** you do, **why**, and **what you should see**. Follow them in order.
 
+> ⚠️ **Read this before you deploy.** Once you have deployed to Fabric (`npx rayfin up`),
+> **do not delete or recreate the app item in Fabric, and do not change the deployed item by
+> hand, before you redeploy** — doing so puts your local registry out of sync and the next
+> `npx rayfin up` fails with a **404**. If that happens (or you want a clean from-scratch
+> re-demo), follow **[Annex A](#annex-a--redeploy-cleanly-after-deleting-the-rayfin-item-in-fabric)**
+> to tear down in the right order before redeploying.
+
 ---
 
 ## 🗓️ Day agenda (1 day)
@@ -99,8 +106,19 @@ setup. On a lab VM most tools are pre-installed.
 2. **Microsoft Fabric** — open `https://app.fabric.microsoft.com` and sign in. *(If it shows
    "Power BI" bottom-left, switch it to "Fabric".)*
 
-**Fabric workspace:** create (or use) a workspace with a **Fabric capacity** assigned — this is
-where your app deploys.
+**Tenant settings (ask your Fabric Administrator to enable these first).** In
+**⚙️ → Admin portal → Tenant settings**, search and enable both, clicking **Apply** each time:
+
+- **"Users can create Fabric items"** — search *"Fabric items"* → enable → **Apply**.
+- **"Users can discover and create org apps (preview)"** (Fabric Apps) — search *"org apps"* →
+  enable → **Apply**.
+
+> Without these two tenant settings, deploying a Rayfin app to Fabric fails. They are
+> **tenant-admin** settings — a non-admin participant cannot turn them on themselves.
+
+**Fabric workspace & capacity:** create (or use) a workspace assigned to a **Fabric capacity**
+that supports these items — this is where your app deploys. A capacity-less (Pro-only) workspace
+will not host the app.
 
 **Verify your setup:**
 
@@ -110,8 +128,24 @@ npm --version
 copilot --version
 ```
 
-**✅ What you should see.** All three print a version, and you're signed in to GitHub Copilot and
-to Fabric with a capacity-backed workspace.
+**First deploy uses `rayfin login` + `rayfin up`.** Once you have scaffolded the project
+(Step 1), the **first time** you bring it up, run these two explicitly before relying on the
+`npm run dev` loop — they authenticate you against Fabric (Entra) and create the app item:
+
+```shell
+npx rayfin login     # interactive Entra sign-in (also fixes later 401/403)
+npx rayfin up        # first full deploy: creates the Fabric item + provisions the DB
+```
+
+> 🧭 **You must test from inside Fabric.** A Rayfin app is connected to a Fabric semantic model,
+> so opening the raw app URL in a normal browser tab shows **"Can't open this app outside
+> Fabric — Opening apps connected to semantic models outside of the Fabric portal is not
+> supported at this time."** Always open and validate the app **from the Fabric portal**
+> (`app.fabric.microsoft.com` → your workspace → the app item), not from the bare URL.
+
+**✅ What you should see.** All three commands print a version, you're signed in to GitHub Copilot
+and to Fabric (capacity-backed workspace, both tenant settings enabled), and `npx rayfin up`
+prints a live Fabric app link.
 
 ---
 
@@ -171,7 +205,7 @@ Every build step follows the same rhythm:
 project* — you do **not** clone any repo.
 
 ```bash
-npm create @microsoft/rayfin@latest -- --template dataapp
+npm create @microsoft/rayfin@latest --template dataapp
 cd <the-folder-it-created>
 ```
 
@@ -193,15 +227,24 @@ something that already runs.
 World, to confirm your environment and Fabric connection are healthy.
 
 ```bash
-npm run dev          # deploys to Fabric and provisions the database, then opens the app
+npx rayfin login     # first time only (or on a 401/403) — interactive Entra sign-in
+npx rayfin up        # first full deploy: creates the Fabric item + provisions the DB
+npm run dev          # dev loop: re-deploys + serves the app for fast iteration
 ```
 
-**Why.** `npm run dev` pushes the project to Fabric and **provisions your database** from the
-data model in `rayfin/data/*.ts`. If the starter app opens, your whole chain works and you can
-safely start customizing.
+**Why.** The first `npx rayfin up` authenticates you and **creates the Fabric app item**, then
+provisions your database from the data model in `rayfin/data/*.ts`. `npm run dev` wraps `rayfin up`
+for the fast iteration loop, but running `login` + `up` once up front makes the first deploy
+reliable. If the starter app opens, your whole chain works and you can safely start customizing.
 
-**✅ What you should see.** The starter app opens in the browser and your Fabric workspace shows
-the new app. **Don't go further until this works.**
+**✅ What you should see.** `npx rayfin up` prints a **live Fabric app link**; open it **from the
+Fabric portal** and the starter app loads, with the new app showing in your workspace.
+**Don't go further until this works.**
+
+> 🧭 **Open it from Fabric, not the bare URL.** If you paste the raw app URL into a normal browser
+> tab you'll get *"Can't open this app outside Fabric — Opening apps connected to semantic models
+> outside of the Fabric portal is not supported at this time."* That's expected — always validate
+> from `app.fabric.microsoft.com` → your workspace → the app item.
 
 ---
 
@@ -371,8 +414,17 @@ npx rayfin up                                # deploys the static app + applies 
 workspace). `npx rayfin up` does the deploy **and** the database migration in one step, and
 injects the runtime `VITE_*` env vars the client needs.
 
-**✅ What you should see.** The CLI prints the **live app URL** and a Fabric portal link. Open it,
-sign in, and your Helios Bicycle Studio runs inside Fabric.
+**✅ What you should see.** The CLI prints the **live app URL** and a Fabric portal link. Open it
+**from the Fabric portal** (not the bare URL — see the note below), sign in, and your Helios
+Bicycle Studio runs inside Fabric.
+
+> 🧭 **Validate inside Fabric.** Opening the raw app URL outside the portal returns *"Can't open
+> this app outside Fabric — Opening apps connected to semantic models outside of the Fabric portal
+> is not supported at this time."* Use the **Fabric portal link** the CLI prints (or
+> `app.fabric.microsoft.com` → your workspace → the app item).
+
+> ⚠️ **Deployed already?** If you later delete or hand-edit the item in Fabric before redeploying,
+> the next `npx rayfin up` will fail with a **404** — follow **[Annex A](#annex-a--redeploy-cleanly-after-deleting-the-rayfin-item-in-fabric)**.
 
 > 🎯 **Milestone (ship):** the app is deployed and demoable from a real Fabric URL.
 

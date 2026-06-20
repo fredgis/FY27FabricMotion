@@ -192,11 +192,22 @@ flowchart LR
 > 5) Pit-Stop Queue · 6) Ride Mood & KPI · 7) Live Map · 8) polish (bike icons + roles).
 
 ```bash
-npm create @microsoft/rayfin@latest -- --template dataapp
+npm create @microsoft/rayfin@latest --template dataapp
 ```
 
 This creates a runnable Rayfin project (data models, auth, APIs, hosting). `dataapp` is the
 recommended built-in template (others: `blankapp`, `gettingstartedauth`, `todoapp`).
+
+> 🛡️ **Tenant prerequisites (Fabric Administrator).** Before any deploy works, an admin must
+> enable both in **⚙️ → Admin portal → Tenant settings** (search → enable → **Apply**):
+> **"Users can create Fabric items"** and **"Users can discover and create org apps (preview)"**
+> (Fabric Apps). The target workspace must also be on a **Fabric capacity**. Non-admins can't
+> self-enable these.
+>
+> 🧭 **First deploy + Fabric-only validation.** The first time, run `npx rayfin login` then
+> `npx rayfin up` (creates the Fabric item + provisions the DB) before the `npm run dev` loop.
+> Always open/validate the app **from the Fabric portal** — opening the raw URL shows *"Can't open
+> this app outside Fabric … not supported at this time"* because the app is bound to a semantic model.
 
 ### 5.2 The data model **is** the database
 

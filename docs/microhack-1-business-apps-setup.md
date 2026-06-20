@@ -39,10 +39,18 @@ flowchart LR
 ## 2) Prerequisites checklist (must be true before 09:00)
 
 ### Platform & accounts
-- [ ] Fabric **capacity** available and assigned to the workshop **workspace**.
+- [ ] **Tenant setting** *"Users can create Fabric items"* enabled (⚙️ → Admin portal → Tenant
+  settings → search *"Fabric items"* → enable → **Apply**).
+- [ ] **Tenant setting** *"Users can discover and create org apps (preview)"* (Fabric Apps) enabled
+  (search *"org apps"* → enable → **Apply**).
+- [ ] Fabric **capacity** available and assigned to the workshop **workspace** (a Pro-only
+  workspace will not host the app).
 - [ ] All participant accounts can sign in to **Microsoft Fabric** and have the workspace.
 - [ ] All participants signed in to the **GitHub Copilot CLI** (`copilot` → `/login`).
 - [ ] Node.js 20+ and npm installed; GitHub Copilot CLI installed.
+
+> 🛡️ The two tenant settings are **Fabric-admin only** — confirm them with the tenant admin
+> **before** the day, as participants cannot self-enable them and every deploy depends on them.
 
 ### Materials
 - [ ] Reference kit available: [`src/apprayfin/`](../src/apprayfin).
@@ -62,11 +70,14 @@ flowchart LR
 
 1. **Scaffold** a Rayfin project (built-in template, no repo to clone):
    ```bash
-   npm create @microsoft/rayfin@latest -- --template dataapp
+   npm create @microsoft/rayfin@latest --template dataapp
    ```
-2. **Run it** — this deploys to Fabric and **provisions the database** from the data model:
+2. **Run it** — this deploys to Fabric and **provisions the database** from the data model.
+   The **first** time, authenticate and create the item explicitly, then use the dev loop:
    ```bash
-   npm run dev
+   npx rayfin login     # interactive Entra sign-in (first time / on 401-403)
+   npx rayfin up        # first full deploy: creates the Fabric item + provisions the DB
+   npm run dev          # dev loop afterwards
    ```
 3. **Declare the Helios data model** in `rayfin/data/` (Bicycle, RideSession, PitStopTicket,
    MechanicProfile) — using the master prompt with the GitHub Copilot CLI. Re-running `npm run dev`
@@ -138,7 +149,10 @@ Style: clean, friendly, Microsoft Fluent, blue #0078d4 + teal #00b4a6.
 | Symptom | Likely cause | Fast fix |
 |---|---|---|
 | `template "field-technician" not found` | That's a gallery template, not built-in | Use `--template dataapp` (or run with no `--template`) |
+| Deploy blocked / item won't create in Fabric | Tenant settings off | Admin enables *"Users can create Fabric items"* **and** *"Users can discover and create org apps (preview)"* (⚙️ → Admin portal → Tenant settings → Apply) |
+| `Can't open this app outside Fabric` (semantic-model message) | App opened from the bare URL, not the portal | Open it **from the Fabric portal** (workspace → app item), not the raw app URL |
 | Deploy fails with 401/403 | Rayfin session expired | `npx rayfin login --tenant <tenant-id>`, then `npm run dev` |
+| `npx rayfin up` fails with **404** | Item deleted/changed in Fabric but local registry kept | Tear down in order — see **Annex A** in the workbook (delete item → clear `rayfin/.deployments.json` + `.env` → `rayfin up`) |
 | Data-model change not reflected | Schema not applied | `npx rayfin up db apply` (`--force` only if you accept data loss) |
 | Sign-in issues to the app once deployed | Email/password is local-dev only | Use Fabric brokered auth (Entra SSO); set `auth.fabric.enabled: true` in `rayfin.yml` |
 | Participants blocked | Missing workspace permission or capacity | Re-check workspace role + that the capacity is running |
