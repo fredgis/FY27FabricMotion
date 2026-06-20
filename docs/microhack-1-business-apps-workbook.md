@@ -8,13 +8,6 @@ Scenario: **Helios Bicycle** (fictional final customer)
 This is a **didactic** micro-hack. You don't need prior Rayfin experience — every step
 explains **what** you do, **why**, and **what you should see**. Follow them in order.
 
-> ⚠️ **Read this before you deploy.** Once you have deployed to Fabric (`npx rayfin up`),
-> **do not delete or recreate the app item in Fabric, and do not change the deployed item by
-> hand, before you redeploy** — doing so puts your local registry out of sync and the next
-> `npx rayfin up` fails with a **404**. If that happens (or you want a clean from-scratch
-> re-demo), follow **[Annex A](#annex-a--redeploy-cleanly-after-deleting-the-rayfin-item-in-fabric)**
-> to tear down in the right order before redeploying.
-
 ---
 
 ## 🗓️ Day agenda (1 day)
@@ -309,6 +302,8 @@ tag. You can filter by station and status.
 
 ![Helios Bicycle Board — example result](images/scenario1-bicycle-board.png)
 
+> 🚀 **Now deploy & check it in Fabric.** Push this change live with **[Step 9](#step-9--go-live-deploy-to-fabric)** and open the app **from the Fabric portal**. Since the app is already deployed, do a **clean redeploy every time**: first run **[Annex A](#annex-a--redeploy-cleanly-after-deleting-the-rayfin-item-in-fabric)** (delete the item in Fabric → clear local state → `npx rayfin up`) so the next deploy doesn't fail with a **404**.
+
 ---
 
 ## Step 5 — Build the Pit-Stop Queue (take action)
@@ -328,6 +323,8 @@ manager fast; preferring the same-station, least-busy mechanic is a simple, sens
 in **New**; assigning moves it to **Assigned** with the mechanic's name.
 
 ![Helios Pit-Stop Queue — example result](images/scenario1-pit-stop-queue.png)
+
+> 🚀 **Now deploy & check it in Fabric.** Push this change live with **[Step 9](#step-9--go-live-deploy-to-fabric)** and open the app **from the Fabric portal**. Since the app is already deployed, do a **clean redeploy every time**: first run **[Annex A](#annex-a--redeploy-cleanly-after-deleting-the-rayfin-item-in-fabric)** (delete the item in Fabric → clear local state → `npx rayfin up`) so the next deploy doesn't fail with a **404**.
 
 > 🎯 **Milestone (Sprint 1):** Steps 1–5 give you a working app — detect a bike, open a
 > ticket, assign it. If you reach here, you can already demo.
@@ -353,6 +350,8 @@ needing a pit-stop, and the pit-stop pipeline percentages (flag rate, resolution
 
 ![Helios Ride Mood & Fleet KPI — example result](images/scenario1-ride-mood-kpi.png)
 
+> 🚀 **Now deploy & check it in Fabric.** Push this change live with **[Step 9](#step-9--go-live-deploy-to-fabric)** and open the app **from the Fabric portal**. Since the app is already deployed, do a **clean redeploy every time**: first run **[Annex A](#annex-a--redeploy-cleanly-after-deleting-the-rayfin-item-in-fabric)** (delete the item in Fabric → clear local state → `npx rayfin up`) so the next deploy doesn't fail with a **404**.
+
 ---
 
 ## Step 7 — Add the Live Map (make it shine)
@@ -372,6 +371,8 @@ and close to how operations teams think about a city fleet.
 per station.
 
 ![Helios Live Map — example result](images/scenario1-live-map.png)
+
+> 🚀 **Now deploy & check it in Fabric.** Push this change live with **[Step 9](#step-9--go-live-deploy-to-fabric)** and open the app **from the Fabric portal**. Since the app is already deployed, do a **clean redeploy every time**: first run **[Annex A](#annex-a--redeploy-cleanly-after-deleting-the-rayfin-item-in-fabric)** (delete the item in Fabric → clear local state → `npx rayfin up`) so the next deploy doesn't fail with a **404**.
 
 ---
 
@@ -393,6 +394,8 @@ rollout.
 
 **✅ What you should see.** Coloured bike icons on each row, and a mechanic account that only
 sees its own tickets.
+
+> 🚀 **Now deploy & check it in Fabric.** Push this change live with **[Step 9](#step-9--go-live-deploy-to-fabric)** and open the app **from the Fabric portal**. Since the app is already deployed, do a **clean redeploy every time**: first run **[Annex A](#annex-a--redeploy-cleanly-after-deleting-the-rayfin-item-in-fabric)** (delete the item in Fabric → clear local state → `npx rayfin up`) so the next deploy doesn't fail with a **404**.
 
 > 🎯 **Milestone (Sprint 2):** the app is graphical and role-aware — ready for the 5-minute demo.
 
