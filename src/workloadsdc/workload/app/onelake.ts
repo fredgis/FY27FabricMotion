@@ -12,6 +12,7 @@ import type { WorkloadClientAPI } from '@ms-fabric/workload-client';
 import type { SiteRecord } from './contracts';
 
 const ONELAKE_DFS = 'https://onelake.dfs.fabric.microsoft.com';
+const ONELAKE_STORAGE_SCOPE = 'https://storage.azure.com/user_impersonation';
 
 export async function readSitesFromOneLake(
   workloadClient: WorkloadClientAPI,
@@ -19,8 +20,8 @@ export async function readSitesFromOneLake(
   lakehouseId: string
 ): Promise<SiteRecord[]> {
   // Acquire an OBO token scoped for OneLake (storage), then read the CSV file.
-  const { token } = await workloadClient.auth.acquireAccessToken({
-    additionalScopesToConsent: ['https://storage.azure.com/user_impersonation'],
+  const { token } = await workloadClient.auth.acquireFrontendAccessToken({
+    scopes: [ONELAKE_STORAGE_SCOPE],
   });
 
   const url = `${ONELAKE_DFS}/${workspaceId}/${lakehouseId}/Files/sites.csv`;

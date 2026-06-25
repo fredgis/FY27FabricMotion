@@ -220,6 +220,19 @@ Style: Fluent UI, teal #00b4a6 + green accents, clean and friendly. One screen.
 > Reload). Never restart the Dev Gateway for UI changes. The full troubleshooting matrix is in the
 > setup guide §6.
 
+> 🩺 **Trainer note — Step 8 OneLake (`onelake.ts`) common breaks.** The optional OneLake wiring is
+> the second place a team can get a **blank editor**, and it's almost always a **compile error in
+> `onelake.ts`**, not the view. Three things to check: **(1) auth API** — use
+> `client.auth.acquireFrontendAccessToken({ scopes: ['https://storage.azure.com/user_impersonation'] })`;
+> the older `acquireAccessToken({ additionalScopesToConsent })` **does not exist** and won't compile.
+> **(2) Non-ASCII copy-paste artifacts** — a Unicode hyphen `‐` (U+2010) in
+> `@ms-fabric/workload-client` gives *"Cannot find module"*; stray `⌋`/`↪` or hard line breaks inside
+> the URL back-tick template give *"Unterminated template literal"*. Re-type dashes/back-ticks as
+> ASCII. **(3) Blank vs "Failed: …"** — blank = build break (fix `npx tsc --noEmit` first); *"Failed:
+> …"* = the bundle is fine and it's a **runtime** OneLake issue (consent, missing `Files/sites.csv`,
+> 403, CORS). Note the **Sites map** keeps `seedSites` until separately wired to `readSites` — that's
+> expected, optional polish. Canonical fixed file: workbook Step 8a.
+
 ---
 
 ## 6) What is coded in `src/workloadsdc`

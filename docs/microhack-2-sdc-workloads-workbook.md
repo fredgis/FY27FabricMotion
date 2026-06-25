@@ -574,17 +574,28 @@ You also need two IDs (visible in the Lakehouse URL, or from the item context):
 import type { WorkloadClientAPI } from '@ms-fabric/workload-client';
 import type { SiteRecord } from './contracts';
 
+const ONELAKE_DFS_BASE = 'https://onelake.dfs.fabric.microsoft.com';
+const ONELAKE_STORAGE_SCOPE = 'https://storage.azure.com/user_impersonation';
+
+/**
+ * Reads sites.csv from a Lakehouse "Files" area in OneLake, as the signed-in user.
+ * Expected CSV header: siteId,name,city,energyKwh,renewablePct
+ */
 export async function readSites(
-  client: WorkloadClientAPI, workspaceId: string, lakehouseId: string
+  client: WorkloadClientAPI,
+  workspaceId: string,
+  lakehouseId: string,
 ): Promise<SiteRecord[]> {
   // 1) Token to read OneLake AS the signed-in user (OBO).
-  const { token } = await client.auth.acquireAccessToken({
-    additionalScopesToConsent: ['https://storage.azure.com/user_impersonation'],
+  const { token } = await client.auth.acquireFrontendAccessToken({
+    scopes: [ONELAKE_STORAGE_SCOPE],
   });
+
   // 2) Read the CSV file from the Lakehouse "Files" area.
-  const url = `https://onelake.dfs.fabric.microsoft.com/${workspaceId}/${lakehouseId}/Files/sites.csv`;
+  const url = `${ONELAKE_DFS_BASE}/${workspaceId}/${lakehouseId}/Files/sites.csv`;
   const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
   if (!res.ok) throw new Error(`OneLake read failed: ${res.status}`);
+
   // 3) Parse CSV text into rows.
   const [header, ...lines] = (await res.text()).trim().split(/\r?\n/);
   const cols = header.split(',').map((c) => c.trim());
@@ -596,6 +607,20 @@ export async function readSites(
   });
 }
 ```
+
+> ⚠️ **Use the right auth API.** The OBO token comes from
+> **`client.auth.acquireFrontendAccessToken({ scopes: [...] })`** — *not* `acquireAccessToken({
+> additionalScopesToConsent })`, which **does not exist** on the toolkit client and will fail to
+> compile. A compile error here breaks the whole bundle, so the **editor opens blank with no
+> console error** (same symptom as a missing route). If `npx tsc --noEmit` isn't green, fix it
+> before reloading Fabric.
+
+> 🚫 **Paste ASCII only — beware copy-paste artifacts.** If the item opens blank right after adding
+> `onelake.ts`, check for **non-ASCII characters** that slip in from chat/PDF copy: a Unicode hyphen
+> `‐` (U+2010) in the package name `@ms-fabric/workload-client` → *"Cannot find module"*; or stray
+> glyphs like `⌋` (U+230B) / `↪` (U+21AA) and hard line breaks inside the URL template literal →
+> *"Unterminated template literal"* and a cascade of TS errors. Re-type the dashes/back-ticks by
+> hand, or run a quick find for any character outside the ASCII range.
 
 ### 8b. Swap one line in the editor
 
@@ -616,6 +641,16 @@ center={{ content: <Scorecard getSites={() => readSites(workloadClient, workspac
 
 **✅ What you should see — 🎯 Milestone M2.** The same scorecard, now built from the **OneLake
 CSV**. *(If the OBO token fights you, keep the fake-data line as a fallback and keep moving.)*
+
+> 🩺 **Blank vs "Failed: …" — two different problems.** A **blank** editor means the bundle didn't
+> compile (a TypeScript error in `onelake.ts` — wrong auth API or a non-ASCII character; see 8a). If
+> instead the Scorecard renders but shows **"Failed: …"**, the build is fine and you're hitting a
+> **runtime** OneLake issue (token consent, the CSV missing at `Files/sites.csv`, a 403, or CORS) —
+> debug the fetch, not the build.
+
+> 🗺️ **The Sites map still uses seed data.** This swap only changes the **Scorecard** view's input.
+> The **Sites map** tab keeps rendering `seedSites` until you wire it to `readSites` the same way —
+> optional polish, do it only if you have time.
 
 ---
 
