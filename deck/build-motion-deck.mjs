@@ -15,6 +15,7 @@ import { dirname, join } from 'path';
 const __dir = dirname(fileURLToPath(import.meta.url));
 const HERO = join(__dir, 'assets', 'hero-bg.png');
 const PAGE = join(__dir, 'assets', 'page-bg.png');
+const TEAM = ['p1.jpeg', 'p2.jpeg', 'p3.jpeg', 'p4.jpeg', 'p5.jpeg'].map((f) => join(__dir, 'assets', 'team', f));
 
 const C = {
   blue: '0F6CBD', cyan: '2FB6E0', mag: 'B14FD8', teal: '2E9CA8', green: '2E9E63', red: 'E0455E',
@@ -91,10 +92,13 @@ function navyBand(s, x, y, w, h, lead, leadColor, rest) {
     { text: 'Two paths to Microsoft Fabric, enabled through ', options: { color: C.white } },
     { text: '\u201CMicro Hack\u201D', options: { color: C.cyan, bold: true } },
   ], { x: MX, y: 3.5, w: 11.8, h: 0.5, fontFace: F, italic: true, fontSize: 23 });
-  s.addShape(RR(), { x: MX, y: 4.45, w: 6.6, h: 0.62, rectRadius: 0.31, fill: { color: C.white, transparency: 86 }, line: { color: 'AEC9EA', width: 1 } });
-  s.addText('Draft for v-team review \u00B7 to be finalized end of June 2026', { x: MX + 0.25, y: 4.45, w: 6.2, h: 0.62, valign: 'middle', fontFace: F, fontSize: 13, color: 'EAF2FC' });
-  s.addText('EMEA \u00B7 Owner: EPS Tech / GTM \u00B7 Two micro-hacks: Apps (Rayfin) + Workloads (Extensibility Toolkit)', { x: MX, y: 5.35, w: 11.5, h: 0.4, fontFace: F, fontSize: 13, color: 'BFD6F2' });
-  s.addText('June 2026', { x: MX, y: 6.55, w: 4, h: 0.3, fontFace: F, fontSize: 13, bold: true, color: C.white });
+  s.addText('EMEA \u00B7 Owner: EPS Tech / GTM \u00B7 Two micro-hacks: Apps (Rayfin) + Workloads (Extensibility Toolkit)', { x: MX, y: 4.25, w: 11.5, h: 0.4, fontFace: F, fontSize: 13, color: 'BFD6F2' });
+  // EMEA PSA Data team — five circular headshots
+  TEAM.forEach((path, i) => {
+    s.addImage({ path, x: 3.38 + i * 1.49, y: 5.09, w: 1.18, h: 1.18, rounding: true });
+  });
+  s.addText('EMEA PSA Data Team', { x: 3.38, y: 6.32, w: 7.13, h: 0.32, align: 'center', fontFace: F, fontSize: 13, color: 'EAF2FC' });
+  s.addText('July 2026', { x: MX, y: 6.55, w: 4, h: 0.3, fontFace: F, fontSize: 13, bold: true, color: C.white });
   brand(s, W - MX - 2.2, 6.95, false);
 }
 
