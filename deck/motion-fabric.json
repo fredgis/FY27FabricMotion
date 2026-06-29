@@ -28,21 +28,21 @@
       ]
     },
     {
-      "tag": "SDC",
+      "tag": "ISV",
       "audience": "Software Vendors",
       "accent": "00B4A6",
       "headline": [
         { "t": "Become " },
         { "t": "Microsoft Fabric ", "bold": true, "accent": true },
         { "t": "(GA) ", "italic": true, "color": "5B6B7B" },
-        { "t": "\u2014 SDC " },
+        { "t": "\u2014 ISV " },
         { "t": "platform extension", "bold": true }
       ],
       "approach": "Workload / Code-driven",
-      "kpi": "Number of workloads per SDC",
+      "kpi": "Number of workloads per ISV",
       "bullets": [
         "Client opty on Fabric consumption capacity",
-        "Vision: Adoption \u2013 one workload per SDC"
+        "Vision: Adoption \u2013 one workload per ISV"
       ]
     }
   ],
@@ -67,7 +67,7 @@
         "Sponsorship \u2014 Ahmed + EPS",
         "Funding secured",
         "Contact PM lead on workloads",
-        { "text": "SDC + Advisory \u2192 ONE Microsoft program", "highlight": true }
+        { "text": "ISV + Advisory \u2192 ONE Microsoft program", "highlight": true }
       ]
     }
   }

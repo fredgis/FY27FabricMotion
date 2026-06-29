@@ -117,10 +117,10 @@ function navyBand(s, x, y, w, h, lead, leadColor, rest) {
     kpiBox(s, x + 0.34, cy + 2.55, cw - 0.68, 0.58, accent, tint, 'Primary KPI', kpi);
   };
   path(MX, C.blue, C.tBlue, '\uD83D\uDDC4\uFE0F', 'Path A \u2014 Apps', 'System Integrators (SI / advisory) \u00B7 start with the GSIs', 'Build & ship business apps on Microsoft Fabric with Rayfin \u2014 partner-led, on governed OneLake data.', '# of opportunities created (MSX)');
-  path(MX + cw + 0.2, C.mag, C.tMag, '\uD83E\uDDE9', 'Path B \u2014 Adoption', 'Software Development Companies (SDC / ISV)', 'Every managed SDC embeds a Fabric workload in its offer \u2014 so every customer consumes a data workload.', '% of managed SDCs that built a workload');
+  path(MX + cw + 0.2, C.mag, C.tMag, '\uD83E\uDDE9', 'Path B \u2014 Adoption', 'ISV', 'Every managed ISV embeds a Fabric workload in its offer \u2014 so every customer consumes a data workload.', '% of managed ISVs that built a workload');
   navyBand(s, MX, 5.08, W - 2 * MX, 1.42, 'The core idea', C.cyan, [
     { t: 'Microsoft does not build new tooling \u2014 Fabric, Rayfin, the Extensibility Toolkit and the GitHub Copilot CLI already exist. We package ' },
-    { t: 'one turnkey, repeatable vehicle \u2014 the \u201CMicro Hack\u201D \u2014 that an SI or SDC can run themselves.', b: true },
+    { t: 'one turnkey, repeatable vehicle \u2014 the \u201CMicro Hack\u201D \u2014 that an SI or ISV can run themselves.', b: true },
   ]);
 }
 
@@ -156,9 +156,9 @@ function navyBand(s, x, y, w, h, lead, leadColor, rest) {
   kpiBox(s, rx + 0.25, 2.86, rw - 0.5, 0.44, C.blue, C.tBlue, 'KPI', '# opportunities (MSX)');
   s.addShape(RR(), { x: rx, y: 3.55, w: rw, h: 1.45, rectRadius: 0.08, fill: { color: C.white }, line: { color: C.line, width: 1 } });
   s.addShape(RECT(), { x: rx, y: 3.55, w: 0.1, h: 1.45, fill: { color: C.mag } });
-  s.addText([{ text: 'Path B \u2014 SDC / ISV', options: { bold: true, fontSize: 14, color: C.navy } }], { x: rx + 0.25, y: 3.66, w: rw - 0.4, h: 0.3, fontFace: F });
+  s.addText([{ text: 'Path B \u2014 ISV', options: { bold: true, fontSize: 14, color: C.navy } }], { x: rx + 0.25, y: 3.66, w: rw - 0.4, h: 0.3, fontFace: F });
   s.addText('embed a Fabric workload \u2192 every customer adopts', { x: rx + 0.25, y: 3.96, w: rw - 0.45, h: 0.45, fontFace: F, fontSize: 11.5, color: C.grey });
-  kpiBox(s, rx + 0.25, 4.46, rw - 0.5, 0.44, C.mag, C.tMag, 'KPI', '# workloads per SDC');
+  kpiBox(s, rx + 0.25, 4.46, rw - 0.5, 0.44, C.mag, C.tMag, 'KPI', '# workloads per ISV');
   // operating principle
   s.addShape(RR(), { x: MX, y: 5.45, w: W - 2 * MX, h: 1.0, rectRadius: 0.08, fill: { color: C.panel }, line: { color: C.line, width: 1 } });
   s.addText([
@@ -367,17 +367,17 @@ agendaSlide(
 // ====================================================== 9 · PATH B (objective + cascade)
 {
   const s = p.addSlide();
-  head(s, 'Path B \u2014 SDC / ISV (Workloads)', 'Grow the Fabric footprint through ISV offers: embed once, consume mechanically across the ISV\u2019s customer base.');
+  head(s, 'Path B \u2014 ISV (Workloads)', 'Grow the Fabric footprint through ISV offers: embed once, consume mechanically across the ISV\u2019s customer base.');
   // left card
   const lx = MX, lw = 5.7, ly = 1.6, lh = 4.85;
   s.addShape(RR(), { x: lx, y: ly, w: lw, h: lh, rectRadius: 0.08, fill: { color: C.white }, line: { color: C.line, width: 1 }, shadow: { type: 'outer', color: '8AA0BC', opacity: 0.25, blur: 7, offset: 2, angle: 90 } });
   s.addShape(RR(), { x: lx, y: ly, w: lw, h: 0.12, rectRadius: 0.06, fill: { color: C.mag } });
   s.addText('Objective', { x: lx + 0.34, y: ly + 0.3, w: lw - 0.6, h: 0.4, fontFace: F, fontSize: 18, bold: true, color: C.navy });
-  s.addText('Get every Microsoft-managed SDC to embed a Fabric workload (Extensibility Toolkit) inside its commercial offer \u2014 so every time a customer uses the product, a Fabric data workload is consumed by design.', { x: lx + 0.34, y: ly + 0.78, w: lw - 0.66, h: 1.0, fontFace: F, fontSize: 13, color: C.ink, valign: 'top' });
+  s.addText('Get every Microsoft-managed ISV to embed a Fabric workload (Extensibility Toolkit) inside its commercial offer \u2014 so every time a customer uses the product, a Fabric data workload is consumed by design.', { x: lx + 0.34, y: ly + 0.78, w: lw - 0.66, h: 1.0, fontFace: F, fontSize: 13, color: C.ink, valign: 'top' });
   s.addShape(RR(), { x: lx + 0.34, y: ly + 1.9, w: lw - 0.68, h: 0.95, rectRadius: 0.06, fill: { color: C.tMag } });
-  s.addText([{ text: 'Embed once, adopt many.   ', options: { bold: true, color: C.mag } }, { text: 'When an SDC standardizes on a Fabric workload, its entire customer base becomes ongoing Fabric adoption.', options: { color: C.ink } }], { x: lx + 0.52, y: ly + 1.9, w: lw - 1.0, h: 0.95, valign: 'middle', fontFace: F, fontSize: 12 });
+  s.addText([{ text: 'Embed once, adopt many.   ', options: { bold: true, color: C.mag } }, { text: 'When an ISV standardizes on a Fabric workload, its entire customer base becomes ongoing Fabric adoption.', options: { color: C.ink } }], { x: lx + 0.52, y: ly + 1.9, w: lw - 1.0, h: 0.95, valign: 'middle', fontFace: F, fontSize: 12 });
   s.addShape(RR(), { x: lx + 0.34, y: ly + 2.98, w: lw - 0.68, h: 0.7, rectRadius: 0.06, fill: { color: C.navy } });
-  s.addText([{ text: 'PRIMARY KPI  ', options: { bold: true, color: C.cyan, fontSize: 11 } }, { text: '% of managed SDCs that built a Fabric workload', options: { bold: true, color: C.white, fontSize: 12.5 } }], { x: lx + 0.52, y: ly + 2.98, w: lw - 1.0, h: 0.7, valign: 'middle', fontFace: F });
+  s.addText([{ text: 'PRIMARY KPI  ', options: { bold: true, color: C.cyan, fontSize: 11 } }, { text: '% of managed ISVs that built a Fabric workload', options: { bold: true, color: C.white, fontSize: 12.5 } }], { x: lx + 0.52, y: ly + 2.98, w: lw - 1.0, h: 0.7, valign: 'middle', fontFace: F });
   s.addText('Measured on adoption & mechanical consumption \u2014 not repeated workshops. The win is the embed and the footprint it generates.', { x: lx + 0.34, y: ly + 3.82, w: lw - 0.66, h: 0.8, fontFace: F, italic: true, fontSize: 11.5, color: C.grey, valign: 'top' });
   // right cascade
   const rx = MX + lw + 0.4, rw = W - MX - rx;
@@ -387,9 +387,9 @@ agendaSlide(
     s.addText(txt, { x: rx + 0.2, y, w: rw - 0.4, h, align: 'center', valign: 'middle', fontFace: F, fontSize: 13.5, bold: true, color: (fill === C.mag || fill === C.teal) ? C.white : C.navy });
   };
   let yy = ly + 0.4;
-  casc(yy, 0.6, C.mag, 'Microsoft-managed SDC'); arrow(s, rx + rw / 2, yy + 0.6, 0, 0.18, C.mag); yy += 0.82;
+  casc(yy, 0.6, C.mag, 'Microsoft-managed ISV'); arrow(s, rx + rw / 2, yy + 0.6, 0, 0.18, C.mag); yy += 0.82;
   casc(yy, 0.55, C.tBlue, 'Embed a managed Fabric workload (Toolkit)'); arrow(s, rx + rw / 2, yy + 0.55, 0, 0.16, C.blue); yy += 0.74;
-  casc(yy, 0.55, C.tBlue, 'SDC product / offer'); yy += 0.7;
+  casc(yy, 0.55, C.tBlue, 'ISV product / offer'); yy += 0.7;
   // three customers
   const ckw = (rw - 2 * 0.18) / 3;
   ['Customer 1', 'Customer 2', 'Customer N'].forEach((c, i) => {
@@ -406,7 +406,7 @@ agendaSlide(
 // ====================================================== 10 · MICRO HACK 2 agenda
 agendaSlide(
   'The Vehicle \u2014 Micro Hack 2 (Workloads) agenda',
-  'Same fixed, repeatable shape as Micro Hack 1 \u2014 but the artifact is a Fabric workload the SDC embeds in its offer.',
+  'Same fixed, repeatable shape as Micro Hack 1 \u2014 but the artifact is a Fabric workload the ISV embeds in its offer.',
   [
     ['Why build a workload', 'reach every Fabric customer via the Workload Hub \u00B7 run on OneLake'],
     ['Extensibility Toolkit', 'workload structure \u00B7 Entra app \u00B7 Dev Gateway \u00B7 manifest \u00B7 OBO token'],
@@ -416,9 +416,9 @@ agendaSlide(
   [
     ['Build sprint 1', 'clone toolkit, Setup.ps1 (Entra app), dev server + gateway, Hello World, CreateNewItem'],
     ['Build sprint 2', 'read Files/sites.csv from OneLake, call the backend, render the scorecard', true],
-    ['Plan & next steps', 'embed in the SDC offer + path to publish on the Workload Hub'],
+    ['Plan & next steps', 'embed in the ISV offer + path to publish on the Workload Hub'],
   ],
-  { lead: 'Same shape, different artifact.', rest: 'The output is a Fabric workload the SDC embeds in its offer \u2014 so every customer adopts Fabric by design.' }
+  { lead: 'Same shape, different artifact.', rest: 'The output is a Fabric workload the ISV embeds in its offer \u2014 so every customer adopts Fabric by design.' }
 );
 
 // ====================================================== 11 · WHAT WE REUSE (numbered list + navy sidebar)
@@ -475,7 +475,7 @@ agendaSlide(
     s.addText(secondary, { x: x + 0.34, y: 4.26, w: 5.9 - 0.66, h: 0.5, fontFace: F, fontSize: 12, color: C.ink, valign: 'top' });
   };
   card(MX, C.blue, C.tBlue, '\uD83D\uDDC4\uFE0F', 'Path A \u2014 Apps', '# of opportunities created (MSX), Stage 1 & 2', '# Micro Hacks repeated by the partner \u00B7 # apps deployed \u00B7 Fabric / Azure ACR pipeline.');
-  card(MX + 6.1, C.mag, C.tMag, '\uD83E\uDDE9', 'Path B \u2014 Workloads', '% of managed SDCs that built a Fabric workload', '# workloads per SDC \u00B7 Fabric usage / ACR from SDC end-customers.');
+  card(MX + 6.1, C.mag, C.tMag, '\uD83E\uDDE9', 'Path B \u2014 Workloads', '% of managed ISVs that built a Fabric workload', '# workloads per ISV \u00B7 Fabric usage / ACR from ISV end-customers.');
   navyBand(s, MX, 5.05, W - 2 * MX, 1.4, 'North-star', C.cyan, [
     { t: 'The share of Micro Hacks, apps and workloads that are ' },
     { t: 'partner-led, not Microsoft-led', b: true },
@@ -500,7 +500,7 @@ agendaSlide(
     ['Path A \u2014 Co-deliver Run #1 \u25C6', C.mag, [0, 0]],
     ['Path A \u2014 SIs repeat (own customers)', C.teal, [1, 2]],
     ['Path A \u2014 Scale to other GSIs', C.teal, [1, 3]],
-    ['Path B \u2014 SDC first workloads', C.green, [0, 1]],
+    ['Path B \u2014 ISV first workloads', C.green, [0, 1]],
     ['Path B \u2014 Repeat across portfolio', C.green, [1, 3]],
   ];
   const rh = 0.5, gy = top + 0.5;
@@ -517,7 +517,7 @@ agendaSlide(
   s.addShape(RR(), { x: MX, y: gy + rows.length * rh + 0.18, w: W - 2 * MX, h: 0.82, rectRadius: 0.08, fill: { color: C.amberBg }, line: { color: C.amberBd, width: 1 } });
   s.addText([
     { text: '\u25C6 Key milestone \u2014 Run #1 co-delivered, end of Q1 (Sep \u201926):  ', options: { bold: true, color: C.amberTx, fontSize: 12.5 } },
-    { text: 'first Micro Hack delivered live; partner pursuit team certified. Q2\u2013Q3: partners repeat independently while we scale to other GSIs and SDCs.', options: { color: C.ink, fontSize: 12 } },
+    { text: 'first Micro Hack delivered live; partner pursuit team certified. Q2\u2013Q3: partners repeat independently while we scale to other SIs and ISVs.', options: { color: C.ink, fontSize: 12 } },
   ], { x: MX + 0.3, y: gy + rows.length * rh + 0.18, w: W - 2 * MX - 0.6, h: 0.82, valign: 'middle', fontFace: F });
 }
 
@@ -529,7 +529,7 @@ agendaSlide(
     [C.blue, '\uD83D\uDC64', 'Sponsorship', 'Ahmed + EPS leadership behind one ONE-Microsoft motion'],
     [C.teal, '\uD83D\uDCB5', 'Funding', 'Build the kit + scenarios and run the first co-delivered sessions'],
     [C.mag, '\uD83E\uDD16', 'Workloads PM', 'Align with the Extensibility Toolkit roadmap and the Workload Hub'],
-    [C.green, '\uD83D\uDD17', 'ONE Microsoft', 'SDC + Advisory \u2192 one execution layer, not parallel tracks'],
+    [C.green, '\uD83D\uDD17', 'ONE Microsoft', 'ISV + Advisory \u2192 one execution layer, not parallel tracks'],
   ];
   const cw = (W - 2 * MX - 3 * 0.28) / 4;
   asks.forEach((a, i) => {

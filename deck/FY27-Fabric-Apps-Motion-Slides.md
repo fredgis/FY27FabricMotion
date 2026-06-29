@@ -83,7 +83,7 @@ section.title small{ color:#9fb6ce; }
 <p class="sub">Two paths to Microsoft Fabric, enabled through the <strong style="color:#fff">Micro Hack</strong></p>
 
 - **Advisory / Apps** — build business apps on Fabric with **Rayfin**
-- **SDC / Workloads** — build Fabric workloads with the **Extensibility Toolkit**
+- **ISV / Workloads** — build Fabric workloads with the **Extensibility Toolkit**
 
 <br>
 
@@ -109,10 +109,10 @@ section.title small{ color:#9fb6ce; }
 <ul><li>Ship enterprise apps fast, on governed data</li><li>Partner-led, repeatable</li></ul>
 </div>
 <div class="card teal">
-<span class="ctag">SDC</span>
-<h3>Extend Microsoft Fabric — SDCs build Workloads</h3>
+<span class="ctag">ISV</span>
+<h3>Extend Microsoft Fabric — ISVs build Workloads</h3>
 <p class="approach">Code-driven · <strong>Extensibility Toolkit</strong> · runs on OneLake data</p>
-<div class="kpi">KPI — # workloads per SDC · <em>Adoption vision (≥1 / SDC)</em></div>
+<div class="kpi">KPI — # workloads per ISV · <em>Adoption vision (≥1 / ISV)</em></div>
 <ul><li>Build once, adopt mechanically across customers</li><li>Path to the Workload Hub</li></ul>
 </div>
 </div>
@@ -120,7 +120,7 @@ section.title small{ color:#9fb6ce; }
 <div class="bottom">
 <div class="bbox"><h4>Activation — EMEA ecosystem</h4>PwC · KPMG · EY · HVMC · Bain · BCG · McKinsey<br><em>"Build the next page of your business with Microsoft Fabric"</em></div>
 <div class="bbox vehicle"><span style="font-size:26px">⚡</span><b>Micro Hack</b><small>1 day — hands-on</small></div>
-<div class="bbox"><h4>The ask</h4>Sponsorship (Ahmed + EPS) · Funding · PM lead on workloads<br><span class="hl">SDC + Advisory → ONE Microsoft program</span></div>
+<div class="bbox"><h4>The ask</h4>Sponsorship (Ahmed + EPS) · Funding · PM lead on workloads<br><span class="hl">ISV + Advisory → ONE Microsoft program</span></div>
 </div>
 </div>
 
@@ -134,8 +134,8 @@ section.title small{ color:#9fb6ce; }
 
 <div class="point"><b>Every business ships software</b><div>Building enterprise apps still means months of backend plumbing. <strong>Fabric + Rayfin removes it</strong> — declare your data, ship in one command.</div></div>
 <div class="point"><b>AI-era apps need governed data</b><div>Apps &amp; workloads on Fabric inherit <strong>OneLake</strong> governance, security and a single copy of data — no data movement.</div></div>
-<div class="point"><b>A large, growing audience</b><div>SIs build customer apps on Fabric; SDCs reach <strong>every Fabric customer</strong> by publishing a workload to the Workload Hub.</div></div>
-<div class="point"><b>Partners multiply impact</b><div><strong>+95.6% win rate</strong> and <strong>+46% larger deals</strong> when an opportunity is shared with a partner. Scaling through SIs &amp; SDCs covers the ecosystem.</div></div>
+<div class="point"><b>A large, growing audience</b><div>SIs build customer apps on Fabric; ISVs reach <strong>every Fabric customer</strong> by publishing a workload to the Workload Hub.</div></div>
+<div class="point"><b>Partners multiply impact</b><div><strong>+95.6% win rate</strong> and <strong>+46% larger deals</strong> when an opportunity is shared with a partner. Scaling through SIs &amp; ISVs covers the ecosystem.</div></div>
 
 ---
 
@@ -168,7 +168,7 @@ section.title small{ color:#9fb6ce; }
 <div class="card teal">
 <h3>Objective</h3>
 <ul>
-<li>Every managed SDC builds a Fabric workload (Extensibility Toolkit).</li>
+<li>Every managed ISV builds a Fabric workload (Extensibility Toolkit).</li>
 <li>Embed it in the offer — the product runs <strong>natively in Fabric</strong>.</li>
 <li>Every customer consumes a Fabric workload by design.</li>
 <li>Grow adoption mechanically, not via one-off projects.</li>
@@ -177,15 +177,15 @@ section.title small{ color:#9fb6ce; }
 <div class="card blue">
 <h3>Build once → adopt many</h3>
 <ul>
-<li>SDC builds the workload once (reads OneLake, runs their logic).</li>
+<li>ISV builds the workload once (reads OneLake, runs their logic).</li>
 <li>Customers 1…N each run it natively in Fabric.</li>
-<li>Adoption scales with the SDC's business — no per-customer selling.</li>
+<li>Adoption scales with the ISV's business — no per-customer selling.</li>
 <li>Repeat across modules → publish to the Workload Hub.</li>
 </ul>
 </div>
 </div>
 
-<p style="margin-top:14px"><em>Primary KPI: <strong>#workloads per SDC</strong> · Secondary: Fabric usage / ACR through SDC end-customers.</em></p>
+<p style="margin-top:14px"><em>Primary KPI: <strong>#workloads per ISV</strong> · Secondary: Fabric usage / ACR through ISV end-customers.</em></p>
 
 ---
 
@@ -202,9 +202,9 @@ section.title small{ color:#9fb6ce; }
 | | Demo | GreenGrid Scorecard running live inside Fabric |
 | **Afternoon** | ⭐ Build sprint 1 | Clone toolkit, `Setup.ps1` (Entra app), Dev server + gateway, Hello World, `CreateNewItem` |
 | | ⭐ Build sprint 2 | Read `Files/sites.csv` from OneLake, call the backend, render the scorecard, polish |
-| | Plan & next steps | Embed the workload in the SDC offer + path to **publish on the Workload Hub** |
+| | Plan & next steps | Embed the workload in the ISV offer + path to **publish on the Workload Hub** |
 
-*Same shape as Micro Hack 1 — but the artifact is a Fabric workload the SDC embeds in its offer, so every customer adopts Fabric.* · Primary KPI: **# workloads per SDC**.
+*Same shape as Micro Hack 1 — but the artifact is a Fabric workload the ISV embeds in its offer, so every customer adopts Fabric.* · Primary KPI: **# workloads per ISV**.
 
 ---
 
@@ -225,7 +225,7 @@ section.title small{ color:#9fb6ce; }
 <div class="card teal">
 <span class="ctag">SCENARIO 2 · WORKLOADS</span>
 <h3>GreenGrid Scorecard</h3>
-<ul><li>Sustainability workload (Extensibility Toolkit)</li><li>Reads <code>Files/sites.csv</code> from OneLake (OBO)</li><li>Calls the pre-deployed GreenGrid SaaS (the algorithm)</li><li>Code: <code>src/workloadsdc/</code></li></ul>
+<ul><li>Sustainability workload (Extensibility Toolkit)</li><li>Reads <code>Files/sites.csv</code> from OneLake (OBO)</li><li>Calls the pre-deployed GreenGrid SaaS (the algorithm)</li><li>Code: <code>src/workloadISV/</code></li></ul>
 </div>
 </div>
 
@@ -240,7 +240,7 @@ section.title small{ color:#9fb6ce; }
 | Path | Leading indicator | Outcome KPI |
 |------|-------------------|-------------|
 | **A — Advisory / Apps** | # Micro Hacks repeated by partner; # apps deployed to Fabric | **# opportunities (MSX)**, Stage 1 & 2; Fabric/Azure ACR pipeline |
-| **B — SDC Adoption** | # managed SDCs engaged; # offers with a workload built | **# workloads per SDC**; Fabric usage / ACR from end-customers |
+| **B — ISV Adoption** | # managed ISVs engaged; # offers with a workload built | **# workloads per ISV**; Fabric usage / ACR from end-customers |
 | **Motion health** | Ratio of partner-led vs MS-led sessions | Partner-sourced opportunities & adoptions share |
 
 <p style="margin-top:12px"><strong style="color:var(--blue)">North-star:</strong> the share of Micro Hacks, apps and workloads that are <strong>partner-led, not Microsoft-led</strong>.</p>
@@ -259,7 +259,7 @@ section.title small{ color:#9fb6ce; }
 | Path A — Co-deliver Run #1 ◆ | █████ | | | |
 | Path A — SIs repeat (own customers) | | █████ | █████ | |
 | Path A — Scale advisory ecosystem | | █████ | █████ | █████ |
-| Path B — SDC first workloads | █████ | █████ | | |
+| Path B — ISV first workloads | █████ | █████ | | |
 | Path B — Repeat + Workload Hub | | █████ | █████ | █████ |
 
 *◆ Run #1 co-delivered end of Q1 (Sep '26): the kit is in partners' hands — the motion shifts from Microsoft build to partner-led repeat.*
