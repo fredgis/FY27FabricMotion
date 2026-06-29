@@ -15,7 +15,7 @@ converge into **one Microsoft program**.
 | Path | Audience | Approach | KPI |
 | ---- | -------- | -------- | --- |
 | **Advisory** | System Integrators | Use Microsoft Fabric (Preview) — SIs build Business Apps | **Number of opportunities** (MSX / CRM), Stage 1 & 2 — vision **ACR** |
-| **Workload** | SDC | Become Microsoft Fabric (GA) — SDC platform extension | **Number of workloads per SDC** — vision **Adoption** (1 workload / SDC) |
+| **Workload** | ISV | Become Microsoft Fabric (GA) — ISV platform extension | **Number of workloads per ISV** — vision **Adoption** (1 workload / ISV) |
 
 **Enablement vehicle:** ⚡ *Micro Hack — 1 day* (hands-on activation).
 
@@ -30,6 +30,8 @@ converge into **one Microsoft program**.
 - Funding secured.
 - Contact PM lead on workloads.
 - **SDC + Advisory → ONE Microsoft program.**
+
+> Note: the SDC Workloads track below is the ISV path (Software Development Companies / ISVs).
 
 Full detail in [`docs/motion-brief.md`](docs/motion-brief.md). The complete motion write-up is
 in [`docs/FY27-EPS-Fabric-Apps-Motion-Micro-Hack.md`](docs/FY27-EPS-Fabric-Apps-Motion-Micro-Hack.md).
@@ -70,13 +72,13 @@ It then walks both paths end to end:
 - **Path A — SI / Advisory (Apps):** GSIs first; partners build & ship customer
   business apps on Fabric (Rayfin), with the **Micro Hack 1** one-day agenda and the
   *"Micro Hack in a Box"* kit that lets the SI repeat runs #2…N without Microsoft.
-- **Path B — SDC / ISV (Workloads):** grow the Fabric footprint through ISV offers —
+- **Path B — ISV (Workloads):** grow the Fabric footprint through ISV offers —
   embed a workload once (Extensibility Toolkit) and consume it mechanically across the
   ISV's customer base, via the same repeatable **Micro Hack 2** shape.
 
 It closes with **what we reuse instead of rebuild**, the **two-scoreboard KPI model**
 (north-star = share of apps and workloads that are *partner-led*, not Microsoft-led —
-MSX/ACR for SIs, adoption / one-workload-per-ISV for SDCs), the **FY27 execution
+MSX/ACR for SIs, adoption / one-workload-per-ISV for ISVs), the **FY27 execution
 roadmap**, and **The Ask** — adopt this motion as the execution layer for building apps
 & workloads on Fabric across EMEA.
 
