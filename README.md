@@ -58,7 +58,7 @@ regenerate, and the slide stays consistent.
 
 ## 🎞️ The full motion deck
 
-[![FY27 EMEA EPS — Fabric Apps Motion deck cover](docs/preview/fabric-apps-motion-deck-cover.png)](docs/FY27%20EMEA%20EPS%20-%20Fabric%20Apps%20Motion%20-%20Micro%20Hack.pptx)
+[![FY27 EMEA EPS — Fabric Apps Motion deck cover](docs/preview/fabric-apps-motion-deck-cover-v2.png)](docs/FY27%20EMEA%20EPS%20-%20Fabric%20Apps%20Motion%20-%20Micro%20Hack.pptx)
 
 📥 **[FY27 EMEA EPS — Fabric Apps Motion — Micro Hack.pptx](docs/FY27%20EMEA%20EPS%20-%20Fabric%20Apps%20Motion%20-%20Micro%20Hack.pptx)** *(15 editable slides, click the cover above to download)*
 
