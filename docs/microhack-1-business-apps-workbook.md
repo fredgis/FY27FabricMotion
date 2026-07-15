@@ -198,14 +198,12 @@ Every build step follows the same rhythm:
 project* — you do **not** clone any repo.
 
 ```bash
-npm create @microsoft/rayfin@latest --template dataapp
-cd <the-folder-it-created>
+npm create @microsoft/rayfin@latest -- "MyRayfinApp"
+cd MyRayfinApp
 ```
 
-> **Pick a valid template.** `dataapp` is the recommended base (a Fabric-authenticated
-> React + Vite app wired for Rayfin data — you add entities in `rayfin/data/`). Running
-> `npm create @microsoft/rayfin@latest` with no `--template` lets you choose interactively
-> from `blankapp`, `dataapp`, `gettingstartedauth`, `todoapp`.
+> **Choose the `Data` template** when prompted. It provides a Fabric-authenticated
+> React + Vite app wired for Rayfin data — you add entities in `rayfin/data/`.
 
 **Why.** Rayfin gives you a complete app skeleton (data layer + UI) so you start from
 something that already runs.
@@ -220,9 +218,8 @@ something that already runs.
 World, to confirm your environment and Fabric connection are healthy.
 
 ```bash
-npx rayfin login     # first time only (or on a 401/403) — interactive Entra sign-in
-npx rayfin up        # first full deploy: creates the Fabric item + provisions the DB
-npm run dev          # dev loop: re-deploys + serves the app for fast iteration
+npx rayfin login --tenant <votre tenant>   # first time only (or on a 401/403) — interactive Entra sign-in
+npx rayfin up --workspace "VOTRE NOM DE WORKSPACE"   # first full deploy: creates the Fabric item + provisions the DB
 ```
 
 **Why.** The first `npx rayfin up` authenticates you and **creates the Fabric app item**, then
@@ -242,6 +239,14 @@ Fabric portal** and the starter app loads, with the new app showing in your work
 ---
 
 ## Step 3 — Declare the data model
+
+**Before you begin.** In your terminal, move to the application directory and start GitHub
+Copilot CLI:
+
+```bash
+cd MyRayfinApp
+copilot
+```
 
 **What you do.** Tell Copilot the data your app is about. This defines the **database tables**.
 
@@ -516,8 +521,8 @@ Invoke-RestMethod -Method Delete `
 This is the step that's easy to forget — and the cause of the 404 if skipped.
 
 ```powershell
-Remove-Item rayfin\.deployments.json -ErrorAction SilentlyContinue
-Remove-Item rayfin\.env             -ErrorAction SilentlyContinue   # auto-regenerated on the next up
+Remove-Item -LiteralPath ".\rayfin\.deployments.json" -Force -ErrorAction SilentlyContinue
+Remove-Item -LiteralPath ".\rayfin\.env" -Force -ErrorAction SilentlyContinue
 ```
 
 Then in **`rayfin/rayfin.yml`**, remove the old deployed URL from **`allowedRedirectUris`** and keep only
@@ -541,4 +546,3 @@ Then open the app from the **Fabric portal** and click **"Load demo fleet"** to 
 
 > 🎯 **Milestone (fresh demo):** a new item is created live, and the seeded data is reloaded on demand —
 > nothing reused from the previous run.
-
