@@ -1,5 +1,7 @@
 # FY27 Fabric Motion
 
+![Fabric Apps EMEA motion](docs/images/fabric-apps-emea-hero.png)
+
 This repo is the **Microsoft Fabric application motion** for FY27. It follows the
 shared motion template: a README with the strategy, a one-slide executive
 summary, supporting docs, build scripts, and the bundled slide generator.
