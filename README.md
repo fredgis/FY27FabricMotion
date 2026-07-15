@@ -102,11 +102,25 @@ operations:
 Roles: an **Operations Manager** sees and manages everything; a **Mechanic** only sees
 their assigned tickets.
 
+The four screenshots below show the application generated with **Claude Sonnet 4.6**.
+
 | Bicycle Board | Live Map |
 |---|---|
 | ![Bicycle Board](docs/images/scenario1-bicycle-board.png) | ![Live Map](docs/images/scenario1-live-map.png) |
 | **Pit-Stop Queue** | **Ride Mood & Fleet KPI** |
 | ![Pit-Stop Queue](docs/images/scenario1-pit-stop-queue.png) | ![Ride Mood & Fleet KPI](docs/images/scenario1-ride-mood-kpi.png) |
+
+### Application generated with Claude Opus 4.8
+
+The following screenshots show the application generated with **Claude Opus 4.8**.
+
+| Home | European Live Map |
+|---|---|
+| ![Helios Bicycle Studio home](docs/images/scenario1-opus-home.png) | ![European Live Map](docs/images/scenario1-opus-european-live-map.png) |
+| City Pulse | Bicycle Board |
+| ![City Pulse](docs/images/scenario1-opus-city-pulse.png) | ![Bicycle Board](docs/images/scenario1-opus-bicycle-board.png) |
+| Ride Sessions | Ride Mood & KPI |
+| ![Ride Sessions](docs/images/scenario1-opus-ride-sessions.png) | ![Ride Mood and KPI](docs/images/scenario1-opus-ride-mood-kpi.png) |
 
 **Dive in:**
 - Full solution & screenshots: [`docs/microhack-1-business-apps-solution.md`](docs/microhack-1-business-apps-solution.md)
