@@ -92,6 +92,14 @@ setup. On a lab VM most tools are pre-installed.
 - Visual Studio Code
 - **GitHub Copilot CLI** (the `copilot` terminal agent)
 
+On Windows, install Node.js LTS, PowerShell 7 and GitHub Copilot CLI:
+
+```powershell
+winget install OpenJS.NodeJS.LTS
+winget install --id Microsoft.PowerShell --source winget
+winget install Github.copilot
+```
+
 **Sign in (two accounts):**
 
 1. **GitHub Copilot** — in a terminal run `copilot`, then `/login`, choose **GitHub.com**, finish
